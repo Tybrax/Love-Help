@@ -4,6 +4,8 @@ import { Formik, Field, Form } from 'formik';
 import { TextField, Button } from '@material-ui/core';
 import * as Yup from 'yup';
 
+const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
+
 const Schema = Yup.object().shape({
   firstName: Yup.string()
     .min(1, 'Too Short!')
@@ -23,6 +25,8 @@ const Schema = Yup.object().shape({
   passwordConfirm: Yup.string()
     .oneOf([Yup.ref('password'), null], 'Passwords must match')
     .required('Required'),
+  file: Yup.mixed()
+    .required('Your ID is required')
 });
 
 const SignUp = () => (
@@ -35,6 +39,7 @@ const SignUp = () => (
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
           actions.setSubmitting(false);
+          actions.resetForm();
         }, 1000);
       }}
     >
@@ -116,16 +121,20 @@ const SignUp = () => (
           ) : null}
           </div>
           <div>
+            <h5>Upload a copy of your ID</h5>
             <Field
               type="file"
               name="file"
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.file}
-              placeholder="Confirm password"
               as={TextField}
               style={{width: 300}}
+              accept=".png, .jpg, .pdf"
             />
+            {errors.file && touched.file ? (
+            <div>{errors.file}</div>
+          ) : null}
           </div>
           <div>
             <Button className="mt-3"type="submit">Submit</Button>
