@@ -1,10 +1,7 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
 import { Formik, Field, Form } from 'formik';
 import { TextField, Button } from '@material-ui/core';
 import * as Yup from 'yup';
-
-const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
 
 const Schema = Yup.object().shape({
   firstName: Yup.string()
@@ -31,7 +28,7 @@ const Schema = Yup.object().shape({
 
 const SignUp = () => (
   <div className="text-center">
-    <h1 className="sub-titles">Sign up</h1>
+    <h1 className="sub-title">Sign up</h1>
     <Formik
       initialValues={{ firstName: '', lastName: '', email: '', password: '', passwordConfirm: '', file: '' }}
       validationSchema={Schema}

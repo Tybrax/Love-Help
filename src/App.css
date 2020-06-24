@@ -55,7 +55,7 @@ a.nav-link {
   margin-bottom: 20px;
 }
 
-.sub-titles {
+.sub-title {
   color: #086F00;
   font-weight: bold;
   letter-spacing: 1px;
@@ -69,4 +69,8 @@ a.nav-link {
     align-items: inherit;
     justify-content: inherit;
     color: #086F00 !important;
+}
+
+.cat-text {
+  font-size: 1.2em;
 }
