@@ -21,7 +21,8 @@ a.nav-link {
 
 .footer {
     height: 200px;
-    background-color: #086F00;
+    background-color: #F8F9FA;
+    color: #086F00;
 }
 
 .count {
@@ -52,4 +53,20 @@ a.nav-link {
 
 .fields {
   margin-bottom: 20px;
+}
+
+.sub-titles {
+  color: #086F00;
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-family: 'Vollkorn', serif;
+  text-align: center;
+}
+
+.MuiButton-label {
+    width: 100px;
+    display: inherit;
+    align-items: inherit;
+    justify-content: inherit;
+    color: #086F00 !important;
 }

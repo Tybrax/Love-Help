@@ -7,12 +7,12 @@ export const Footer = () => {
             <footer>
                 <Row>
                     <Col className="d-flex justify-content-center mt-5">
-                            <h4 className="text-white">© 2020 Copyright : Bastien RATAT</h4>
+                            <h4>© 2020 Copyright : Bastien RATAT</h4>
                     </Col>
                     <Col className="d-flex justify-content-center mt-5">
                         <ul className="list-inline">
-                            <li className="list-inline-item"><img src="https://pbs.twimg.com/profile_images/1067328449730224128/P7v1-6rV_400x400.jpg" alt="OpenClassrooms" width="50"/></li>
-                            <li className="list-inline-item"><img src="https://mal-thonon.org/wp-content/uploads/2020/02/Logo-LinkedIn.jpg" alt="LinkedIn" width="50"/></li>
+                            <li className="list-inline-item"><a href="https://openclassrooms.com/en/paths/104-full-stack-developer"><img src="https://pbs.twimg.com/profile_images/1067328449730224128/P7v1-6rV_400x400.jpg" alt="OpenClassrooms" width="50"/></a></li>
+                            <li className="list-inline-item"><a href="https://www.linkedin.com/in/bastien-ratat/"><img src="https://mal-thonon.org/wp-content/uploads/2020/02/Logo-LinkedIn.jpg" alt="LinkedIn" width="50"/></a></li>
                         </ul>
                     </Col>
                 </Row>

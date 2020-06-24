@@ -31,7 +31,7 @@ const Schema = Yup.object().shape({
 
 const SignUp = () => (
   <div className="text-center">
-    <h1 className="text-center">Sign up</h1>
+    <h1 className="sub-titles">Sign up</h1>
     <Formik
       initialValues={{ firstName: '', lastName: '', email: '', password: '', passwordConfirm: '', file: '' }}
       validationSchema={Schema}
