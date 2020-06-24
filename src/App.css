@@ -18,3 +18,38 @@ a.nav-link {
 .space {
     margin-top: 300px;
 }
+
+.footer {
+    height: 200px;
+    background-color: #086F00;
+}
+
+.count {
+    background-color: #333333;
+    height: 100px;
+    color: white;
+}
+
+.card-title {
+    padding: 2px 2px;
+}
+
+.jumbotron-title {
+    text-align: center;
+    font-size: 3em;
+    font-family: 'Vollkorn', serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #086F00;
+}
+
+.MuiFilledInput-input {
+    padding: 27px 12px 10px;
+    color: green !important;
+    font-weight: bold !important;
+    letter-spacing: 2px !important;
+}
+
+.fields {
+  margin-bottom: 20px;
+}

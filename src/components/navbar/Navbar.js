@@ -6,7 +6,7 @@ import { Container } from 'react-bootstrap';
 export const Navbar = (props) => {
     return (
         <Container fluid>
-            <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+            <nav className="navbar navbar-expand-lg navbar-light bg-light navbar-static-top">
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
