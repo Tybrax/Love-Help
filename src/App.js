@@ -16,6 +16,7 @@ import { Navbar } from './components/navbar/Navbar.js';
 import { Homepage } from './components/homepage/Homepage.js';
 import { Footer } from './components/footer/Footer.js';
 import { About } from './components/about/About.js';
+import { Request } from './components/request/Request.js';
 
 function App() {
   return (
@@ -27,10 +28,13 @@ function App() {
         </Jumbotron>
         <Switch>
           <Route exact path="/">
-            <Homepage/>
+            <Homepage />
+          </Route>
+          <Route exact path="/request">
+            <Request />
           </Route>
           <Route exact path="/about">
-            <About/>
+            <About />
           </Route>
         </Switch>
       </div>

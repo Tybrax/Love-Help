@@ -1,5 +1,7 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Figure } from 'react-bootstrap';
+import Counter from '../homepage/Count.js';
+import logo from '../../images/logo.png';
 
 export const About = () => {
     return (
@@ -22,6 +24,14 @@ export const About = () => {
                     </Col>
                 </Row>
             </Container>
+            <Counter />
+            <Figure className="d-flex align-items-center justify-content-center">
+                <Figure.Image
+                    className="img-fluid"
+                    alt="logo"
+                    src={logo}
+                />
+            </Figure>
         </section>
     </div>
     )
