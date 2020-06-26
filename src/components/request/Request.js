@@ -1,7 +1,8 @@
 import React from 'react';
+import { MapComponent } from './Map.js';
 
 export const Request = (props) => {
     return (
-        <h1>test</h1>
+        <MapComponent />
     )
 };

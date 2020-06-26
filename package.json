@@ -13,8 +13,11 @@
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
+    "react-geosuggest": "^2.13.1",
+    "react-google-maps": "^9.4.5",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "recompose": "^0.30.0",
     "styled-components": "^5.1.1",
     "yup": "^0.29.1"
   },
