@@ -79,3 +79,14 @@ a.nav-link {
 .card-title {
   height: 60px;
 }
+
+.map-sub-title {
+  position: absolute;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-family: 'Vollkorn', serif;
+  z-index: 10;
+  margin: 5px;
+  padding: 5px;
+}
