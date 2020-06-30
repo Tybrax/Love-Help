@@ -2,26 +2,27 @@ import React from 'react';
 import { Formik, Field, Form } from 'formik';
 import { TextField, Button } from '@material-ui/core';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 const Schema = Yup.object().shape({
   firstName: Yup.string()
     .min(1, 'Too Short!')
     .max(20, 'Too Long!')
-    .required('Required'),
+    .required('First name required'),
   lastName: Yup.string()
     .min(1, 'Too Short!')
     .max(20, 'Too Long!')
-    .required('Required'),
+    .required('Last name required'),
   email: Yup.string()
     .email('Invalid email')
-    .required('Required'),
+    .required('Email required'),
   password: Yup.string()
     .min(6, 'Too Short!')
     .max(20, 'Too Long!')
-    .required('Required'),
+    .required('Password required'),
   passwordConfirm: Yup.string()
     .oneOf([Yup.ref('password'), null], 'Passwords must match')
-    .required('Required'),
+    .required('Confirm password required'),
   file: Yup.mixed()
     .required('Your ID is required')
 });
@@ -33,14 +34,17 @@ const SignUp = () => (
       initialValues={{ firstName: '', lastName: '', email: '', password: '', passwordConfirm: '', file: '' }}
       validationSchema={Schema}
       onSubmit={(values, actions) => {
+        actions.setSubmitting(true);
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
+          {/*Send data to a custom test API*/}
+          axios.post('http://localhost:3001/api/v1/users', values);
           actions.setSubmitting(false);
           actions.resetForm();
         }, 1000);
       }}
     >
-      {( { errors, touched, handleSubmit, handleChange, handleBlur, values }) => (
+      {( { errors, touched, handleSubmit, handleChange, handleBlur, values, isSubmitting }) => (
         <Form className="mt-3" onSubmit={handleSubmit}>
           <div className="fields">
             <Field
@@ -54,7 +58,7 @@ const SignUp = () => (
               style={{width: 300}}
             />
             {errors.firstName && touched.firstName ? (
-            <div>{errors.firstName}</div>
+            <div className="error-field">{errors.firstName}</div>
           ) : null}
           </div>
           <div className="fields">
@@ -69,7 +73,7 @@ const SignUp = () => (
               style={{width: 300}}
             />
             {errors.lastName && touched.lastName ? (
-            <div>{errors.lastName}</div>
+            <div className="error-field">{errors.lastName}</div>
           ) : null}
           </div>
           <div className="fields">
@@ -84,7 +88,7 @@ const SignUp = () => (
               style={{width: 300}}
           />
           {errors.email && touched.email ? (
-            <div>{errors.email}</div>
+            <div className="error-field">{errors.email}</div>
           ) : null}
           </div>
           <div className="fields">
@@ -99,7 +103,7 @@ const SignUp = () => (
               style={{width: 300}}
             />
             {errors.password && touched.password ? (
-            <div>{errors.password}</div>
+            <div className="error-field">{errors.password}</div>
           ) : null}
           </div>
           <div className="fields">
@@ -114,7 +118,7 @@ const SignUp = () => (
                 style={{width: 300}}
             />
             {errors.passwordConfirm && touched.passwordConfirm ? (
-            <div>{errors.passwordConfirm}</div>
+            <div className="error-field">{errors.passwordConfirm}</div>
           ) : null}
           </div>
           <div>
@@ -130,11 +134,11 @@ const SignUp = () => (
               accept=".png, .jpg, .pdf"
             />
             {errors.file && touched.file ? (
-            <div>{errors.file}</div>
+            <div className="error-field">{errors.file}</div>
           ) : null}
           </div>
           <div>
-            <Button className="mt-3"type="submit">Submit</Button>
+            <Button disabled={isSubmitting} className="mt-3"type="submit">Submit</Button>
           </div>
         </Form>
       )}

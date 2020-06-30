@@ -90,3 +90,11 @@ a.nav-link {
   margin: 5px;
   padding: 5px;
 }
+
+.error-field {
+  color: #c70039;
+}
+
+.valid-field {
+  color: #a2de96;
+}
