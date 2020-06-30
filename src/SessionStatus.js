@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Jumbotron } from 'react-bootstrap';
 import axios from 'axios';
 
@@ -6,11 +6,14 @@ export const SessionStatus = () => {
     const [user, setUser] = useState(false);
 
     /*GET method to retrieve the user name given a token to write below*/
-    /*userEffect( () => {
-        setTimeout(() => {
-            AXIOS GET REQUEST FOR TOKEN HERE
-        }, 500)
-    })*/
+
+    /*setTimeout(() => {
+        axios.get('http://localhost:3001/api/v1/users/1')
+        .then((response) => {
+            setUser(`${response.data.firstName} ${response.data.lastName}`);
+            console.log(response.data);
+        })
+    }, 200)*/
 
     if (!user) {
         return (
@@ -21,7 +24,7 @@ export const SessionStatus = () => {
     } else {
         return (
             <div>
-                <h6 className="session-info text-right mr-5">Welcome <span style={{color: '#086F00'}} className="font-weight-bold">firstName + lastName</span></h6>
+                <h6 className="session-info text-right mr-5">Welcome <span style={{color: '#086F00'}} className="font-weight-bold">{user}</span></h6>
             </div>
         )
     }
