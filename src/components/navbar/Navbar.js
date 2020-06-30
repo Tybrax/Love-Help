@@ -1,7 +1,34 @@
-import React from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
+import axios from 'axios';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from "react-router-dom";
 import { Container } from 'react-bootstrap';
+
+const NavbarElements = () => {
+    const [user, setUser] = useState(false);
+
+    /*useEffect(() => {
+        setTimeout(() => {
+            AXIOS GET REQUEST FOR TOKEN HERE
+        }, 500)
+    })*/
+
+    if (!user) {
+        return (
+            <Fragment>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/request">REQUEST</Link>
+                </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/about">ABOUT</Link>
+                </li>
+            </Fragment>
+        )
+    } else {
+        return null;
+    }
+}
 
 export const Navbar = (props) => {
     return (
@@ -22,12 +49,7 @@ export const Navbar = (props) => {
                         <li className="nav-item">
                             <Link className="nav-link" to="/">HOME</Link>
                         </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/request">REQUEST</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/about">ABOUT</Link>
-                        </li>
+                        <NavbarElements />
                     </ul>
                 </div>
             </nav>

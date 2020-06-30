@@ -98,3 +98,9 @@ a.nav-link {
 .valid-field {
   color: #a2de96;
 }
+
+.session-info {
+  letter-spacing: 1px;
+  font-family: 'Roboto';
+  color:  #333333;
+}

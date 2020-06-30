@@ -17,6 +17,7 @@ import { Homepage } from './components/homepage/Homepage.js';
 import { Footer } from './components/footer/Footer.js';
 import { About } from './components/about/About.js';
 import { Request } from './components/request/Request.js';
+import { SessionStatus } from './SessionStatus.js'
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Jumbotron>
           <h1 className="jumbotron-title">Love & Help</h1>
         </Jumbotron>
+        <SessionStatus />
         <Switch>
           <Route exact path="/">
             <Homepage />
