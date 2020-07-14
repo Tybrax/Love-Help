@@ -8,7 +8,7 @@ import { Container } from 'react-bootstrap';
 const NavbarElements = () => {
     const [user, setUser] = useState(false);
 
-    /*useEffect(() => {
+/*    useEffect(() => {
         setTimeout(() => {
             AXIOS GET REQUEST FOR TOKEN HERE
         }, 500)

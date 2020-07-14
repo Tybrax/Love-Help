@@ -4,6 +4,7 @@ import { TextField, Button } from '@material-ui/core';
 import * as Yup from 'yup';
 import axios from 'axios';
 
+// validations using YUP
 const Schema = Yup.object().shape({
   firstName: Yup.string()
     .min(1, 'Too Short!')
@@ -37,8 +38,8 @@ const SignUp = () => (
         actions.setSubmitting(true);
         setTimeout(() => {
           console.log(JSON.stringify(values, null, 2));
-          {/*Send data to a custom test API*/}
-          axios.post('http://localhost:3001/api/v1/users', values);
+          /*Send data to a custom test API*/
+          /*axios.post('http://localhost:3001/api/v1/users', values);*/
           actions.setSubmitting(false);
           actions.resetForm();
         }, 1000);
