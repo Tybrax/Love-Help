@@ -1,20 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng
 } from "react-places-autocomplete";
 import Geocode from 'react-geocode';
+import { Button } from 'react-bootstrap';
 
 Geocode.setApiKey("AIzaSyBT5euhpYYvpzGV7EkplwyF1AttF4jvr2A");
 Geocode.setLanguage("en");
 Geocode.setRegion("fr");
 
 export const GeoSuggest = (props) => {
-  const [address, setAddress] = React.useState("");
+  const [address, setAddress] = useState("");
   const [coordinates, setCoordinates] = React.useState({
     lat: null,
     lng: null
   });
+
+    const [title, setTitle] = useState("");
+    const [type, setType] = useState("");
+    const [description, setDescription] = useState("");
+
+    const handleSubmit = () => {
+        const data = {
+          title: title,
+          type: type,
+          description: description,
+          coordinates: coordinates
+        }
+        console.log(data);
+        alert("request title : " + data.title);
+    }
 
   const handleSelect =  (value) => {
     Geocode.fromAddress(value)
@@ -27,40 +43,85 @@ export const GeoSuggest = (props) => {
 
   return (
     <div className="text-center mt-3 mb-3">
+      <form onSubmit={handleSubmit}>
       <PlacesAutocomplete
         value={address}
         onChange={setAddress}
         onSelect={handleSelect}
+
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
+            {/*Render data for test*/}
             <p>{address ? `Location : ${address}` : null}</p>
             <p>Latitude: {coordinates.lat}</p>
             <p>Longitude: {coordinates.lng}</p>
-            <input {...getInputProps({ placeholder: "Type your address" })} />
 
             <div>
-              {loading ? <div>loading...</div> : null}
-
-              {suggestions.map((suggestion, index) => {
-                const style = {
-                  cursor: 'pointer',
-                  backgroundColor: suggestion.active ? "#086F00" : "#fff",
-                  color: suggestion.active ? "#fff" : "#086F00"
-                };
-
-                return (
-                  <ul className="list-unstyled">
-                    <li key={suggestion.index} {...getSuggestionItemProps(suggestion, { style })}>
-                      {suggestion.description}
-                    </li>
-                  </ul>
-                );
-              })}
+              <h5>Request title</h5>
+              <input
+                className="request-field mb-3"
+                type="text"
+                name="title"
+                required="required"
+                onChange={event => setTitle(event.target.value)}
+                value={title}
+              />
             </div>
+            <div>
+              <h5>Request type</h5>
+              <input
+                className="request-field mb-3"
+                type="text"
+                name="title"
+                required="required"
+                onChange={event => setType(event.target.value)}
+                value={type}
+              />
+            </div>
+            <div>
+              <h5>Request description</h5>
+              <textarea
+                className="request-field mb-3"
+                name="description"
+                required="required"
+                onChange={event => setDescription(event.target.value)}
+                value={description}
+              >
+                Describe your request in no more than 300 characters
+              </textarea>
+            </div>
+
+              {/*form input & droplist*/}
+              <h5>Request address</h5>
+
+                <input className="request-field" {...getInputProps({ placeholder: "Type your address" })} />
+
+                <div>
+                  {loading ? <div>loading...</div> : null}
+
+                  {suggestions.map((suggestion, index) => {
+                    const style = {
+                      cursor: 'pointer',
+                      backgroundColor: suggestion.active ? "#086F00" : "#fff",
+                      color: suggestion.active ? "#fff" : "#086F00"
+                    };
+
+                    return (
+                      <ul className="list-unstyled">
+                        <li key={suggestion.index} {...getSuggestionItemProps(suggestion, { style })}>
+                          {suggestion.description}
+                        </li>
+                      </ul>
+                    );
+                  })}
+                </div>
           </div>
         )}
+
       </PlacesAutocomplete>
+      <input type="submit" value="Submit" />
+      </form>
     </div>
   );
 }

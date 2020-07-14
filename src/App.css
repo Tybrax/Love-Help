@@ -104,3 +104,7 @@ a.nav-link {
   font-family: 'Roboto';
   color:  #333333;
 }
+
+.request-field {
+  width: 350px;
+}
