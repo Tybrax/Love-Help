@@ -10,7 +10,7 @@ import {
   Route,
 } from 'react-router-dom';
 
-import logo from './images/logo.png';
+import logoGreen from './images/logo_green.png';
 
 import { Navbar } from './components/navbar/Navbar.js';
 import { Homepage } from './components/homepage/Homepage.js';
@@ -23,7 +23,7 @@ function App() {
   return (
     <Router>
       <div className='App'>
-        <Navbar logo={logo} />
+        <Navbar logo={logoGreen} />
         <Jumbotron>
           <h1 className="jumbotron-title">Love & Help</h1>
         </Jumbotron>

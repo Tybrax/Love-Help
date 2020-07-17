@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Row, Col, Figure } from 'react-bootstrap';
 import Counter from '../homepage/Count.js';
-import logo from '../../images/logo.png';
+import logoGreen from '../../images/logo_green.png';
 
 export const About = () => {
     return (
@@ -29,7 +29,7 @@ export const About = () => {
                 <Figure.Image
                     className="img-fluid"
                     alt="logo"
-                    src={logo}
+                    src={logoGreen}
                 />
             </Figure>
         </section>

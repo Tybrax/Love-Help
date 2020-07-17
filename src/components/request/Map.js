@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
-import logo from '../../images/logo.png';
+import logoGreen from '../../images/logo_green.png';
+import logoRed from '../../images/logo_red.png';
 import mapStyles from "./mapStyles";
 import {
     GoogleMap,
@@ -29,6 +30,8 @@ const options = {
     zoomControl: true
 };
 
+export const requestInformations = [];
+
 export const MapComponent = () => {
     const {isLoaded, loadError} = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -36,6 +39,20 @@ export const MapComponent = () => {
     });
 
     const [markers, setMarkers] = useState([]);
+    const [fulfilled, setFullfilled] = useState(false);
+
+    const handleClick = () => {
+        axios.get('http://localhost:3001/api/v1/requests/11')
+        .then(res => {
+            alert(res.data.title);
+            requestInformations.push(res.data.title);
+            requestInformations.push(res.data.request_type);
+            requestInformations.push(res.data.description);
+        })
+        .catch(e => {
+            console.log(e);
+        })
+    }
 
     useEffect(() => {
         setTimeout(() => {
@@ -83,11 +100,12 @@ export const MapComponent = () => {
                             key={marker.time.toISOString()}
                             position={{ lat: marker.lat, lng: marker.lng }}
                             icon={{
-                                url: logo,
+                                url: fulfilled ? logoRed : logoGreen,
                                 scaledSize: new window.google.maps.Size(50,50),
                                 origin: new window.google.maps.Point(0,0),
                                 anchor: new window.google.maps.Point(25,25)
                             }}
+                            onClick={handleClick}
                         />
                     ))}
                 </GoogleMap>
