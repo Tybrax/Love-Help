@@ -42,7 +42,7 @@ export const MapComponent = () => {
             axios.get(requestEndPoint)
             .then(res => {
                 const responseData = res.data;
-
+                /*Edit the coordinates so they have the accepted format for googleMap*/
                 const coordinates = [];
                 const cleanCoordinates = [];
                 responseData.map(request => coordinates.push(request.location))
@@ -58,17 +58,13 @@ export const MapComponent = () => {
                     }
                     cleanCoordinates.push(coordinatesObject);
                 })
-                console.log(cleanCoordinates);
+                /*Update state to have an array of object containing coordinates and time for React key*/
                 setMarkers(cleanCoordinates)
-                /*format coordinates
-
-                /*update states by adding each location to the array*/
-
             })
             .catch(e => {
                 console.log(e)
             })
-        }, 3000);
+        }, 1000);
     })
 
     if (loadError) return "Error loading Maps";
