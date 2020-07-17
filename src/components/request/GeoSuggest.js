@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from 'axios';
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng
@@ -24,12 +25,18 @@ export const GeoSuggest = (props) => {
     const handleSubmit = () => {
         const data = {
           title: title,
-          type: type,
+          request_type: type,
           description: description,
-          coordinates: coordinates
+          location: `${coordinates.lat}, ${coordinates.lng}`
         }
         console.log(data);
-        alert("request title : " + data.title);
+        axios.post('http://localhost:3001/api/v1/requests', data)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(e => {
+          console.log(e);
+        })
     }
 
   const handleSelect =  (value) => {
