@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import logo from '../../images/logo.png';
 import mapStyles from "./mapStyles";
@@ -8,8 +8,10 @@ import {
     Marker,
     InfoWindow,
 } from '@react-google-maps/api'
-
+import axios from 'axios';
 const libraries = ["places"];
+
+const requestEndPoint = 'http://localhost:3001/api/v1/requests';
 
 const mapContainerStyle = {
     width: '100vh',
@@ -33,28 +35,52 @@ export const MapComponent = () => {
         libraries,
     });
 
-    const [markers, setMarkers] = React.useState([]);
+    const [markers, setMarkers] = useState([]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            axios.get(requestEndPoint)
+            .then(res => {
+                const responseData = res.data;
+
+                const coordinates = [];
+                const cleanCoordinates = [];
+                responseData.map(request => coordinates.push(request.location))
+
+                coordinates.map(str => {
+                    const splitCoordinates = str.split(",");
+                    const latitude = splitCoordinates[0];
+                    const longitude = splitCoordinates[1].trim();
+                    const coordinatesObject = {
+                        lat: parseFloat(latitude),
+                        lng: parseFloat(longitude),
+                        time: new Date()
+                    }
+                    cleanCoordinates.push(coordinatesObject);
+                })
+                console.log(cleanCoordinates);
+                setMarkers(cleanCoordinates)
+                /*format coordinates
+
+                /*update states by adding each location to the array*/
+
+            })
+            .catch(e => {
+                console.log(e)
+            })
+        }, 3000);
+    })
 
     if (loadError) return "Error loading Maps";
     if (!isLoaded) return "Loading Maps"
     return (
         <Container className="d-flex justify-content-center">
             <div>
-                <h1 className="map-sub-title">LOVE & HELP</h1>
                 <GoogleMap
                     mapContainerStyle={mapContainerStyle}
                     zoom={12}
                     center={center}
                     options={options}
-                    onClick={(event) => {
-                        setMarkers((current) =>  [
-                            ...current,
-                            {
-                                lat: event.latLng.lat(),
-                                lng: event.latLng.lng(),
-                                time: new Date()
-                        }])
-                    }}
                 >
                     {markers.map((marker) => (
                         <Marker
