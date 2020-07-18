@@ -2,6 +2,7 @@ import React from 'react';
 import { MapComponent } from './Map.js';
 import { GeoSuggest } from './GeoSuggest.js';
 import { Legend } from './Legend.js';
+import { RemoveRequest } from './RemoveRequest.js';
 
 export const Request = (props) => {
     return (
@@ -9,6 +10,7 @@ export const Request = (props) => {
             <Legend />
             <MapComponent />
             <GeoSuggest />
+            <RemoveRequest />
         </React.Fragment>
     )
 };

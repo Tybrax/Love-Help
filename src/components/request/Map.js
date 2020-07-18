@@ -10,6 +10,7 @@ import {
     InfoWindow,
 } from '@react-google-maps/api'
 import axios from 'axios';
+
 const libraries = ["places"];
 
 const requestEndPoint = 'http://localhost:3001/api/v1/requests';
@@ -39,8 +40,7 @@ export const MapComponent = () => {
     });
 
     const [markers, setMarkers] = useState([]);
-    const [fulfilled, setFullfilled] = useState(false);
-
+    const [icons, setIcons] = useState([]);
     const handleClick = () => {
         axios.get('http://localhost:3001/api/v1/requests/11')
         .then(res => {
@@ -59,13 +59,34 @@ export const MapComponent = () => {
             axios.get(requestEndPoint)
             .then(res => {
                 const responseData = res.data;
+
                 /*Edit the coordinates so they have the accepted format for googleMap*/
                 const coordinates = [];
                 const cleanCoordinates = [];
+                const requestsStatus = [];
+
+                responseData.map(request => requestsStatus.push(request.fulfilled))
+
                 responseData.map(request => coordinates.push(request.location))
 
-                coordinates.map(str => {
+                let i;
+                for (i = 0 ; i < coordinates.length; i++) {
+                    const splitCoordinates = coordinates[i].split(",");
+                    const latitude = splitCoordinates[0];
+                    const longitude = splitCoordinates[1].trim();
+                    const status = requestsStatus[i];
+                    const coordinatesObject = {
+                        lat: parseFloat(latitude),
+                        lng: parseFloat(longitude),
+                        time: new Date(),
+                        icon: status
+                    };
+                    cleanCoordinates.push(coordinatesObject);
+                }
+
+/*                coordinates.map(str => {
                     const splitCoordinates = str.split(",");
+
                     const latitude = splitCoordinates[0];
                     const longitude = splitCoordinates[1].trim();
                     const coordinatesObject = {
@@ -74,9 +95,10 @@ export const MapComponent = () => {
                         time: new Date()
                     }
                     cleanCoordinates.push(coordinatesObject);
-                })
+                })*/
                 /*Update state to have an array of object containing coordinates and time for React key*/
-                setMarkers(cleanCoordinates)
+                setMarkers(cleanCoordinates);
+                setIcons(requestsStatus);
             })
             .catch(e => {
                 console.log(e)
@@ -100,7 +122,7 @@ export const MapComponent = () => {
                             key={marker.time.toISOString()}
                             position={{ lat: marker.lat, lng: marker.lng }}
                             icon={{
-                                url: fulfilled ? logoRed : logoGreen,
+                                url: marker.icon ? logoRed : logoGreen,
                                 scaledSize: new window.google.maps.Size(50,50),
                                 origin: new window.google.maps.Point(0,0),
                                 anchor: new window.google.maps.Point(25,25)
