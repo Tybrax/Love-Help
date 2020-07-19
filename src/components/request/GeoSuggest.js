@@ -59,11 +59,6 @@ export const GeoSuggest = (props) => {
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
-            {/*Render data for test*/}
-            <p>{address ? `Location : ${address}` : null}</p>
-            <p>Latitude: {coordinates.lat}</p>
-            <p>Longitude: {coordinates.lng}</p>
-
             <div>
               <h5>Request title</h5>
               <input

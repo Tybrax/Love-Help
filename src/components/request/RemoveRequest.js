@@ -1,10 +1,12 @@
+/*TEST COMPONENT TO UPDATE REQUEST STATUS AND REMOVE IT*/
+
 import React, { useState, useEffect, Fragment } from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 
 export const RemoveRequest = () => {
     const [request, setRequest] = useState({})
-    const endpoint = 'http://localhost:3001/api/v1/requests/13';
+    const endpoint = 'http://localhost:3001/api/v1/requests/16';
 
     useEffect(() => {
         setTimeout(() => {
@@ -19,18 +21,14 @@ export const RemoveRequest = () => {
     })
 
     const handleClick = () => {
-        setTimeout(() => {
             axios.put(
                 endpoint,
                 {
-                    title: request.title,
-                    request_type: request.request_type,
-                    description: request.description,
-                    location: request.location,
                     fulfilled: true
                 }
             )
-        }, 500)
+            .then(alert("UPDATED"))
+            .catch(alert("FAILURE"))
     }
 
     return (

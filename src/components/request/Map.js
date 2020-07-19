@@ -84,18 +84,6 @@ export const MapComponent = () => {
                     cleanCoordinates.push(coordinatesObject);
                 }
 
-/*                coordinates.map(str => {
-                    const splitCoordinates = str.split(",");
-
-                    const latitude = splitCoordinates[0];
-                    const longitude = splitCoordinates[1].trim();
-                    const coordinatesObject = {
-                        lat: parseFloat(latitude),
-                        lng: parseFloat(longitude),
-                        time: new Date()
-                    }
-                    cleanCoordinates.push(coordinatesObject);
-                })*/
                 /*Update state to have an array of object containing coordinates and time for React key*/
                 setMarkers(cleanCoordinates);
                 setIcons(requestsStatus);
@@ -103,7 +91,7 @@ export const MapComponent = () => {
             .catch(e => {
                 console.log(e)
             })
-        }, 1000);
+        }, 500);
     })
 
     if (loadError) return "Error loading Maps";
