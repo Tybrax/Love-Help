@@ -72,14 +72,18 @@ export const GeoSuggest = (props) => {
             </div>
             <div>
               <h5>Request type</h5>
-              <input
+              <select
                 className="request-field mb-3"
-                type="text"
-                name="title"
+                name="type"
                 required="required"
-                onChange={event => setType(event.target.value)}
                 value={type}
-              />
+                onChange={event => setType(event.target.value)}
+              >
+                <option selected value="">Pick up a type below</option>
+                <option value="One-time task">One-time task</option>
+                <option value="Material need">Material need</option>
+              </select>
+
             </div>
             <div>
               <h5>Request description</h5>

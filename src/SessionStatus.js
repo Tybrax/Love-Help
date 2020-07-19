@@ -7,13 +7,13 @@ export const SessionStatus = () => {
 
     /*GET method to retrieve the user name given a token to write below*/
 
-    setTimeout(() => {
+/*    setTimeout(() => {
         axios.get('http://localhost:3001/api/v1/users/1')
         .then((response) => {
             setUser(`${response.data.firstName} ${response.data.lastName}`);
             console.log(response.data);
         })
-    }, 200)
+    }, 200)*/
 
     if (!user) {
         return (

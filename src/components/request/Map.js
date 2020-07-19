@@ -31,8 +31,6 @@ const options = {
     zoomControl: true
 };
 
-export const requestInformations = [];
-
 export const MapComponent = () => {
     const {isLoaded, loadError} = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -41,18 +39,6 @@ export const MapComponent = () => {
 
     const [markers, setMarkers] = useState([]);
     const [icons, setIcons] = useState([]);
-    const handleClick = () => {
-        axios.get('http://localhost:3001/api/v1/requests/11')
-        .then(res => {
-            alert(res.data.title);
-            requestInformations.push(res.data.title);
-            requestInformations.push(res.data.request_type);
-            requestInformations.push(res.data.description);
-        })
-        .catch(e => {
-            console.log(e);
-        })
-    }
 
     useEffect(() => {
         setTimeout(() => {
@@ -64,9 +50,12 @@ export const MapComponent = () => {
                 const coordinates = [];
                 const cleanCoordinates = [];
                 const requestsStatus = [];
+                const requestsType = [];
+                const requestsId = [];
 
                 responseData.map(request => requestsStatus.push(request.fulfilled))
-
+                responseData.map(request => requestsType.push(request.request_type))
+                responseData.map(request => requestsId.push(request.id))
                 responseData.map(request => coordinates.push(request.location))
 
                 let i;
@@ -74,19 +63,21 @@ export const MapComponent = () => {
                     const splitCoordinates = coordinates[i].split(",");
                     const latitude = splitCoordinates[0];
                     const longitude = splitCoordinates[1].trim();
-                    const status = requestsStatus[i];
+                    const type = requestsType[i];
+                    const requestId = requestsId[i]
+                    /*alert(type);*/
                     const coordinatesObject = {
                         lat: parseFloat(latitude),
                         lng: parseFloat(longitude),
-                        time: new Date(),
-                        icon: status
+                        id: requestId,
+                        icon: type
                     };
                     cleanCoordinates.push(coordinatesObject);
                 }
 
                 /*Update state to have an array of object containing coordinates and time for React key*/
                 setMarkers(cleanCoordinates);
-                setIcons(requestsStatus);
+                setIcons(requestsType);
             })
             .catch(e => {
                 console.log(e)
@@ -107,15 +98,14 @@ export const MapComponent = () => {
                 >
                     {markers.map((marker) => (
                         <Marker
-                            key={marker.time.toISOString()}
+                            key={marker.id}
                             position={{ lat: marker.lat, lng: marker.lng }}
                             icon={{
-                                url: marker.icon ? logoRed : logoGreen,
+                                url: (marker.icon === "One-time task") ? logoRed : logoGreen,
                                 scaledSize: new window.google.maps.Size(50,50),
                                 origin: new window.google.maps.Point(0,0),
                                 anchor: new window.google.maps.Point(25,25)
                             }}
-                            onClick={handleClick}
                         />
                     ))}
                 </GoogleMap>
