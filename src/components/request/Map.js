@@ -49,15 +49,19 @@ export const MapComponent = () => {
                 /*Edit the coordinates so they have the accepted format for googleMap*/
                 const coordinates = [];
                 const cleanCoordinates = [];
+
+                /*Create empty lists for each request to append to the marker state*/
                 const requestsStatus = [];
                 const requestsType = [];
                 const requestsId = [];
 
+                /*Fill our lists with data from the requests*/
                 responseData.map(request => requestsStatus.push(request.fulfilled))
                 responseData.map(request => requestsType.push(request.request_type))
                 responseData.map(request => requestsId.push(request.id))
                 responseData.map(request => coordinates.push(request.location))
 
+                /*Create objects using our lists*/
                 let i;
                 for (i = 0 ; i < coordinates.length; i++) {
                     const splitCoordinates = coordinates[i].split(",");
@@ -82,7 +86,7 @@ export const MapComponent = () => {
             .catch(e => {
                 console.log(e)
             })
-        }, 500);
+        }, 5000);
     })
 
     if (loadError) return "Error loading Maps";

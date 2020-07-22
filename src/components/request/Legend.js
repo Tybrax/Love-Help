@@ -12,12 +12,12 @@ export const Legend = () => {
                     <Row>
                         <Col>
                             <figure>
-                                <img src={logoGreen} className="img-fluid d-flex mx-auto" alt="legendGreen" width="100" />
+                                <img src={logoRed} className="img-fluid d-flex mx-auto" alt="legendRed" width="100" />
                             </figure>
                         </Col>
                         <Col className="mt-3">
-                            <h5 className="sub-title text-center">Unfulfilled request</h5>
-                            <p className="cat-text">People out there really need your help. Click on the marker in order to know more about what's going on.</p>
+                            <h5 className="sub-title-alert text-center">One-time task</h5>
+                            <p className="cat-text">i.e., to help carry a piece of heavy furniture or feeding the cats.</p>
                         </Col>
                     </Row>
                 </Col>
@@ -25,12 +25,12 @@ export const Legend = () => {
                     <Row>
                         <Col>
                             <figure>
-                                <img src={logoRed} className="img-fluid d-flex mx-auto" alt="legendRed" width="100" />
+                                <img src={logoGreen} className="img-fluid d-flex mx-auto" alt="legendGreen" width="100" />
                             </figure>
                         </Col>
                         <Col className="mt-3">
-                            <h5 className="sub-title-alert text-center">Fulfilled request</h5>
-                            <p className="cat-text">Someone else already took care of that request! That's great! Try to find out unfulfilled requests around you!</p>
+                            <h5 className="sub-title text-center">Material need</h5>
+                            <p className="cat-text">i.e., a homeless woman on your street who needs a blanket for winter or some rice to cook a risotto.</p>
                         </Col>
                     </Row>
                 </Col>

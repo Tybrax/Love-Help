@@ -76,7 +76,7 @@ export const GeoSuggest = (props) => {
                 className="request-field mb-3"
                 name="type"
                 required="required"
-                value={type}
+                defaultValue={type}
                 onChange={event => setType(event.target.value)}
               >
                 <option selected value="">Pick up a type below</option>
