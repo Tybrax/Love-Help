@@ -20,11 +20,6 @@ const mapContainerStyle = {
     height:'100vh'
 };
 
-const center = {
-    lat: 43.294640 ,
-    lng: 5.368660
-};
-
 const options = {
     styles: mapStyles,
     disableDefaultUI: true,
@@ -37,8 +32,43 @@ export const MapComponent = () => {
         libraries,
     });
 
+    /*state for map*/
+    const [center, setCenter] = useState({ lat: 43.294640, lng: 5.368660});
+    const [zoom, setZoom] = useState(12);
+
+    /*states for markers*/
     const [markers, setMarkers] = useState([]);
     const [icons, setIcons] = useState([]);
+
+    /*states for infowindows*/
+    const [windows, setWindows] = useState();
+    const [infoOpen, setInfoOpen] = useState(false);
+    const [selectedPlace, setSelectedPlace] = useState();
+
+    const handleClick = (id) => {
+        const endpointWindow = `${requestEndPoint}/${id}`;
+            setTimeout( () => {
+                axios.get(endpointWindow)
+                .then(response => {
+                    const clickResponse = response.data;
+                    const windowObject = {
+                        windowsId: clickResponse.id,
+                        type: clickResponse.request_type,
+                        title: clickResponse.title.toUpperCase(),
+                        description : clickResponse.description,
+                        lat: parseFloat(clickResponse.location.split(',')[0]),
+                        lng: parseFloat(clickResponse.location.split(',')[1].trim())
+                    };
+                    setWindows(windowObject);
+                    setInfoOpen(true);
+                    setCenter({lat: windowObject.lat, lng: windowObject.lng});
+
+                })
+                .catch(error => {
+                    console.log('ERROR DESCRIPTION : ' + error)
+                })
+            }, 500)
+    }
 
     useEffect(() => {
         setTimeout(() => {
@@ -96,7 +126,7 @@ export const MapComponent = () => {
             <div>
                 <GoogleMap
                     mapContainerStyle={mapContainerStyle}
-                    zoom={12}
+                    zoom={zoom}
                     center={center}
                     options={options}
                 >
@@ -110,12 +140,31 @@ export const MapComponent = () => {
                                 origin: new window.google.maps.Point(0,0),
                                 anchor: new window.google.maps.Point(25,25)
                             }}
+                            onClick={() => {handleClick(marker.id)}}
                         />
                     ))}
+                    {windows && infoOpen && (
+                        <InfoWindow
+                            position={{lat: windows.lat, lng: windows.lng }}
+                            onCloseClick={() => setInfoOpen(false)}
+                        >
+                            <div>
+                                <h4 className="info-title">{windows.title}</h4>
+                                <h6
+                                    className="info-text"
+                                    style={{ color : (windows.type === "One-time task") ? ' #c70039' : '#086F00'}}
+                                >
+                                    {windows.type}
+                                </h6>
+                                <p className="info-text">{windows.description}</p>
+                            </div>
+                        </InfoWindow>
+                    )}
                 </GoogleMap>
             </div>
         </Container>
     )
 }
+
 
 export default MapComponent;

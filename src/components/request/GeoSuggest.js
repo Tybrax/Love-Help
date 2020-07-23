@@ -33,6 +33,7 @@ export const GeoSuggest = (props) => {
         axios.post('http://localhost:3001/api/v1/requests', data)
         .then(res => {
           console.log(res);
+          console.log("DATA SENT TO BACKEND");
         })
         .catch(e => {
           console.log(e);
@@ -76,10 +77,10 @@ export const GeoSuggest = (props) => {
                 className="request-field mb-3"
                 name="type"
                 required="required"
-                defaultValue={type}
+                defaultValue={"DEFAULT"}
                 onChange={event => setType(event.target.value)}
               >
-                <option selected value="">Pick up a type below</option>
+                <option value="DEFAULT" disabled>Pick up a type below</option>
                 <option value="One-time task">One-time task</option>
                 <option value="Material need">Material need</option>
               </select>

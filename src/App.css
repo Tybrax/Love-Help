@@ -116,3 +116,17 @@ a.nav-link {
 .request-field {
   width: 350px;
 }
+
+.info-title {
+  color: #086F00;
+  font-family: 'Vollkorn', serif;
+  letter-spacing: 2px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.info-text {
+  color: #333333;
+  font-family: 'Roboto';
+  text-align: justify;
+}
