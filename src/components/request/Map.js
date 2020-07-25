@@ -38,18 +38,22 @@ export const MapComponent = () => {
         libraries,
     });
 
-    const mapCenter = {
-        lat: 0,
-        lng: 0
+    const getCenter = () => {
+        const mapCenter = {
+            lat: null,
+            lng: null
+        };
+
+        navigator.geolocation.getCurrentPosition(function(position) {
+            mapCenter.lat = position.coords.latitude;
+            mapCenter.lng = position.coords.longitude;
+        })
+
+        return mapCenter;
     }
 
-    navigator.geolocation.getCurrentPosition(function(position) {
-            mapCenter.lat =  position.coords.latitude;
-            mapCenter.lng =  position.coords.longitude;
-    })
-
     /*state for map*/
-    const [center, setCenter] = useState(mapCenter);
+    const [center, setCenter] = useState(getCenter());
     const [zoom, setZoom] = useState(12);
 
     /*states for markers*/
