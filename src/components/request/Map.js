@@ -9,7 +9,13 @@ import {
     Marker,
     InfoWindow,
 } from '@react-google-maps/api'
+import Geocode from 'react-geocode';
+
 import axios from 'axios';
+
+Geocode.setApiKey("AIzaSyBT5euhpYYvpzGV7EkplwyF1AttF4jvr2A");
+Geocode.setLanguage("en");
+Geocode.setRegion("fr");
 
 const libraries = ["places"];
 
@@ -46,22 +52,44 @@ export const MapComponent = () => {
     const [selectedPlace, setSelectedPlace] = useState();
 
     const handleClick = (id) => {
+
         const endpointWindow = `${requestEndPoint}/${id}`;
+
             setTimeout( () => {
+                /*Get request for a clicked marker*/
                 axios.get(endpointWindow)
                 .then(response => {
+
                     const clickResponse = response.data;
+
                     const windowObject = {
                         windowsId: clickResponse.id,
                         type: clickResponse.request_type,
                         title: clickResponse.title.toUpperCase(),
                         description : clickResponse.description,
-                        lat: parseFloat(clickResponse.location.split(',')[0]),
-                        lng: parseFloat(clickResponse.location.split(',')[1].trim())
+                        location: {
+                            lat: parseFloat(clickResponse.location.split(',')[0]),
+                            lng: parseFloat(clickResponse.location.split(',')[1].trim())
+                        }
                     };
+
+                    /*Translate the address from coordinates to letters*/
+                    Geocode.fromLatLng(String(windowObject.location.lat), String(windowObject.location.lng))
+                    .then((response) => {
+
+                       /*Append the address to the object*/
+                       windowObject.address = response.results[0].formatted_address;
+                    })
+
+                    /*Handle request if errors occur*/
+                    .catch((error) => {
+                        alert("Coordinates cannot be translated");
+                    })
+
+                    /*Update states to retrieve data from the JSX*/
                     setWindows(windowObject);
                     setInfoOpen(true);
-                    setCenter({lat: windowObject.lat, lng: windowObject.lng});
+                    setCenter(windowObject.location);
 
                 })
                 .catch(error => {
@@ -70,7 +98,15 @@ export const MapComponent = () => {
             }, 500)
     }
 
+    /*Get user's current position to center the map*/
     useEffect(() => {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            setCenter({
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            })
+        })
+
         setTimeout(() => {
             axios.get(requestEndPoint)
             .then(res => {
@@ -130,6 +166,7 @@ export const MapComponent = () => {
                     center={center}
                     options={options}
                 >
+                    {/*Create markers for each request*/}
                     {markers.map((marker) => (
                         <Marker
                             key={marker.id}
@@ -143,9 +180,11 @@ export const MapComponent = () => {
                             onClick={() => {handleClick(marker.id)}}
                         />
                     ))}
+
+                    {/*Display basics information for clicked requests*/}
                     {windows && infoOpen && (
                         <InfoWindow
-                            position={{lat: windows.lat, lng: windows.lng }}
+                            position={windows.location}
                             onCloseClick={() => setInfoOpen(false)}
                         >
                             <div>
@@ -156,15 +195,29 @@ export const MapComponent = () => {
                                 >
                                     {windows.type}
                                 </h6>
-                                <p className="info-text">{windows.description}</p>
+                                <p className="info-text">{windows.address}</p>
                             </div>
                         </InfoWindow>
                     )}
                 </GoogleMap>
+
+                {/*Toggle a container to display more information about the clicked request*/}
+                { windows && infoOpen && (
+                    <Container className="mt-3">
+                        <h4 className="info-title">{windows.title}</h4>
+                        <h6
+                            className="info-text"
+                            style={{ color : (windows.type === "One-time task") ? ' #c70039' : '#086F00'}}
+                        >
+                            TYPE : {windows.type}
+                        </h6>
+                        <p className="info-text">ADDRESS : {windows.address}</p>
+                        <p className="info-text">DESCRIPTION : {windows.description}</p>
+                    </Container>
+                )}
             </div>
         </Container>
     )
 }
-
 
 export default MapComponent;

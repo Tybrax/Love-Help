@@ -12,7 +12,7 @@ export const Request = (props) => {
             <MapComponent />
             <GeoSuggest />
             <RequestDescription />
-            <Chat />
+            {/*<Chat />*/}
         </React.Fragment>
     )
 };
