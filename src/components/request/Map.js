@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container } from 'react-bootstrap';
+import { Container, Button } from 'react-bootstrap';
 import logoGreen from '../../images/logo_green.png';
 import logoRed from '../../images/logo_red.png';
 import mapStyles from "./mapStyles";
@@ -64,6 +64,11 @@ export const MapComponent = () => {
     const [windows, setWindows] = useState();
     const [infoOpen, setInfoOpen] = useState(false);
     const [selectedPlace, setSelectedPlace] = useState();
+
+    /*BUILDING*/
+    /*state for fulfilled request*/
+    const [fulfillBtnCount, seTfulfillBtnCount] = useState([]);
+
 
     const handleClick = (id) => {
 
@@ -163,6 +168,16 @@ export const MapComponent = () => {
         }, 5000);
     })
 
+    /*BUILDING*/
+    const FulfillRequest = (id) => {
+        console.log("CHANGE STATE TO OPEN A CHAT WINDOWS TO CONNECT REQUESTER AND HELPER");
+        const RequestCount = {
+            id: id,
+            count: 0
+        }
+
+    }
+
     if (loadError) return "Error loading Maps";
     if (!isLoaded) return "Loading Maps"
     return (
@@ -204,6 +219,12 @@ export const MapComponent = () => {
                                     {windows.type}
                                 </h6>
                                 <p className="info-text">{windows.address}</p>
+                                <Button
+                                    className="btn-dark d-block mx-auto"
+                                    onClick={() => FulfillRequest(windows.windowsId)}
+                                >
+                                    Fulfill
+                                </Button>
                             </div>
                         </InfoWindow>
                     )}
@@ -221,6 +242,12 @@ export const MapComponent = () => {
                         </h6>
                         <p className="info-text">ADDRESS : {windows.address}</p>
                         <p className="info-text">DESCRIPTION : {windows.description}</p>
+                        <Button
+                            className="btn-dark d-block mx-auto"
+                            onClick={() => FulfillRequest(windows.windowsId)}
+                        >
+                            Fulfill
+                        </Button>
                     </Container>
                 )}
             </div>

@@ -6,18 +6,25 @@ const requestEndPoint = 'http://localhost:3001/api/v1/requests'
 
 const Counter = (props) => {
 
-    const [count, newCount] = useState(0);
+    const [count, setCount] = useState(0);
 
     useEffect(() => {
         setTimeout(() => {
             axios.get(requestEndPoint)
-            .then(res => {
-                newCount(res.data.length)
+            .then(response => {
+                const responseData = response.data;
+                let fulfilledRequest = 0;
+                responseData.map((res) => {
+                    if (res.fulfilled == false) {
+                        fulfilledRequest++;
+                    }
+                })
+                setCount(fulfilledRequest);
             })
             .catch(e => {
                 console.log(e)
             })
-        }, 500);
+        }, 200);
     })
 
     return (
