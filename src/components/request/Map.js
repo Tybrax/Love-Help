@@ -38,8 +38,18 @@ export const MapComponent = () => {
         libraries,
     });
 
+    const mapCenter = {
+        lat: 0,
+        lng: 0
+    }
+
+    navigator.geolocation.getCurrentPosition(function(position) {
+            mapCenter.lat =  position.coords.latitude;
+            mapCenter.lng =  position.coords.longitude;
+    })
+
     /*state for map*/
-    const [center, setCenter] = useState({ lat: 43.294640, lng: 5.368660});
+    const [center, setCenter] = useState(mapCenter);
     const [zoom, setZoom] = useState(12);
 
     /*states for markers*/
@@ -100,12 +110,6 @@ export const MapComponent = () => {
 
     /*Get user's current position to center the map*/
     useEffect(() => {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            setCenter({
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            })
-        })
 
         setTimeout(() => {
             axios.get(requestEndPoint)
