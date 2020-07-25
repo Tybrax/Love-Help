@@ -130,3 +130,18 @@ a.nav-link {
   font-family: 'Roboto';
   text-align: justify;
 }
+
+.alert-success {
+  font-family: 'Vollkorn', serif;
+  color: #013220;
+  letter-spacing: 1px;
+  font-weight: 500;
+  text-decoration: uppercase;
+}
+
+.alert-fail {
+  font-family: 'Vollkorn', serif;
+  color: white;
+  letter-spacing: 1px;
+  font-weight: 500;
+}

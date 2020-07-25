@@ -2,8 +2,8 @@ import React from 'react';
 import { MapComponent } from './Map.js';
 import { GeoSuggest } from './GeoSuggest.js';
 import { Legend } from './Legend.js';
-/*import { RemoveRequest } from './RemoveRequest.js';*/
 import { RequestDescription } from './RequestDescription.js';
+import { Chat } from '../chat/Chat.js';
 
 export const Request = (props) => {
     return (
@@ -12,6 +12,7 @@ export const Request = (props) => {
             <MapComponent />
             <GeoSuggest />
             <RequestDescription />
+            <Chat />
         </React.Fragment>
     )
 };

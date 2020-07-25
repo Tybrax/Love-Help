@@ -5,7 +5,7 @@ import PlacesAutocomplete, {
   getLatLng
 } from "react-places-autocomplete";
 import Geocode from 'react-geocode';
-import { Button } from 'react-bootstrap';
+import { Button, Alert } from 'react-bootstrap';
 
 Geocode.setApiKey("AIzaSyBT5euhpYYvpzGV7EkplwyF1AttF4jvr2A");
 Geocode.setLanguage("en");
@@ -18,26 +18,54 @@ export const GeoSuggest = (props) => {
     lng: null
   });
 
+    /*state for request*/
     const [title, setTitle] = useState("");
     const [type, setType] = useState("");
     const [description, setDescription] = useState("");
 
-    const handleSubmit = () => {
+    /*state for success alert*/
+    const [successAlert, setSuccessAlert] = useState(false);
+    const [successInformations, setSuccessInformations] = useState({});
+
+    /*state for fail alert*/
+    const [failAlert, setFailAlert] = useState(false);
+
+    const handleSubmit = (event) => {
+
+        if (successAlert) {
+          setSuccessAlert(false);
+        }
+
+        if (failAlert) {
+          setFailAlert(false);
+        }
+
         const data = {
           title: title,
           request_type: type,
           description: description,
           location: `${coordinates.lat}, ${coordinates.lng}`
         }
-        console.log(data);
+
+        /*post data to API*/
         axios.post('http://localhost:3001/api/v1/requests', data)
         .then(res => {
-          console.log(res);
-          console.log("DATA SENT TO BACKEND");
+          /*display a success alert if the record is created in the API*/
+          const informationsObject = {
+            title: res.data.title,
+            type: res.data.request_type,
+            description: res.data.description
+          };
+          setSuccessInformations(informationsObject);
+          setSuccessAlert(true);
         })
         .catch(e => {
-          console.log(e);
+          /*display a failure alert if the record is created in the API*/
+          setFailAlert(true);
         })
+
+        /*prevent page to be refreshed after the form is submit*/
+        event.preventDefault();
     }
 
   const handleSelect =  (value) => {
@@ -51,6 +79,18 @@ export const GeoSuggest = (props) => {
 
   return (
     <div className="text-center mt-3 mb-3">
+    { successAlert && (
+      <Alert variant="success" className="alert-success">
+        <h4>Your request has been sent successfully</h4>
+      </Alert>
+    )}
+
+   { failAlert && (
+      <Alert variant="danger" className="alert-fail">
+        <h4>Your request was not sent. Please try again later.</h4>
+      </Alert>
+    )}
+
       <form onSubmit={handleSubmit}>
       <PlacesAutocomplete
         value={address}
@@ -127,8 +167,9 @@ export const GeoSuggest = (props) => {
         )}
 
       </PlacesAutocomplete>
-      <input type="submit" value="Submit" />
+      <Button type="submit">Submit</Button>
       </form>
+
     </div>
   );
 }
