@@ -22,6 +22,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "recompose": "^0.30.0",
+    "use-position": "^0.0.7",
     "yup": "^0.29.1"
   },
   "scripts": {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Container, Button } from 'react-bootstrap';
 import logoGreen from '../../images/logo_green.png';
 import logoRed from '../../images/logo_red.png';
@@ -10,7 +10,7 @@ import {
     InfoWindow,
 } from '@react-google-maps/api'
 import Geocode from 'react-geocode';
-
+import { usePosition } from 'use-position';
 import axios from 'axios';
 
 Geocode.setApiKey("AIzaSyBT5euhpYYvpzGV7EkplwyF1AttF4jvr2A");
@@ -109,7 +109,6 @@ export const MapComponent = () => {
                     setWindows(windowObject);
                     setInfoOpen(true);
                     setCenter(windowObject.location);
-
                 })
                 .catch(error => {
                     console.log('ERROR DESCRIPTION : ' + error)
@@ -119,7 +118,6 @@ export const MapComponent = () => {
 
     /*Get user's current position to center the map*/
     useEffect(() => {
-
         setTimeout(() => {
             axios.get(requestEndPoint)
             .then(res => {
@@ -165,7 +163,7 @@ export const MapComponent = () => {
             .catch(e => {
                 console.log(e)
             })
-        }, 5000);
+        }, 1000);
     })
 
     /*BUILDING*/
