@@ -10,7 +10,7 @@ import {
     InfoWindow,
 } from '@react-google-maps/api'
 import Geocode from 'react-geocode';
-import { usePosition } from 'use-position';
+import { Location } from '../homepage/Location';
 import axios from 'axios';
 
 Geocode.setApiKey("AIzaSyBT5euhpYYvpzGV7EkplwyF1AttF4jvr2A");
@@ -38,22 +38,12 @@ export const MapComponent = () => {
         libraries,
     });
 
-    const getCenter = () => {
-        const mapCenter = {
-            lat: null,
-            lng: null
-        };
-
-        navigator.geolocation.getCurrentPosition(function(position) {
-            mapCenter.lat = position.coords.latitude;
-            mapCenter.lng = position.coords.longitude;
-        })
-
-        return mapCenter;
-    }
-
     /*state for map*/
-    const [center, setCenter] = useState(getCenter());
+    const [userLocation, setUserLocation] = useState({
+        lat: parseFloat(localStorage.getItem('userLatitude')),
+        lng: parseFloat(localStorage.getItem('userLongitude'))
+    })
+    const [center, setCenter] = useState(userLocation);
     const [zoom, setZoom] = useState(12);
 
     /*states for markers*/
