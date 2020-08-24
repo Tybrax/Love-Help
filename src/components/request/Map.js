@@ -11,6 +11,7 @@ import {
 } from '@react-google-maps/api'
 import Geocode from 'react-geocode';
 import { Location } from '../homepage/Location';
+import { Chat } from './Chat/Chat.js';
 import axios from 'axios';
 
 Geocode.setApiKey("AIzaSyBT5euhpYYvpzGV7EkplwyF1AttF4jvr2A");
@@ -54,6 +55,9 @@ export const MapComponent = () => {
     const [windows, setWindows] = useState();
     const [infoOpen, setInfoOpen] = useState(false);
     const [selectedPlace, setSelectedPlace] = useState();
+
+    /*states for chat*/
+    const [chat, setChat] = useState(false);
 
     /*BUILDING*/
     /*state for fulfilled request*/
@@ -157,8 +161,17 @@ export const MapComponent = () => {
     })
 
     /*BUILDING*/
-    const FulfillRequest = (id) => {
-        console.log("CHANGE STATE TO OPEN A CHAT WINDOWS TO CONNECT REQUESTER AND HELPER");
+    const FulfillRequest = (event, id) => {
+
+        /*ADD PREVENTDEFAULT TO THE EVENT LISTENER*/
+        event.preventDefault();
+        if (!chat) {
+           /*MAKE THE CHAT APPEAR ON THE PAGE*/
+           setChat(true);
+           /*LOAD CHAT DISCUSSION*/
+        }
+
+
         const RequestCount = {
             id: id,
             count: 0
@@ -207,9 +220,10 @@ export const MapComponent = () => {
                                     {windows.type}
                                 </h6>
                                 <p className="info-text">{windows.address}</p>
+                                {/*BUILDING*/}
                                 <Button
                                     className="btn-dark d-block mx-auto"
-                                    onClick={() => FulfillRequest(windows.windowsId)}
+                                    onClick={(event) => FulfillRequest(windows.windowsId)}
                                 >
                                     Fulfill
                                 </Button>
@@ -230,13 +244,21 @@ export const MapComponent = () => {
                         </h6>
                         <p className="info-text">ADDRESS : {windows.address}</p>
                         <p className="info-text">DESCRIPTION : {windows.description}</p>
+                        {/*WATCH OUT ARGUMENTS FOR THE ONCLICK EVENTLISTENER*/}
                         <Button
                             className="btn-dark d-block mx-auto"
-                            onClick={() => FulfillRequest(windows.windowsId)}
+                            onClick={(event) => FulfillRequest(event, windows.windowsId)}
                         >
                             Fulfill
                         </Button>
                     </Container>
+                )}
+                { chat ? (
+                   <Container className="mt-3 shadow">
+                        <Chat />
+                   </Container>
+                ) : (
+                    <h3 className="mt-3 text-center info-title">Contact the requester by clicking on a request</h3>
                 )}
             </div>
         </Container>

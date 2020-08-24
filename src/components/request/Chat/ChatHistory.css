@@ -1,0 +1,11 @@
+.ChatHistory {
+    height: 400px;
+    background-color: #E9ECEF;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align: justify;
+}
+
+div.ChatHistory {
+    padding-top: 10px;
+}

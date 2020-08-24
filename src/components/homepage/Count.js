@@ -4,7 +4,7 @@ import { Container } from 'react-bootstrap';
 
 const requestEndPoint = 'http://localhost:3001/api/v1/requests'
 
-const Counter = (props) => {
+const Counter = ({ date }) => {
 
     const [count, setCount] = useState(0);
 
@@ -24,12 +24,12 @@ const Counter = (props) => {
             .catch(e => {
                 console.log(e)
             })
-        }, 200);
+        }, 2000);
     })
 
     return (
         <Container fluid className='count d-flex mx-auto align-items-center justify-content-center'>
-            <h3 className='text-center'>Unfulfilled request ({ props.date }) : { count }</h3>
+            <h3 className='text-center'>Unfulfilled request ({ date }) : { count }</h3>
         </Container>
     )
 };

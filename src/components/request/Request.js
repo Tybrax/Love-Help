@@ -13,9 +13,6 @@ export const Request = (props) => {
             <MapComponent />
             <GeoSuggest />
             <RequestDescription />
-            <Container className="shadow mb-5">
-                <Chat />
-            </Container>
         </Fragment>
     )
 };

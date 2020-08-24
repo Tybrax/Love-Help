@@ -19,7 +19,7 @@ import { Homepage } from './components/homepage/Homepage.js';
 import { Footer } from './components/footer/Footer.js';
 import { About } from './components/about/About.js';
 import { Request } from './components/request/Request.js';
-import { SessionStatus } from './SessionStatus.js'
+import { SessionStatus } from './SessionStatus.js';
 
 function App() {
 
@@ -35,15 +35,9 @@ function App() {
           </Jumbotron>
           <SessionStatus />
           <Switch>
-            <Route exact path="/">
-              <Homepage />
-            </Route>
-            <Route exact path="/request">
-              <Request />
-            </Route>
-            <Route exact path="/about">
-              <About />
-            </Route>
+            <Route exact path="/" component={Homepage} />
+            <Route exact path="/request" component={Request} />
+            <Route exact path="/about" component={About} />
           </Switch>
         </div>
         <Footer />

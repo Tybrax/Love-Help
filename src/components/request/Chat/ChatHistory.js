@@ -1,4 +1,5 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState } from 'react';
+import './ChatHistory.css';
 
 export const ChatHistory = () => {
 
@@ -16,15 +17,15 @@ export const ChatHistory = () => {
     }, [messages])
 
     return (
-        <Fragment>
+        <div className="ChatHistory">
                 { isLoading ? (
-                    <div className="mt-3">
+                    <div className="mt-3 ml-3">
                         <h4>USERNAME - TIME</h4>
                         <p>MESSAGE BODY</p>
                     </div>
                 ) : (
                     <p>DISPLAY A SPINNER</p>
                 )}
-        </Fragment>
+        </div>
     )
 }

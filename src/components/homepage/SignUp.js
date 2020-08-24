@@ -4,6 +4,8 @@ import { TextField, Button } from '@material-ui/core';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { signup } from '../../utils/signup';
+import { Redirect } from 'react-router-dom';
+import { Alert } from 'react-bootstrap';
 
 // validations using YUP
 const Schema = Yup.object().shape({
@@ -25,26 +27,55 @@ const Schema = Yup.object().shape({
   passwordConfirm: Yup.string()
     .oneOf([Yup.ref('password'), null], 'Passwords must match')
     .required('Confirm password required'),
-  file: Yup.mixed()
-    .required('Your ID is required')
+/*  file: Yup.mixed()
+    .required('Your ID is required')*/
 });
 
 const SignUp = () => {
 
   const [created, setCreated] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [isSignedUp, setIsSignedUp] = useState(false);
+  const [file, setFile] = useState('');
+
+  const onChange = (event) => {
+    setFile(event.target.files[0]);
+  }
 
   return (
   <div className="text-center">
       <h1 className="sub-title">Sign up</h1>
+        {hasError ? (
+          <Alert variant='danger'>An issue has occured, please try again.</Alert>
+        ) : (
+          <></>
+        )}
+        { isSignedUp ? (
+          <Redirect to="/verification" />
+        ) : (
+          <></>
+        )}
       <Formik
-        initialValues={{ firstName: '', lastName: '', email: '', password: '', passwordConfirm: '', file: '' }}
+        initialValues={{ firstName: '', lastName: '', email: '', password: '', passwordConfirm: ''}}
         validationSchema={Schema}
         onSubmit={(values, actions) => {
           actions.setSubmitting(true);
           setTimeout(() => {
-            const dataToAPI = JSON.stringify(values);
-            const promise = signup(values);
+            const dataToAPI = {
+              email: values.email,
+              password: values.password,
+              password_confirmation: values.passwordConfirm,
+              first_name: values.firstName,
+              last_name: values.lastName,
+            };
+
+            const formData = new FormData();
+            for (const key in dataToAPI) {
+              formData.append(key, dataToAPI[key]);
+            }
+            formData.append('file', file);
+            console.log(formData.get('file'));
+            const promise = signup(formData);
             promise.then(response => {
               console.log(response);
               setCreated(true);
@@ -60,7 +91,7 @@ const SignUp = () => {
         }}
       >
         {( { errors, touched, handleSubmit, handleChange, handleBlur, values, isSubmitting }) => (
-          <Form className="mt-3" onSubmit={handleSubmit}>
+          <Form className="mt-3" onSubmit={handleSubmit} encType="multipart/form-data">
             <div className="fields">
               <Field
                 type="text"
@@ -136,22 +167,11 @@ const SignUp = () => {
               <div className="error-field">{errors.passwordConfirm}</div>
             ) : null}
             </div>
-            <div>
-              <h5>Upload a copy of your ID</h5>
-              <Field
-                type="file"
-                name="file"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.file}
-                as={TextField}
-                style={{width: 300}}
-                accept=".png, .jpg, .pdf"
-              />
-              {errors.file && touched.file ? (
-              <div className="error-field">{errors.file}</div>
-            ) : null}
-            </div>
+            <input
+              type='file'
+              name='file' onChange={onChange}
+              accept='image/jpeg,image/gif,image/png,application/pdf,image/x-eps'
+            />
             <div>
               <Button disabled={isSubmitting} className="mt-3"type="submit">Submit</Button>
             </div>

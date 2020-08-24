@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useContext, useState, Fragment } from 'react';
+import { UserContext } from '../../UserContext';
 
 import Description from './Description.js';
 import SignUp from './SignUp.js';
 import LogIn from './LogIn.js';
+import LogOut from './LogOut.js';
+import { logout } from '../../utils/logout';
+
 import Counter from './Count.js';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Alert } from 'react-bootstrap';
 
 import img0 from '../../images/img0.jpg';
 import img1 from '../../images/img1.jpg';
@@ -20,12 +24,40 @@ const description = {
 };
 
 export const Homepage = () => {
+
+    const { user, setUser } = useContext(UserContext);
+    const [loggedOut, setLoggedOut] = useState(false);
+
+    const signOut = (event) => {
+        event.preventDefault();
+        if (!loggedOut) {
+            logout();
+            setUser(null);
+            setLoggedOut(true);
+        }
+        setTimeout(() => {
+            setLoggedOut(false);
+        }, 2000)
+    }
+
     return (
         <React.Fragment>
             <Container className="mt-5">
                 <Row className="mb-5">
                     <Col xs={12} sm={12} md={6}>
-                        <LogIn />
+                        { loggedOut ? (
+                            <Alert
+                                variant={'dark'}
+                                className="text-center"
+                            >You successfully logged out.</Alert>
+                        ) : (
+                            <></>
+                        )}
+                        { user ? (
+                            <LogOut handleClick={signOut} />
+                        ) : (
+                            <LogIn />
+                        )}
                     </Col>
                     <Col xs={12} sm={12} md={6}>
                         <SignUp />

@@ -8,12 +8,6 @@ import { Container } from 'react-bootstrap';
 const NavbarElements = () => {
     const [user, setUser] = useState(false);
 
-/*    useEffect(() => {
-        setTimeout(() => {
-            AXIOS GET REQUEST FOR TOKEN HERE
-        }, 500)
-    })*/
-
     if (!user) {
         return (
             <Fragment>

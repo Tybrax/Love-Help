@@ -5,6 +5,9 @@ import * as Yup from 'yup';
 import { login } from '../../utils/login';
 import { UserContext } from '../../UserContext';
 import jwt_decode from 'jwt-decode';
+import { Alert } from 'react-bootstrap';
+
+import { Redirect } from 'react-router-dom';
 
 const Schema = Yup.object().shape({
   email: Yup.string()
@@ -19,7 +22,7 @@ const Schema = Yup.object().shape({
 const LogIn = () => {
 
   /*CREATE CONTEXT FOR USER DATA*/
-  const { user, setUser} = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   const [hasError, setHasError] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -30,6 +33,16 @@ const LogIn = () => {
   return (
     <div className="text-center">
       <h1 className="sub-title">Log In</h1>
+        {hasError ? (
+          <Alert variant='danger'>Wrong email or password</Alert>
+        ) : (
+          <></>
+        )}
+        { loggedIn ? (
+          <Redirect to="/request" />
+        ) : (
+          <></>
+        )}
       <Formik
         initialValues={{ email: '', password: '' }}
         validationSchema={Schema}
@@ -46,10 +59,22 @@ const LogIn = () => {
               const webToken = response.data.jwt;
               console.log(webToken);
               localStorage.setItem('userToken', webToken);
-              setLoggedIn(true);
+              if (!loggedIn) {
+                setLoggedIn(true);
+              }
+              const decodedToken = jwt_decode(webToken);
+              setUser(decodedToken);
+              setTimeout(() => {
+                setLoggedIn(false);
+              }, 1500)
             })
             .catch(e => {
-              setHasError(true);
+              if (!hasError) {
+                setHasError(true);
+              }
+              setTimeout(() => {
+                setHasError(false);
+              }, 2000)
             })
             actions.setSubmitting(false);
             actions.resetForm();
