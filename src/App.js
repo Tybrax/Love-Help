@@ -16,6 +16,7 @@ import logoGreen from './images/logo_green.png';
 
 import { Navbar } from './components/navbar/Navbar.js';
 import { Homepage } from './components/homepage/Homepage.js';
+import { File } from './components/homepage/File.js';
 import { Footer } from './components/footer/Footer.js';
 import { About } from './components/about/About.js';
 import { Request } from './components/request/Request.js';
@@ -38,6 +39,7 @@ function App() {
             <Route exact path="/" component={Homepage} />
             <Route exact path="/request" component={Request} />
             <Route exact path="/about" component={About} />
+            <Route exact path="/file" component={File} />
           </Switch>
         </div>
         <Footer />

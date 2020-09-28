@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-/* login endpoint to declare*/
-const endPoint = 'http://localhost:3001/auth/signin';
+/* temporary login endpoint to declare*/
+const loginEndPoint = 'http://localhost:3001/login';
 
 export const login = async (data) => {
-    const response = await axios.post(endPoint, data, {
+    const response = await axios.post(loginEndPoint, data, {
         headers: {
             'Content-type': 'application/json'
         }
