@@ -2,29 +2,26 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container } from 'react-bootstrap';
 
-const requestEndPoint = 'http://localhost:3001/api/v1/requests'
+const requestEndPoint = 'http://localhost:3001/total'
 
-const Counter = ({ date }) => {
+const Counter = () => {
 
     const [count, setCount] = useState(0);
+
+    const today = new Date();
+    const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
 
     useEffect(() => {
         setTimeout(() => {
             axios.get(requestEndPoint)
             .then(response => {
                 const responseData = response.data;
-                let fulfilledRequest = 0;
-                responseData.map((res) => {
-                    if (res.fulfilled == false) {
-                        fulfilledRequest++;
-                    }
-                })
-                setCount(fulfilledRequest);
+                setCount(responseData);
             })
             .catch(e => {
                 console.log(e)
             })
-        }, 2000);
+        }, 1000);
     })
 
     return (
