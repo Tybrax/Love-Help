@@ -5,6 +5,7 @@ import Description from './Description.js';
 import SignUp from './SignUp.js';
 import LogIn from './LogIn.js';
 import LogOut from './LogOut.js';
+import { LoggedIn } from './LoggedIn';
 import { logout } from '../../utils/logout';
 
 import Counter from './Count.js';
@@ -51,7 +52,7 @@ export const Homepage = () => {
                             <></>
                         )}
                         { user ? (
-                            <LogOut handleClick={signOut} />
+                            <LoggedIn  />
                         ) : (
                             <LogIn />
                         )}

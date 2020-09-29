@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 
-const Description = (props) => {
+export const Description = (props) => {
     return (
         <Card className="mb-5 shadow d-flex justify-content-around">
           <Card.Title className="d-flex justify-content-center align-items-center sub-title">{props.title}</Card.Title>
