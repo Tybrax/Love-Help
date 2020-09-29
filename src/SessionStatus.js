@@ -18,7 +18,7 @@ export const SessionStatus = () => {
     } else {
         return (
             <div>
-                <h6 className="session-info text-right mr-5">Welcome <span style={titleColor} className="font-weight-bold">{user.username}, check out the latest requests</span></h6>
+                <h6 className="session-info text-right mr-5">Welcome <span style={titleColor} className="font-weight-bold">{user.first_name} {user.last_name}</span>, check out the latest requests.</h6>
             </div>
         )
     }
