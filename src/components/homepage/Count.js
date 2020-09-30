@@ -24,9 +24,9 @@ const Counter = () => {
     return (
         <Container className='count d-flex mx-auto align-items-center justify-content-center rounded-lg'>
             { count <= 1  ? (
-                <h3 className='text-center'>Unfulfilled request : { count }</h3>
+                <h3 style={{fontSize: '1rem'}} className='text-center'>Unfulfilled request : { count }</h3>
             ) : (
-                <h3 className='text-center'>Unfulfilled requests : { count }</h3>
+                <h3 style={{fontSize: '1rem'}} className='text-center'>Unfulfilled requests : { count }</h3>
             )}
         </Container>
     )
