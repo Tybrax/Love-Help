@@ -7,7 +7,7 @@ export const About = () => {
     return (
         <div>
         <section>
-            <Container fluid>
+            <Container fluid className="mb-3">
                 <Row>
                     <Col xs={12} sm={12} md={12} lg={4}>
                         <h2 className="sub-title text-center">LOREM IPSUM</h2>
@@ -25,11 +25,13 @@ export const About = () => {
                 </Row>
             </Container>
             <Counter />
-            <Figure className="d-flex align-items-center justify-content-center">
+            <Figure className="d-flex align-items-center justify-content-center mt-5">
                 <Figure.Image
                     className="img-fluid"
                     alt="logo"
                     src={logoGreen}
+                    width="200"
+                    height="200"
                 />
             </Figure>
         </section>

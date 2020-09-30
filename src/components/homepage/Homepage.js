@@ -23,6 +23,9 @@ const description = {
 
 export const Homepage = () => {
 
+    const today = new Date();
+    const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
     const { user, setUser } = useContext(UserContext);
     const [loggedOut, setLoggedOut] = useState(false);
 
@@ -62,7 +65,10 @@ export const Homepage = () => {
                     </Col>
                 </Row>
            </Container>
-           <Counter className="mt-5" />
+           <Container>
+            <h3 className="counter-title subtitle text-center mb-5">Help us reducing the number of unfulfilled request on {date}.</h3>
+            <Counter className="mt-5" />
+           </Container>
             <Container fluid className="mt-5">
                 <Row className="mb-5 d-flex justify-content-around">
                     <Col xs={12} sm={12} md={4}>
