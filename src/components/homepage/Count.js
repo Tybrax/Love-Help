@@ -8,9 +8,6 @@ const Counter = () => {
 
     const [count, setCount] = useState(0);
 
-    const today = new Date();
-    const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-
     useEffect(() => {
         setTimeout(() => {
             axios.get(requestEndPoint)
@@ -25,8 +22,12 @@ const Counter = () => {
     })
 
     return (
-        <Container fluid className='count d-flex mx-auto align-items-center justify-content-center'>
-            <h3 className='text-center'>Unfulfilled request ({ date }) : { count }</h3>
+        <Container className='count d-flex mx-auto align-items-center justify-content-center rounded-lg'>
+            { count <= 1  ? (
+                <h3 className='text-center'>Unfulfilled request : { count }</h3>
+            ) : (
+                <h3 className='text-center'>Unfulfilled requests : { count }</h3>
+            )}
         </Container>
     )
 };

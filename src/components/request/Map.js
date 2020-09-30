@@ -11,7 +11,6 @@ import {
 } from '@react-google-maps/api'
 import Geocode from 'react-geocode';
 import { Location } from '../homepage/Location';
-import { Chat } from './Chat/Chat.js';
 import axios from 'axios';
 
 Geocode.setApiKey("AIzaSyBT5euhpYYvpzGV7EkplwyF1AttF4jvr2A");
@@ -252,13 +251,6 @@ export const MapComponent = () => {
                             Fulfill
                         </Button>
                     </Container>
-                )}
-                { chat ? (
-                   <Container className="mt-3 shadow">
-                        <Chat />
-                   </Container>
-                ) : (
-                    <h3 className="mt-3 text-center info-title">Contact the requester by clicking on a request</h3>
                 )}
             </div>
         </Container>

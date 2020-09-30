@@ -147,7 +147,7 @@ export const GeoSuggest = (props) => {
                 <div>
                   {loading ? <div>loading...</div> : null}
 
-                  {suggestions.map((suggestion, index) => {
+                  {suggestions.map((suggestion, key) => {
                     const style = {
                       cursor: 'pointer',
                       backgroundColor: suggestion.active ? "#086F00" : "#fff",
@@ -155,11 +155,11 @@ export const GeoSuggest = (props) => {
                     };
 
                     return (
-                      <ul className="list-unstyled">
-                        <li key={suggestion.index} {...getSuggestionItemProps(suggestion, { style })}>
-                          {suggestion.description}
-                        </li>
-                      </ul>
+                        <div key={key} className="autocomplete-dropdown-container mx-auto ">
+                          <div {...getSuggestionItemProps(suggestion, { style })}>
+                            {suggestion.description}
+                          </div>
+                        </div>
                     );
                   })}
                 </div>

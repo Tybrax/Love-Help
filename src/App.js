@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-
+import 'semantic-ui-css/semantic.min.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { Jumbotron } from 'react-bootstrap';
@@ -31,10 +31,10 @@ function App() {
       <UserContext.Provider value={{user, setUser}}>
         <div className='App'>
           <Navbar logo={logoGreen} />
+          <SessionStatus />
           <Jumbotron>
             <h1 className="jumbotron-title">Love & Help</h1>
           </Jumbotron>
-          <SessionStatus />
           <Switch>
             <Route exact path="/" component={Homepage} />
             <Route exact path="/request" component={Request} />

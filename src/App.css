@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Vollkorn&display=swap');
 
+.navbar {
+  background-color: white;
+}
+
+.navbar-toggler {
+  background-color: #F8F9FA;
+}
+
 a.nav-link {
   margin-right: 100px !important;
 }
@@ -29,6 +37,17 @@ a.nav-link {
     background-color: #333333;
     height: 100px;
     color: white;
+    width: 50%;
+}
+
+@media screen and (max-width: 480px) {
+  .counter-title {
+    font-size: 20px;
+  }
+}
+
+.card {
+  margin: 15px;
 }
 
 .card-title {
@@ -144,4 +163,8 @@ a.nav-link {
   color: white;
   letter-spacing: 1px;
   font-weight: 500;
+}
+
+.autocomplete-dropdown-container {
+  width: 50%;
 }
