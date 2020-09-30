@@ -3,6 +3,8 @@ import { Container, Row, Col, Figure } from 'react-bootstrap';
 import Counter from '../homepage/Count.js';
 import logoGreen from '../../images/logo_green.png';
 
+// Comment Antoine 
+
 export const About = () => {
     return (
         <div>
