@@ -31,7 +31,7 @@ function App() {
       <UserContext.Provider value={{user, setUser}}>
         <div className='App'>
           <Navbar logo={logoGreen} />
-          <SessionStatus />
+          {/* <SessionStatus /> */}
           <Jumbotron>
             <h1 className="jumbotron-title">Love & Help</h1>
           </Jumbotron>

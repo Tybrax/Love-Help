@@ -7,7 +7,7 @@ export const Footer = () => {
             <footer>
                 <Row>
                     <Col className="d-flex justify-content-center mt-5">
-                            <h4>© 2020 Copyright : Bastien RATAT</h4>
+                            <h4 className="mt-2">© 2020 Copyright : Bastien RATAT</h4>
                     </Col>
                     <Col className="d-flex justify-content-center mt-5">
                         <ul className="list-inline">
