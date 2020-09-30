@@ -13,8 +13,8 @@ export const SessionStatus = () => {
 
     if (!user) {
         return (
-            <Container className="mt-4">
-                <h6 className="session-info text-right mr-5 mb-5">Please <span style={titleColor} className="font-weight-bold">Login</span> or <span style={titleColor} className="font-weight-bold">Sign up</span>.</h6>
+            <Container className="">
+                <h6 className="session-info text-right my-auto mr-5 mb-5">Please <span style={titleColor} className="font-weight-bold">Login</span> or <span style={titleColor} className="font-weight-bold">Sign up</span>.</h6>
             </Container>
         )
     } else {

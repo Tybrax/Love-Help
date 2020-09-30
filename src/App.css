@@ -197,3 +197,31 @@ a.nav-link {
     overflow: hidden;
     padding: 25px 25px;
 }
+
+.container_legend {
+  background: rgb(255,93,93);
+  background: linear-gradient(90deg, rgba(255,93,93,1) 0%, rgba(255,93,93,1) 35%, rgba(255,93,93,1) 100%);
+  border-radius: 12px;
+  margin-top: 20px;
+  margin-bottom: 0px;
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  overflow: hidden
+}
+
+.container_legend_green {
+  background: #086f0063;
+  border-radius: 12px;
+  margin-top: 20px;
+  margin-bottom: 0px;
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  overflow: hidden
+}
+
+.img_legend {
+  margin-left:-100px;
+  width:40%; 
+}
