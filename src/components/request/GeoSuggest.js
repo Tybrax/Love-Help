@@ -94,7 +94,7 @@ export const GeoSuggest = (props) => {
         </Alert>
       )}
       
-      <h3 style={{fontSize: '1.5rem', marginTop: '4%'}} clasName='nav_link'>Add a request</h3>
+      <h3 style={{fontSize: '1.5rem', marginTop: '4%'}} className='nav_link'>Add a request</h3>
       <Form style={{ padding: '1rem'}} onSubmit={handleSubmit}>
         <PlacesAutocomplete
           value={address}
