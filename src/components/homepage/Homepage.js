@@ -22,9 +22,9 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 library.add(fas);
 
 const description = {
-    first: ['BE ACTIVE', img0, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.', <FontAwesomeIcon size="lg" icon={['fas', 'hands-helping']} fixedWidth />],
-    second: ['LOVE OTHERS', img1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.', <FontAwesomeIcon size="lg" icon={['fas', 'heart']} fixedWidth />],
-    third: ['SHARE HELP', img2, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.', <FontAwesomeIcon size="lg" icon={['fas', 'globe-americas']} fixedWidth />]
+    first: ['BE ACTIVE', img0, 'Meet your neighbors by helping them. Go out and discover new people instead of staying passively in your place. Turn off Netflix and write your own adventure through helping people in need. ', <FontAwesomeIcon size="lg" icon={['fas', 'hands-helping']} fixedWidth />],
+    second: ['LOVE OTHERS', img1, 'Give love to your community and receive all the benefit from helping others : wonderful friendship & pride. Find out who needs help nearby using our amazing application', <FontAwesomeIcon size="lg" icon={['fas', 'heart']} fixedWidth />],
+    third: ['SHARE YOUR REQUEST', img2, 'Are you shorthanded with anything? Do you have to move out your place but lack handful people to help you out? We build this application just for you so that you find the right person for the right thing.', <FontAwesomeIcon size="lg" icon={['fas', 'globe-americas']} fixedWidth />]
 };
 
 export const Homepage = () => {
