@@ -22,8 +22,8 @@ const libraries = ["places"];
 const requestEndPoint = 'http://localhost:3001/api/v1/requests';
 
 const mapContainerStyle = {
-    width: '100vh',
-    height:'100vh'
+    width: '100%',
+    height:'60vh'
 };
 
 const options = {
@@ -181,7 +181,7 @@ export const MapComponent = () => {
     if (loadError) return "Error loading Maps";
     if (!isLoaded) return "Loading Maps"
     return (
-        <Container className="d-flex justify-content-center">
+        // <Container className="d-flex justify-content-center">
             <div>
                 <GoogleMap
                     mapContainerStyle={mapContainerStyle}
@@ -253,7 +253,7 @@ export const MapComponent = () => {
                     </Container>
                 )}
             </div>
-        </Container>
+        // </Container>
     )
 }
 

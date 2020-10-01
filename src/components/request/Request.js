@@ -6,6 +6,7 @@ import { RequestDescription } from './RequestDescription.js';
 import { Container, Row, Col } from 'react-bootstrap';
 
 import Counter from '../homepage/Count.js';
+import Card from 'react-bootstrap/Card'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -25,7 +26,6 @@ export const Request = (props) => {
             <Container fluid>
                 <Row>
                     <Col md={12} className='background_style'>
-                        {/* Test */}
                         <Container>
                             <Row className='justify-content-center'>
                                 <Col className='contribute' md={12}>
@@ -43,19 +43,30 @@ export const Request = (props) => {
                                 <Col xs={12} sm={12} md={12} lg={12} className='text-center'>
                                     <Legend />
                                 </Col>
-                                <Col xs={12} sm={12} md={12} lg={4}>
-
-                                </Col>
                             </Row>
                         </Container>
                     </Col>
                 </Row>
             </Container>
             <Container fluid>
-                <MapComponent />
+                <Row>
+                    <Col md={12} className='background_style_custom'>
+                        <Container className='mb-4'>
+                            <Row className='justify-content-center'>
+                                <Col className='col_form' sm={12} md={8}>
+                                    <MapComponent />
+                                </Col>
+                                <Col className='col_form' sm={12} md={4}>
+                                <Card style={{margin: 0}} className='card_form' border="light">
+                                    <GeoSuggest />
+                                    <RequestDescription />
+                                </Card>
+                                </Col>
+                            </Row>
+                        </Container>
+                    </Col>
+                </Row>
             </Container>
-            <GeoSuggest />
-            <RequestDescription />
         </Fragment>
     )
 };
