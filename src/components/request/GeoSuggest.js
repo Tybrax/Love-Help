@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from 'axios';
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -8,7 +8,8 @@ import Geocode from 'react-geocode';
 import { Button, Alert } from 'react-bootstrap';
 
 import Form from 'react-bootstrap/Form'
-
+import { UserContext } from '../../UserContext';
+import { post_request } from '../../utils/post_request.js';
 
 Geocode.setApiKey("AIzaSyBT5euhpYYvpzGV7EkplwyF1AttF4jvr2A");
 Geocode.setLanguage("en");
@@ -20,6 +21,10 @@ export const GeoSuggest = (props) => {
     lat: null,
     lng: null
   });
+
+  /*user context*/
+  const { user, setUser } = useContext(UserContext);
+  const token = localStorage.getItem('userToken') || null;
 
   /*state for request*/
   const [title, setTitle] = useState("");
@@ -34,7 +39,7 @@ export const GeoSuggest = (props) => {
   const [failAlert, setFailAlert] = useState(false);
 
   const handleSubmit = (event) => {
-
+    event.preventDefault();
     if (successAlert) {
       setSuccessAlert(false);
     }
@@ -43,22 +48,28 @@ export const GeoSuggest = (props) => {
       setFailAlert(false);
     }
 
-    const data = {
+    /*remember to active API keys from Google Developer console*/
+    const requestData = {
+      user_id: user.user_id,
       title: title,
       request_type: type,
       description: description,
       location: `${coordinates.lat}, ${coordinates.lng}`
     }
 
+    /*test the data to be sent to API*/
+    console.log(requestData);
+
     /*post data to API*/
-    axios.post('http://localhost:3001/api/v1/requests', data)
-      .then(res => {
+    const promise = post_request(requestData, token);
+      promise.then(res => {
         /*display a success alert if the record is created in the API*/
         const informationsObject = {
           title: res.data.title,
           type: res.data.request_type,
           description: res.data.description
         };
+        console.log(informationsObject);
         setSuccessInformations(informationsObject);
         setSuccessAlert(true);
       })
@@ -66,9 +77,6 @@ export const GeoSuggest = (props) => {
         /*display a failure alert if the record is created in the API*/
         setFailAlert(true);
       })
-
-    /*prevent page to be refreshed after the form is submit*/
-    event.preventDefault();
   }
 
   const handleSelect = (value) => {
@@ -93,7 +101,7 @@ export const GeoSuggest = (props) => {
           <h4>Your request was not sent. Please try again later.</h4>
         </Alert>
       )}
-      
+
       <h3 style={{fontSize: '1.5rem', marginTop: '4%'}} className='nav_link'>Add a request</h3>
       <Form style={{ padding: '1rem'}} onSubmit={handleSubmit}>
         <PlacesAutocomplete
@@ -112,8 +120,8 @@ export const GeoSuggest = (props) => {
                   required="required"
                   onChange={event => setType(event.target.value)}
                 >
-                  <option value="One-time task">One-time task</option>
-                  <option value="Material need">Material need</option>
+                  <option value="one-time task">One-time task</option>
+                  <option value="material need">Material need</option>
                 </Form.Control>
                 <Form.Text className="text-muted">
                   Please select from the dropdown menu.

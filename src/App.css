@@ -222,7 +222,7 @@ a.nav-link {
 }
 
 .img_legend {
-  width:100%; 
+  width:100%;
 }
 
 .autocomplete-dropdown-container {
@@ -247,4 +247,19 @@ a.nav-link {
 
 .card_form{
   padding-left: 10px;
+}
+
+.card_link {
+  color: #222f21 !important;
+}
+
+.signout:hover {
+  color: white !important;
+  background-color: #222f21 !important;
+  cursor: pointer;
+}
+
+.loggedin_title {
+  font-size: 1,5em !important;
+  color: #222f21 !important;
 }

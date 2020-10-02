@@ -35,18 +35,6 @@ export const Homepage = () => {
     const { user, setUser } = useContext(UserContext);
     const [loggedOut, setLoggedOut] = useState(false);
 
-    const signOut = (event) => {
-        event.preventDefault();
-        if (!loggedOut) {
-            logout();
-            setUser(null);
-            setLoggedOut(true);
-        }
-        setTimeout(() => {
-            setLoggedOut(false);
-        }, 2000)
-    }
-
     return (
         <React.Fragment>
             <Jumbotron>
