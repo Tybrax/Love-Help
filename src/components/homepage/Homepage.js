@@ -1,5 +1,6 @@
 import React, { useContext, useState, Fragment } from 'react';
 import { UserContext } from '../../UserContext';
+import { usePosition } from 'use-position';
 
 import { Jumbotron } from 'react-bootstrap';
 import Description from './Description.js';
@@ -8,6 +9,7 @@ import LogIn from './LogIn.js';
 import LogOut from './LogOut.js';
 import { LoggedIn } from './LoggedIn';
 import { logout } from '../../utils/logout';
+import { setPosition } from '../../utils/setPosition';
 
 import Counter from './Count.js';
 import { Container, Row, Col, Alert } from 'react-bootstrap';
@@ -34,6 +36,9 @@ export const Homepage = () => {
 
     const { user, setUser } = useContext(UserContext);
     const [loggedOut, setLoggedOut] = useState(false);
+
+    const { latitude, longitude, error } = usePosition();
+    const userPosition = setPosition(latitude, longitude, error);
 
     return (
         <React.Fragment>

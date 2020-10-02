@@ -13,7 +13,6 @@ export const SessionStatus = () => {
 
     const token = localStorage.getItem('userToken') || null;
     const userData = decodeToken(token);
-    console.log(userData);
 
     const handleClick = (event) => {
         event.preventDefault();

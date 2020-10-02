@@ -40,8 +40,8 @@ export const MapComponent = () => {
 
     /*state for map*/
     const [userLocation, setUserLocation] = useState({
-        lat: parseFloat(localStorage.getItem('userLatitude')),
-        lng: parseFloat(localStorage.getItem('userLongitude'))
+        lat: parseFloat(localStorage.getItem('lat')),
+        lng: parseFloat(localStorage.getItem('lng'))
     })
     const [center, setCenter] = useState(userLocation);
     const [zoom, setZoom] = useState(12);
