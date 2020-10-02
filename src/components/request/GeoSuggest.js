@@ -9,7 +9,7 @@ import { Button, Alert } from 'react-bootstrap';
 
 import Form from 'react-bootstrap/Form'
 import { UserContext } from '../../UserContext';
-import { post_request } from '../../utils/post_request.js';
+import { postRequest } from '../../utils/postRequest.js';
 
 Geocode.setApiKey("AIzaSyBT5euhpYYvpzGV7EkplwyF1AttF4jvr2A");
 Geocode.setLanguage("en");
@@ -24,6 +24,9 @@ export const GeoSuggest = (props) => {
 
   /*user context*/
   const { user, setUser } = useContext(UserContext);
+  const [userInformations, setUserInformations] = useState(
+    localStorage.getItem('userInformations') || null
+  );
   const token = localStorage.getItem('userToken') || null;
 
   /*state for request*/
@@ -61,7 +64,7 @@ export const GeoSuggest = (props) => {
     console.log(requestData);
 
     /*post data to API*/
-    const promise = post_request(requestData, token);
+    const promise = postRequest(requestData, token);
       promise.then(res => {
         /*display a success alert if the record is created in the API*/
         const informationsObject = {

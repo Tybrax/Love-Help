@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const post_request = async (data, token) => {
+export const postRequest = async (data, token) => {
 
     const endPoint = 'http://localhost:3001/requests';
 

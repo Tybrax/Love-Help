@@ -9,6 +9,20 @@ export const SessionStatus = () => {
     const {user, setUser} = useContext(UserContext);
     const [isLoggedOut, setIsLoggedOut] = useState(false);
 
+    /*User state*/
+    const [userID, setUserID] = useState(
+        localStorage.getItem('userId') || null
+    );
+    const [userEmail, setUserEmail] = useState(
+        localStorage.getItem('email') || null
+    );
+    const [firstName, setFirstName] = useState(
+        localStorage.getItem('firstName') || null
+    );
+    const [lastName, setLastName] = useState(
+        localStorage.getItem('lastName') || null
+    );
+
     const handleClick = (event) => {
         event.preventDefault();
         logout();
@@ -20,7 +34,7 @@ export const SessionStatus = () => {
         color: '#086F00'
     };
 
-    if (!user) {
+    if (!userID) {
         return (
             <Container className="">
                 <h6 className="session-info text-right my-auto mr-5 mb-5">Please <span style={titleColor} className="font-weight-bold">Login</span> or <span style={titleColor} className="font-weight-bold">Sign up</span>.</h6>
@@ -29,7 +43,7 @@ export const SessionStatus = () => {
     } else {
         return (
             <Container className="mt-4">
-                <h5 className="session-info text-right mr-5">Welcome <span style={titleColor} className="font-weight-bold">{user.first_name} {user.last_name}</span>.</h5>
+                <h5 className="session-info text-right mr-5">Welcome <span style={titleColor} className="font-weight-bold">{firstName} {lastName}</span>.</h5>
                 <div
                     className="mt-2 mb-3 d-flex  flex-row-reverse border rounded pt-2 px-1 signout"
                     onClick={handleClick}

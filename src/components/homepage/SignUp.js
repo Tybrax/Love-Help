@@ -8,6 +8,7 @@ import { Redirect } from 'react-router-dom';
 import { Alert } from 'react-bootstrap';
 import { File } from './File';
 import { UserContext } from '../../UserContext';
+import { setLocalStorage } from '../../utils/setLocalStorage';
 
 // validations schemas
 const Schema = Yup.object().shape({
@@ -40,7 +41,10 @@ const SignUp = () => {
   const [userID, setUserID] = useState('');
   const [token, setToken] = useState(
     localStorage.getItem('userToken') || null
-  )
+  );
+  const [userInformations, setUserInformations] = useState(
+    localStorage.getItem('userInformations') || null
+  );
 
   return (
   <div className="text-center">
@@ -72,6 +76,17 @@ const SignUp = () => {
               const promise = signup(dataToAPI);
               promise.then(response => {
                 setIsCreated(true);
+                const responseData = response.data.user;
+                const userInfos = {
+                  userId: responseData.id,
+                  email: responseData.email,
+                  firstName: responseData.first_name,
+                  lastName: responseData.last_name,
+                };
+                setUserInformations(userInfos)
+                {/*REMOVE PREVIOUS STORAGE*/}
+                {/*CHECK THAT ON THE BROWSER*/}
+                setLocalStorage(userInfos);
                 setUserID(response.data.user.id);
                 setToken(response.data.jwt);
               })
