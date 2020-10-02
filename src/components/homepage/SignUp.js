@@ -83,10 +83,7 @@ const SignUp = () => {
                   firstName: responseData.first_name,
                   lastName: responseData.last_name,
                 };
-                setUserInformations(userInfos)
-                {/*REMOVE PREVIOUS STORAGE*/}
-                {/*CHECK THAT ON THE BROWSER*/}
-                setLocalStorage(userInfos);
+                setUserInformations(userInfos);
                 setUserID(response.data.user.id);
                 setToken(response.data.jwt);
               })

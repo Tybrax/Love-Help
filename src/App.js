@@ -31,7 +31,6 @@ function App() {
       <UserContext.Provider value={{user, setUser}}>
         <div className='App'>
           <Navbar logo={logoGreen} />
-          {/* <SessionStatus /> */}
           <Switch>
             <Route exact path="/" component={Homepage} />
             <Route exact path="/request" component={Request} />
