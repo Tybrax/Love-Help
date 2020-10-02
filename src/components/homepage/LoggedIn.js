@@ -11,7 +11,7 @@ export const LoggedIn = () => {
     return (
         <Container>
             <Card className="mb-5 shadow d-flex justify-content-around">
-              <Card.Title className="d-flex justify-content-center align-items-center sub-title">{`Hey ${user.first_name}, glad to see you!`}</Card.Title>
+              <h3 className="d-flex justify-content-center align-items-center loggedin_title my-4">Latest requests available</h3>
               <Card.Img
                 className="img-fluid"
                 variant="top"
@@ -20,7 +20,7 @@ export const LoggedIn = () => {
               <Card.Body>
                 <a
                     href="/request"
-                    className="cat-text stretched-link text-decoration-none"
+                    className="cat-text stretched-link text-decoration-none card_link"
                 >
                   Click on the map to get started by checking nearby requests.
                 </a>
