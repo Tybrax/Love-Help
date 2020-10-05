@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Container, Button } from 'react-bootstrap';
+import { Container, Button, Alert } from 'react-bootstrap';
 import logoGreen from '../../images/logo_green.png';
 import logoRed from '../../images/logo_red.png';
 import mapStyles from "./mapStyles";
@@ -12,6 +12,7 @@ import {
 import Geocode from 'react-geocode';
 import { Location } from '../homepage/Location';
 import axios from 'axios';
+import { getRequests } from '../../utils/getRequests.js';
 
 Geocode.setApiKey("AIzaSyBT5euhpYYvpzGV7EkplwyF1AttF4jvr2A");
 Geocode.setLanguage("en");
@@ -38,6 +39,11 @@ export const MapComponent = () => {
         libraries,
     });
 
+    /*state for user*/
+    const [token, setToken] = useState(
+        localStorage.getItem('userToken') || null
+    )
+
     /*state for map*/
     const [userLocation, setUserLocation] = useState({
         lat: parseFloat(localStorage.getItem('lat')),
@@ -45,6 +51,9 @@ export const MapComponent = () => {
     })
     const [center, setCenter] = useState(userLocation);
     const [zoom, setZoom] = useState(12);
+
+    /*states for errors*/
+    const [requestsError, setRequestsError] = useState(false);
 
     /*states for markers*/
     const [markers, setMarkers] = useState([]);
@@ -95,7 +104,8 @@ export const MapComponent = () => {
 
                     /*Handle request if errors occur*/
                     .catch((error) => {
-                        alert("Coordinates cannot be translated");
+                        /*HANDLE ERROR FOR COORDINATES*/
+                        console.log("Coordinates cannot be translated");
                     })
 
                     /*Update states to retrieve data from the JSX*/
@@ -112,6 +122,19 @@ export const MapComponent = () => {
     /*Get user's current position to center the map*/
     useEffect(() => {
         setTimeout(() => {
+
+            const promise = getRequests(token);
+
+            promise.then((response) => {
+                console.log(response.data);
+                /*Iterate through an array of objects and edit different states for the Map component*/
+            })
+            .catch((error) => {
+                console.log('FUNCTION ERROR : ' + error);
+                if (requestsError === false) {
+                    setRequestsError(true);
+                }
+            })
             axios.get(requestEndPoint)
             .then(res => {
                 const responseData = res.data;
@@ -156,7 +179,7 @@ export const MapComponent = () => {
             .catch(e => {
                 console.log(e)
             })
-        }, 1000);
+        }, 2000);
     })
 
     /*BUILDING*/
@@ -183,6 +206,11 @@ export const MapComponent = () => {
     return (
         // <Container className="d-flex justify-content-center">
             <div>
+            { requestsError && (
+                <Alert variant="danger" className="alert-fail text-center">
+                    <h4>Can't display requests, please try later.</h4>
+                </Alert>
+            )}
                 <GoogleMap
                     mapContainerStyle={mapContainerStyle}
                     zoom={zoom}

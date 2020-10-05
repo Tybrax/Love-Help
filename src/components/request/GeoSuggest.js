@@ -6,6 +6,7 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete";
 import Geocode from 'react-geocode';
 import { Button, Alert } from 'react-bootstrap';
+import { decodeToken } from '../../utils/decodeToken';
 
 import Form from 'react-bootstrap/Form'
 import { UserContext } from '../../UserContext';
@@ -24,10 +25,9 @@ export const GeoSuggest = (props) => {
 
   /*user context*/
   const { user, setUser } = useContext(UserContext);
-  const [userInformations, setUserInformations] = useState(
-    localStorage.getItem('userInformations') || null
-  );
+
   const token = localStorage.getItem('userToken') || null;
+  const userInformations = decodeToken(token);
 
   /*state for request*/
   const [title, setTitle] = useState("");
@@ -53,15 +53,12 @@ export const GeoSuggest = (props) => {
 
     /*remember to active API keys from Google Developer console*/
     const requestData = {
-      user_id: user.user_id,
+      user_id: userInformations.user_id,
       title: title,
       request_type: type,
       description: description,
       location: `${coordinates.lat}, ${coordinates.lng}`
     }
-
-    /*test the data to be sent to API*/
-    console.log(requestData);
 
     /*post data to API*/
     const promise = postRequest(requestData, token);
