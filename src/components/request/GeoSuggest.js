@@ -12,7 +12,9 @@ import Form from 'react-bootstrap/Form'
 import { UserContext } from '../../UserContext';
 import { postRequest } from '../../utils/postRequest.js';
 
-Geocode.setApiKey("AIzaSyBT5euhpYYvpzGV7EkplwyF1AttF4jvr2A");
+/*Remove key*/
+/*Geocode.setApiKey("AIzaSyBT5euhpYYvpzGV7EkplwyF1AttF4jvr2A");*/
+
 Geocode.setLanguage("en");
 Geocode.setRegion("fr");
 

@@ -14,7 +14,9 @@ import { Location } from '../homepage/Location';
 import axios from 'axios';
 import { getRequests } from '../../utils/getRequests.js';
 
-Geocode.setApiKey("AIzaSyBT5euhpYYvpzGV7EkplwyF1AttF4jvr2A");
+/*Remove key*/
+
+/*Geocode.setApiKey("AIzaSyBT5euhpYYvpzGV7EkplwyF1AttF4jvr2A");*/
 Geocode.setLanguage("en");
 Geocode.setRegion("fr");
 
@@ -34,10 +36,10 @@ const options = {
 };
 
 export const MapComponent = () => {
-    const {isLoaded, loadError} = useLoadScript({
+/*    const {isLoaded, loadError} = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
         libraries,
-    });
+    });*/
 
     /*state for user*/
     const [token, setToken] = useState(
@@ -201,8 +203,6 @@ export const MapComponent = () => {
 
     }
 
-    if (loadError) return "Error loading Maps";
-    if (!isLoaded) return "Loading Maps"
     return (
         // <Container className="d-flex justify-content-center">
             <div>
