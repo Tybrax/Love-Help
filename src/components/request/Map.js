@@ -73,6 +73,58 @@ export const MapComponent = () => {
     /*state for fulfilled request*/
     const [fulfillBtnCount, seTfulfillBtnCount] = useState([]);
 
+    useEffect(() => {
+            const promise = getRequests(token);
+
+            promise.then((response) => {
+                console.log(response.data);
+                const responseData = response.data;
+
+                /*Edit the coordinates so they have the accepted format for googleMap*/
+                const coordinates = [];
+                const cleanCoordinates = [];
+
+                /*Create empty lists for each request to append to the marker state*/
+                const requestsStatus = [];
+                const requestsType = [];
+                const requestsId = [];
+
+                /*Fill our lists with data from the requests*/
+                responseData.map(request => requestsStatus.push(request.fulfilled))
+                responseData.map(request => requestsType.push(request.request_type))
+                responseData.map(request => requestsId.push(request.id))
+                responseData.map(request => coordinates.push(request.location))
+
+                /*Create objects using our lists*/
+                let i;
+                for (i = 0 ; i < coordinates.length; i++) {
+                    const splitCoordinates = coordinates[i].split(",");
+                    const latitude = splitCoordinates[0];
+                    const longitude = splitCoordinates[1].trim();
+                    const type = requestsType[i];
+                    const requestId = requestsId[i]
+                    /*alert(type);*/
+                    const coordinatesObject = {
+                        lat: parseFloat(latitude),
+                        lng: parseFloat(longitude),
+                        id: requestId,
+                        icon: type
+                    };
+                    cleanCoordinates.push(coordinatesObject);
+                }
+
+                /*Update state to have an array of object containing coordinates and time for React key*/
+                setMarkers(cleanCoordinates);
+                setIcons(requestsType);
+                /*Iterate through an array of objects and edit different states for the Map component*/
+            })
+            .catch((error) => {
+                console.log('FUNCTION ERROR : ' + error);
+                if (requestsError === false) {
+                    setRequestsError(true);
+                }
+            })
+    }, [markers])
 
     const handleClick = (id) => {
 
@@ -122,67 +174,7 @@ export const MapComponent = () => {
     }
 
     /*Get user's current position to center the map*/
-    useEffect(() => {
-        setTimeout(() => {
 
-            const promise = getRequests(token);
-
-            promise.then((response) => {
-                console.log(response.data);
-                /*Iterate through an array of objects and edit different states for the Map component*/
-            })
-            .catch((error) => {
-                console.log('FUNCTION ERROR : ' + error);
-                if (requestsError === false) {
-                    setRequestsError(true);
-                }
-            })
-            axios.get(requestEndPoint)
-            .then(res => {
-                const responseData = res.data;
-
-                /*Edit the coordinates so they have the accepted format for googleMap*/
-                const coordinates = [];
-                const cleanCoordinates = [];
-
-                /*Create empty lists for each request to append to the marker state*/
-                const requestsStatus = [];
-                const requestsType = [];
-                const requestsId = [];
-
-                /*Fill our lists with data from the requests*/
-                responseData.map(request => requestsStatus.push(request.fulfilled))
-                responseData.map(request => requestsType.push(request.request_type))
-                responseData.map(request => requestsId.push(request.id))
-                responseData.map(request => coordinates.push(request.location))
-
-                /*Create objects using our lists*/
-                let i;
-                for (i = 0 ; i < coordinates.length; i++) {
-                    const splitCoordinates = coordinates[i].split(",");
-                    const latitude = splitCoordinates[0];
-                    const longitude = splitCoordinates[1].trim();
-                    const type = requestsType[i];
-                    const requestId = requestsId[i]
-                    /*alert(type);*/
-                    const coordinatesObject = {
-                        lat: parseFloat(latitude),
-                        lng: parseFloat(longitude),
-                        id: requestId,
-                        icon: type
-                    };
-                    cleanCoordinates.push(coordinatesObject);
-                }
-
-                /*Update state to have an array of object containing coordinates and time for React key*/
-                setMarkers(cleanCoordinates);
-                setIcons(requestsType);
-            })
-            .catch(e => {
-                console.log(e)
-            })
-        }, 2000);
-    })
 
     /*BUILDING*/
     const FulfillRequest = (event, id) => {
@@ -223,7 +215,7 @@ export const MapComponent = () => {
                             key={marker.id}
                             position={{ lat: marker.lat, lng: marker.lng }}
                             icon={{
-                                url: (marker.icon === "One-time task") ? logoRed : logoGreen,
+                                url: (marker.icon === "one-time task") ? logoRed : logoGreen,
                                 scaledSize: new window.google.maps.Size(50,50),
                                 origin: new window.google.maps.Point(0,0),
                                 anchor: new window.google.maps.Point(25,25)

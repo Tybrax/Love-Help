@@ -32,7 +32,7 @@ export const GeoSuggest = (props) => {
 
   /*state for request*/
   const [title, setTitle] = useState("");
-  const [type, setType] = useState("");
+  const [type, setType] = useState("one-time task");
   const [description, setDescription] = useState("");
 
   /*state for success alert*/
@@ -120,7 +120,9 @@ export const GeoSuggest = (props) => {
                   name="type"
                   required="required"
                   onChange={event => setType(event.target.value)}
+                  defaultValue="Please select a type"
                 >
+                  <option disabled >Please select a type</option>
                   <option value="one-time task">One-time task</option>
                   <option value="material need">Material need</option>
                 </Form.Control>
