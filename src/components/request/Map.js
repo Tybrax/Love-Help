@@ -12,9 +12,10 @@ import {
 import Geocode from 'react-geocode';
 import { Location } from '../homepage/Location';
 import axios from 'axios';
+import { decodeToken } from '../../utils/decodeToken';
 import { getRequests } from '../../utils/getRequests.js';
 import { getRequest } from '../../utils/getRequest.js';
-import { volunteersCount } from '../../utils/createVolunteer.js';
+import { getVolunteers, volunteersCheck, volunteersFilter, createVolunteer } from '../../utils/createVolunteer.js';
 
 /*Remove key*/
 
@@ -43,6 +44,7 @@ export const MapComponent = () => {
     const [token, setToken] = useState(
         localStorage.getItem('userToken') || null
     )
+    const currentUserId = decodeToken(token).user_id;
 
     /*state for map*/
     const [userLocation, setUserLocation] = useState({
@@ -64,7 +66,8 @@ export const MapComponent = () => {
     const [infoOpen, setInfoOpen] = useState(false);
 
     /*states for volunteers*/
-    const [hasVolunteer, setHasVolunteer] = useState(false);
+    const [volunteerFull, setVolunteerFull] = useState(false);
+    const [newVolunteer, setNewVolunteer] = useState(false);
 
     useEffect(() => {
             const promise = getRequests(token);
@@ -167,8 +170,29 @@ export const MapComponent = () => {
     }
 
     /*BUILDING*/
-    const FulfillRequest = (id) => {
-        console.log("Request ID : " + id);
+    const postVolunteer = (id) => {
+        /*Count number of volunteer for given request ID*/
+        const promise = getVolunteers(token, id);
+        promise.then((response) => {
+            const totalVolunteers = response.data;
+            const count = volunteersFilter(totalVolunteers, id);
+            const volunterChecker = volunteersCheck(count);
+            if (volunterChecker === 'create') {
+                const secondPromise = createVolunteer(token, currentUserId, id);
+                secondPromise.then((response) => {
+                    alert('volunteer added');
+                    console.log(response);
+                    /*HANDLE STATE*/
+                })
+                .catch((error) => {
+                    console.error(error);
+                    /*HANDLE STATE*/
+                })
+            } else {
+                setVolunteerFull(true);
+                /*HANDLE STATE*/
+            }
+        })
     }
 
     return (
@@ -220,10 +244,9 @@ export const MapComponent = () => {
                                     {windows.type}
                                 </h6>
                                 <p className="info-text">{windows.address}</p>
-                                {/*BUILDING*/}
                                 <Button
                                     className="btn-dark d-block mx-auto"
-                                    onClick={(event) => FulfillRequest(windows.windowsId)}
+                                    onClick={(event) => postVolunteer(windows.windowsId)}
                                 >
                                     Fulfill
                                 </Button>
@@ -238,21 +261,13 @@ export const MapComponent = () => {
                         <h4 className="info-title">{windows.title}</h4>
                         <h6
                             className="info-text"
-                            style={{ color : (windows.type === "One-time task") ? ' #c70039' : '#086F00'}}
+                            style={{ color : (windows.type === "one-time task") ? ' #c70039' : '#086F00'}}
                         >
                             TYPE : {windows.type}
                         </h6>
                         <p className="info-text">ADDRESS : {windows.address}</p>
                         <p className="info-text">DESCRIPTION : {windows.description}</p>
-                        {/*WATCH OUT ARGUMENTS FOR THE ONCLICK EVENTLISTENER*/}
-                        <Button
-                            className="btn-dark d-block mx-auto"
-                            onClick={(event) => {
-                                this.FulfillRequest(event, windows.id)
-                            }}
-                        >
-                            Fulfill
-                        </Button>
+
                     </Container>
                 )}
             </div>
