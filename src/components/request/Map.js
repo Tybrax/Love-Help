@@ -14,6 +14,7 @@ import { Location } from '../homepage/Location';
 import axios from 'axios';
 import { getRequests } from '../../utils/getRequests.js';
 import { getRequest } from '../../utils/getRequest.js';
+import { volunteersCount } from '../../utils/createVolunteer.js';
 
 /*Remove key*/
 
@@ -61,14 +62,9 @@ export const MapComponent = () => {
     /*states for infowindows*/
     const [windows, setWindows] = useState();
     const [infoOpen, setInfoOpen] = useState(false);
-    const [selectedPlace, setSelectedPlace] = useState();
 
-    /*states for chat*/
-    const [chat, setChat] = useState(false);
-
-    /*BUILDING*/
-    /*state for fulfilled request*/
-    const [fulfillBtnCount, seTfulfillBtnCount] = useState([]);
+    /*states for volunteers*/
+    const [hasVolunteer, setHasVolunteer] = useState(false);
 
     useEffect(() => {
             const promise = getRequests(token);
@@ -170,26 +166,9 @@ export const MapComponent = () => {
             }, 500)
     }
 
-    /*Get user's current position to center the map*/
-
-
     /*BUILDING*/
-    const FulfillRequest = (event, id) => {
-
-        /*ADD PREVENTDEFAULT TO THE EVENT LISTENER*/
-        event.preventDefault();
-        if (!chat) {
-           /*MAKE THE CHAT APPEAR ON THE PAGE*/
-           setChat(true);
-           /*LOAD CHAT DISCUSSION*/
-        }
-
-
-        const RequestCount = {
-            id: id,
-            count: 0
-        }
-
+    const FulfillRequest = (id) => {
+        console.log("Request ID : " + id);
     }
 
     return (
@@ -268,7 +247,9 @@ export const MapComponent = () => {
                         {/*WATCH OUT ARGUMENTS FOR THE ONCLICK EVENTLISTENER*/}
                         <Button
                             className="btn-dark d-block mx-auto"
-                            onClick={(event) => FulfillRequest(event, windows.windowsId)}
+                            onClick={(event) => {
+                                this.FulfillRequest(event, windows.id)
+                            }}
                         >
                             Fulfill
                         </Button>
