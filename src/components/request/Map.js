@@ -13,6 +13,7 @@ import Geocode from 'react-geocode';
 import { Location } from '../homepage/Location';
 import axios from 'axios';
 import { getRequests } from '../../utils/getRequests.js';
+import { getRequest } from '../../utils/getRequest.js';
 
 /*Remove key*/
 
@@ -36,10 +37,6 @@ const options = {
 };
 
 export const MapComponent = () => {
-/*    const {isLoaded, loadError} = useLoadScript({
-        googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-        libraries,
-    });*/
 
     /*state for user*/
     const [token, setToken] = useState(
@@ -132,8 +129,8 @@ export const MapComponent = () => {
 
             setTimeout( () => {
                 /*Get request for a clicked marker*/
-                axios.get(endpointWindow)
-                .then(response => {
+                const promise = getRequest(token, id);
+                promise.then(response => {
 
                     const clickResponse = response.data;
 
@@ -231,10 +228,15 @@ export const MapComponent = () => {
                             onCloseClick={() => setInfoOpen(false)}
                         >
                             <div>
-                                <h4 className="info-title">{windows.title}</h4>
+                                <h4
+                                    className="info-title"
+                                    style={{ color : (windows.type === "one-time task") ? ' #c70039' : '#086F00'}}
+                                >
+                                    {windows.title}
+                                </h4>
                                 <h6
                                     className="info-text"
-                                    style={{ color : (windows.type === "One-time task") ? ' #c70039' : '#086F00'}}
+                                    style={{ color : (windows.type === "one-time task") ? ' #c70039' : '#086F00'}}
                                 >
                                     {windows.type}
                                 </h6>

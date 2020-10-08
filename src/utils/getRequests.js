@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const getRequests = (token) => {
+export const getRequests = async (token) => {
     const endpoint = 'http://localhost:3001/requests';
 
     const config = { headers: {
@@ -8,6 +8,6 @@ export const getRequests = (token) => {
         'content-type': 'application/json'
     }}
 
-    const request = axios.get(endpoint, config);
+    const request = await axios.get(endpoint, config);
     return request;
 }
