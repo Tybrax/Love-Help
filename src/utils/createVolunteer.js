@@ -18,9 +18,9 @@ export const getVolunteers = async (token, requestId) => {
 }
 
 /*Filter the volunteer for a given request*/
-export const volunteersFilter = (array, requestId) => {
+export const volunteersFilter = (totalVolunteers, requestId) => {
     let count = 0;
-    array.map((volunteer) => {
+    totalVolunteers.map((volunteer) => {
         ((volunteer.request_id === requestId) ? count += 1 : count = 0);
     })
     return count;
@@ -29,6 +29,29 @@ export const volunteersFilter = (array, requestId) => {
 /*Check if the number of volunteers for a given request is inferior to 5*/
 export const volunteersCheck = (count) => {
    return ((count < 5) ? 'create' : 'full')
+}
+
+export const usersCheck = (totalVolunteers, requestId, userId) => {
+    let count = 0;
+    let userExist = false;
+    const volunteersForRequest = [];
+    totalVolunteers.map((volunteer) => {
+        if (volunteer.request_id === requestId) {
+            volunteersForRequest.push(volunteer);
+            count +=1;
+        } else {
+            count = 0;
+        }
+    })
+
+    volunteersForRequest.map((volunteer) => {
+        if (volunteer.user_id === userId) {
+            userExist = true;
+        } else {
+            userExist = false;
+        }
+    })
+    return [count, userExist];
 }
 
 /*Post a volunteer to backend*/

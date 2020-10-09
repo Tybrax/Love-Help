@@ -15,17 +15,19 @@ import axios from 'axios';
 import { decodeToken } from '../../utils/decodeToken';
 import { getRequests } from '../../utils/getRequests.js';
 import { getRequest } from '../../utils/getRequest.js';
-import { getVolunteers, volunteersCheck, volunteersFilter, createVolunteer } from '../../utils/createVolunteer.js';
+import {
+    getVolunteers,
+    volunteersCheck,
+    volunteersFilter,
+    createVolunteer,
+    usersCheck
+} from '../../utils/createVolunteer.js';
+import { createChat } from '../../utils/createChat.js';
 
-/*Remove key*/
-
-/*Geocode.setApiKey("AIzaSyBT5euhpYYvpzGV7EkplwyF1AttF4jvr2A");*/
 Geocode.setLanguage("en");
 Geocode.setRegion("fr");
 
 const libraries = ["places"];
-
-const requestEndPoint = 'http://localhost:3001/api/v1/requests';
 
 const mapContainerStyle = {
     width: '100%',
@@ -65,9 +67,12 @@ export const MapComponent = () => {
     const [windows, setWindows] = useState();
     const [infoOpen, setInfoOpen] = useState(false);
 
-    /*states for volunteers*/
+    /*states for volunteers & chats*/
     const [volunteerFull, setVolunteerFull] = useState(false);
     const [newVolunteer, setNewVolunteer] = useState(false);
+    const [requesterId, setRequesterId] = useState(null);
+    const [chatCreated, setChatCreated] = useState(false);
+
 
     useEffect(() => {
             const promise = getRequests(token);
@@ -123,16 +128,14 @@ export const MapComponent = () => {
     }, [markers])
 
     const handleClick = (id) => {
-
-        const endpointWindow = `${requestEndPoint}/${id}`;
-
             setTimeout( () => {
                 /*Get request for a clicked marker*/
                 const promise = getRequest(token, id);
                 promise.then(response => {
 
                     const clickResponse = response.data;
-
+                    const publisherId = response.data.user_id;
+                    setRequesterId(publisherId);
                     const windowObject = {
                         windowsId: clickResponse.id,
                         type: clickResponse.request_type,
@@ -176,16 +179,26 @@ export const MapComponent = () => {
         promise.then((response) => {
             const totalVolunteers = response.data;
             const count = volunteersFilter(totalVolunteers, id);
-            const volunterChecker = volunteersCheck(count);
-            if (volunterChecker === 'create') {
+            /*Checkers functions*/
+            const userChecker = usersCheck(totalVolunteers, id, currentUserId);
+            const volunterChecker = volunteersCheck(userChecker[0]);
+            /*Create a volunteer*/
+            if (volunterChecker === 'create' && (userChecker[1] === false)) {
                 const secondPromise = createVolunteer(token, currentUserId, id);
                 secondPromise.then((response) => {
-                    alert('volunteer added');
-                    console.log(response);
-                    /*HANDLE STATE*/
+                    const volunteerId = response.data.id;
+                    /*CREATE CHATROOMS*/
+                    const thirdPromise = createChat(token, requesterId, volunteerId, id);
+                    thirdPromise.then((response) => {
+                        /*HANDLE STATE*/
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
                 })
                 .catch((error) => {
                     console.error(error);
+                    console.log('ISSUE');
                     /*HANDLE STATE*/
                 })
             } else {
