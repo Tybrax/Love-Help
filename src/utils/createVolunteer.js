@@ -1,8 +1,5 @@
 import axios from 'axios';
 
-/*MAKE SURE THE INDEX ACTION IS WORKING PROPERLY BEFORE RUNNING THOSE FUNCTIONS*/
-/*CHECK RETURN FOR TYPES IN COMPONENTS*/
-
 /*Store the total number of volunteers*/
 export const getVolunteers = async (token, requestId) => {
 

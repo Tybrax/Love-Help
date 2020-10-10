@@ -58,6 +58,11 @@ export const MapComponent = () => {
 
     /*states for errors*/
     const [requestsError, setRequestsError] = useState(false);
+    const [coordinatesError ,setCoordinatesError] = useState(false);
+    const [singleRequestError, setSingleRequestError] = useState(false);
+    const [volunteersError, setVolunteersError] = useState(false);
+    const [chatError, setChatError] = useState(false);
+    const [volunteerNotCreated, setVolunteerNotCreated] = useState(false);
 
     /*states for markers*/
     const [markers, setMarkers] = useState([]);
@@ -120,7 +125,6 @@ export const MapComponent = () => {
                 /*Iterate through an array of objects and edit different states for the Map component*/
             })
             .catch((error) => {
-                console.log('FUNCTION ERROR : ' + error);
                 if (requestsError === false) {
                     setRequestsError(true);
                 }
@@ -154,11 +158,8 @@ export const MapComponent = () => {
                        /*Append the address to the object*/
                        windowObject.address = response.results[0].formatted_address;
                     })
-
-                    /*Handle request if errors occur*/
                     .catch((error) => {
-                        /*HANDLE ERROR FOR COORDINATES*/
-                        console.log("Coordinates cannot be translated");
+                        setCoordinatesError(true);
                     })
 
                     /*Update states to retrieve data from the JSX*/
@@ -167,7 +168,7 @@ export const MapComponent = () => {
                     setCenter(windowObject.location);
                 })
                 .catch(error => {
-                    console.log('ERROR DESCRIPTION : ' + error)
+                    setSingleRequestError(true);
                 })
             }, 500)
     }
@@ -190,32 +191,61 @@ export const MapComponent = () => {
                     /*CREATE CHATROOMS*/
                     const thirdPromise = createChat(token, requesterId, volunteerId, id);
                     thirdPromise.then((response) => {
-                        /*HANDLE STATE*/
+                        alert("chat created");
                     })
                     .catch((error) => {
-                        console.log(error);
+                        setChatError(true);
                     })
                 })
                 .catch((error) => {
                     console.error(error);
                     console.log('ISSUE');
-                    /*HANDLE STATE*/
+                    setVolunteerNotCreated(true);
                 })
             } else {
                 setVolunteerFull(true);
                 /*HANDLE STATE*/
             }
         })
+        .catch((error) => {
+            setVolunteersError(true);
+        })
     }
 
     return (
-        // <Container className="d-flex justify-content-center">
+        // Display Errors
             <div>
             { requestsError && (
                 <Alert variant="danger" className="alert-fail text-center">
-                    <h4>Can't display requests, please try later.</h4>
+                    <h4>Can't display requests on the map, please try later.</h4>
                 </Alert>
             )}
+            { coordinatesError && (
+                <Alert variant="danger" className="alert-fail text-center">
+                    <h4>Can't display translate addresses into coordinates.</h4>
+                </Alert>
+            )}
+            { singleRequestError && (
+                <Alert variant="danger" className="alert-fail text-center">
+                    <h4>Can't load request from server.</h4>
+                </Alert>
+            )}
+            { volunteersError && (
+                <Alert variant="danger" className="alert-fail text-center">
+                    <h4>Can't display volunteers from server.</h4>
+                </Alert>
+            )}
+            { chatError && (
+                <Alert variant="danger" className="alert-fail text-center">
+                    <h4>Can't create a chat.</h4>
+                </Alert>
+            )}
+            { volunteerNotCreated && (
+                <Alert variant="danger" className="alert-fail text-center">
+                    <h4>Can't create a volunteer.</h4>
+                </Alert>
+            )}
+
                 <GoogleMap
                     mapContainerStyle={mapContainerStyle}
                     zoom={zoom}
@@ -284,7 +314,6 @@ export const MapComponent = () => {
                     </Container>
                 )}
             </div>
-        // </Container>
     )
 }
 
