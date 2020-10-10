@@ -251,3 +251,11 @@ a.nav-link {
   font-size: 1,5em !important;
   color: #222f21 !important;
 }
+
+.conversations {
+  background-color: #BACCB1;
+}
+
+.chats {
+  background-color: #D6D5D5;
+}

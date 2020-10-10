@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import axios from 'axios';
+import { Icon } from 'semantic-ui-react'
 
 import { SessionStatus } from '../../SessionStatus.js';
 
@@ -20,6 +21,10 @@ const NavbarElements = () => {
                 </li>
                 <li className="nav-item">
                     <Link className="nav-link" to="/about">ABOUT</Link>
+                </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/messages"><Icon name='mail' /></Link>
+
                 </li>
             </Fragment>
         )

@@ -20,6 +20,7 @@ import { File } from './components/homepage/File.js';
 import { Footer } from './components/footer/Footer.js';
 import { About } from './components/about/About.js';
 import { Request } from './components/request/Request.js';
+import { Chat } from './components/chat/Chat.js';
 import { SessionStatus } from './SessionStatus.js';
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
             <Route exact path="/request" component={Request} />
             <Route exact path="/about" component={About} />
             <Route exact path="/file" component={File} />
+            <Route exact path="/messages" component={Chat} />
           </Switch>
         </div>
         <Footer />
