@@ -77,6 +77,7 @@ export const MapComponent = () => {
     const [newVolunteer, setNewVolunteer] = useState(false);
     const [requesterId, setRequesterId] = useState(null);
     const [chatCreated, setChatCreated] = useState(false);
+    const [chatId, setChatId] = useState(null);
 
 
     useEffect(() => {
@@ -191,15 +192,14 @@ export const MapComponent = () => {
                     /*CREATE CHATROOMS*/
                     const thirdPromise = createChat(token, requesterId, volunteerId, id);
                     thirdPromise.then((response) => {
-                        alert("chat created");
+                        setChatCreated(true);
+                        setChatId(response.data.id);
                     })
                     .catch((error) => {
                         setChatError(true);
                     })
                 })
                 .catch((error) => {
-                    console.error(error);
-                    console.log('ISSUE');
                     setVolunteerNotCreated(true);
                 })
             } else {
@@ -243,6 +243,11 @@ export const MapComponent = () => {
             { volunteerNotCreated && (
                 <Alert variant="danger" className="alert-fail text-center">
                     <h4>Can't create a volunteer.</h4>
+                </Alert>
+            )}
+            { chatCreated && (
+                <Alert variant="success" className="alert-fail text-center">
+                    <h4>Request successfully answered.</h4>
                 </Alert>
             )}
 
