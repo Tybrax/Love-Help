@@ -259,3 +259,8 @@ a.nav-link {
 .chats {
   background-color: #D6D5D5;
 }
+
+.conversation {
+  background-color: #D6D5D5;
+  height: 50px;
+}
