@@ -11,16 +11,13 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 const NavbarElements = () => {
-    const [user, setUser] = useState(false);
+    const token = localStorage.getItem('userToken') || null;
 
-    if (!user) {
+    if (token) {
         return (
             <Fragment>
                 <li className="nav-item">
                     <Link className="nav-link" to="/request">REQUEST</Link>
-                </li>
-                <li className="nav-item">
-                    <Link className="nav-link" to="/about">ABOUT</Link>
                 </li>
                 <li className="nav-item">
                     <Link className="nav-link" to="/messages"><Icon name='mail' /></Link>
@@ -53,6 +50,9 @@ export const Navbar = (props) => {
                         <ul className="navbar-nav mr-auto mt-2 mt-lg-0 ml-5">
                             <li className="nav-item">
                                 <Link className="nav-link ml-5" to="/">HOME</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/about">ABOUT</Link>
                             </li>
                             <NavbarElements />
                             <SessionStatus />

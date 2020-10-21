@@ -16,7 +16,7 @@ const retrieveUserInformation = async (userId) => {
 
 export const getUserInformation = (arrayOfUserIds) => {
 
-    const fullNames = []
+    const fullNames = [];
 
     arrayOfUserIds.map((userId) => {
         const getNames = retrieveUserInformation(userId);

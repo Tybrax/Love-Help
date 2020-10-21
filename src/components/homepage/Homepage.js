@@ -9,6 +9,7 @@ import LogIn from './LogIn.js';
 import LogOut from './LogOut.js';
 import { LoggedIn } from './LoggedIn';
 import { logout } from '../../utils/logout';
+import { decodeToken } from '../../utils/decodeToken';
 import { setPosition } from '../../utils/setPosition';
 
 import Counter from './Count.js';
@@ -35,6 +36,9 @@ export const Homepage = () => {
     const date = ("0" + (today.getMonth() + 1)).slice(-2) + '/' + ("0" + today.getDate()).slice(-2) + '/' + today.getFullYear();
 
     const { user, setUser } = useContext(UserContext);
+    const [loggedIn, setLoggedIn] = useState(
+        decodeToken(localStorage.getItem('userToken')) || null
+    )
     const [loggedOut, setLoggedOut] = useState(false);
 
     const { latitude, longitude, error } = usePosition();
@@ -47,30 +51,31 @@ export const Homepage = () => {
             </Jumbotron>
             <Container className="mt-5">
                 <Row className="mb-5">
-                    <Col xs={12} sm={12} md={6}>
-                        {loggedOut ? (
-                            <Alert
-                                variant={'dark'}
-                                className="text-center"
-                            >You successfully logged out.</Alert>
-                        ) : (
-                                <></>
-                            )}
-                        {user ? (
-                            <LoggedIn />
-                        ) : (
+                    {user ? (
+                        <React.Fragment>
+                            <Col xs={12} sm={12} md={6}>
+                                <LoggedIn />
+                            </Col>
+                            <Col xs={12} sm={12} md={6}>
+                                <div>SOME STUFFS</div>
+                            </Col>
+                        </React.Fragment>
+                    ) : (
+                        <React.Fragment>
+                            <Col xs={12} sm={12} md={6}>
                                 <LogIn />
-                            )}
-                    </Col>
-                    <Col xs={12} sm={12} md={6}>
-                        <SignUp />
-                    </Col>
+                            </Col>
+                            <Col xs={12} sm={12} md={6}>
+                                <SignUp />
+                            </Col>
+                        </React.Fragment>
+                    )}
                 </Row>
             </Container>
             <Container fluid>
                 <Row>
                     <Col md={12} className='background_style'>
-                        {/* Test */}
+
                         <Container>
                             <Row className='justify-content-center'>
                                 <Col className='contribute' md={12}>
@@ -83,7 +88,6 @@ export const Homepage = () => {
                                 </Col>
                             </Row>
                         </Container>
-                        {/* End Test */}
 
                         <Container fluid className="mt-3">
                             <Row className="mb-5 d-flex justify-content-around">

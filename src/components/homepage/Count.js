@@ -19,7 +19,7 @@ const Counter = () => {
                 console.log(e)
             })
         }, 1000);
-    })
+    }, [count])
 
     return (
         <Container className='count d-flex mx-auto align-items-center justify-content-center rounded-lg'>

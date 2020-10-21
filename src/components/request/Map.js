@@ -15,6 +15,7 @@ import axios from 'axios';
 import { decodeToken } from '../../utils/decodeToken';
 import { getRequests } from '../../utils/getRequests.js';
 import { getRequest } from '../../utils/getRequest.js';
+import { getUser } from '../../utils/getChats';
 import {
     getVolunteers,
     volunteersCheck,
@@ -71,6 +72,7 @@ export const MapComponent = () => {
     /*states for infowindows*/
     const [windows, setWindows] = useState();
     const [infoOpen, setInfoOpen] = useState(false);
+    const [requesterName, setRequesterName] = useState();
 
     /*states for volunteers & chats*/
     const [volunteerFull, setVolunteerFull] = useState(false);
@@ -84,7 +86,6 @@ export const MapComponent = () => {
             const promise = getRequests(token);
 
             promise.then((response) => {
-                console.log(response.data);
                 const responseData = response.data;
 
                 /*Edit the coordinates so they have the accepted format for googleMap*/
@@ -96,11 +97,12 @@ export const MapComponent = () => {
                 const requestsType = [];
                 const requestsId = [];
 
+
                 /*Fill our lists with data from the requests*/
-                responseData.map(request => requestsStatus.push(request.fulfilled))
-                responseData.map(request => requestsType.push(request.request_type))
-                responseData.map(request => requestsId.push(request.id))
-                responseData.map(request => coordinates.push(request.location))
+                responseData.map(request => requestsStatus.push(request.fulfilled));
+                responseData.map(request => requestsType.push(request.request_type));
+                responseData.map(request => requestsId.push(request.id));
+                responseData.map(request => coordinates.push(request.location));
 
                 /*Create objects using our lists*/
                 let i;
@@ -132,7 +134,7 @@ export const MapComponent = () => {
             })
     }, [markers])
 
-    const handleClick = (id) => {
+    const openWindow = (id) => {
             setTimeout( () => {
                 /*Get request for a clicked marker*/
                 const promise = getRequest(token, id);
@@ -140,6 +142,10 @@ export const MapComponent = () => {
 
                     const clickResponse = response.data;
                     const publisherId = response.data.user_id;
+                    const secondPromise = getUser(publisherId);
+                    secondPromise.then((response) => {
+                        setRequesterName(response);
+                    })
                     setRequesterId(publisherId);
                     const windowObject = {
                         windowsId: clickResponse.id,
@@ -190,6 +196,7 @@ export const MapComponent = () => {
                 secondPromise.then((response) => {
                     const volunteerId = response.data.id;
                     /*CREATE CHATROOMS*/
+                    /*CHANGE VOLUNTEER ID TO PASS REQUESTER_ID (=USER_ID in REQUEST)*/
                     const thirdPromise = createChat(token, requesterId, volunteerId, id);
                     thirdPromise.then((response) => {
                         setChatCreated(true);
@@ -204,7 +211,6 @@ export const MapComponent = () => {
                 })
             } else {
                 setVolunteerFull(true);
-                /*HANDLE STATE*/
             }
         })
         .catch((error) => {
@@ -268,7 +274,7 @@ export const MapComponent = () => {
                                 origin: new window.google.maps.Point(0,0),
                                 anchor: new window.google.maps.Point(25,25)
                             }}
-                            onClick={() => {handleClick(marker.id)}}
+                            onClick={() => {openWindow(marker.id)}}
                         />
                     ))}
 
@@ -285,6 +291,11 @@ export const MapComponent = () => {
                                 >
                                     {windows.title}
                                 </h4>
+                                <h6
+                                    className="info-text font-weight-bold text-uppercase"
+                                >
+                                    {requesterName}
+                                </h6>
                                 <h6
                                     className="info-text"
                                     style={{ color : (windows.type === "one-time task") ? ' #c70039' : '#086F00'}}
