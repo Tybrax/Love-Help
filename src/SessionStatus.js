@@ -4,15 +4,12 @@ import { UserContext } from './UserContext';
 import { Button, Container } from 'react-bootstrap';
 import { Icon } from 'semantic-ui-react'
 import { logout } from './utils/logout';
-import { decodeToken } from './utils/decodeToken';
-
 
 export const SessionStatus = () => {
     const {user, setUser} = useContext(UserContext);
     const [isLoggedOut, setIsLoggedOut] = useState(false);
 
     const token = localStorage.getItem('userToken') || null;
-    const userData = decodeToken(token);
 
     const handleClick = (event) => {
         event.preventDefault();
@@ -34,7 +31,6 @@ export const SessionStatus = () => {
     } else {
         return (
             <Container className="mt-4">
-                <h5 className="session-info text-right mr-5">Welcome <span style={titleColor} className="font-weight-bold">{userData.first_name} {userData.last_name}</span>.</h5>
                 <div
                     className="mt-2 mb-3 d-flex  flex-row-reverse border rounded pt-2 px-1 signout"
                     onClick={handleClick}

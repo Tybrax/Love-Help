@@ -36,11 +36,6 @@ export const Homepage = () => {
     const date = ("0" + (today.getMonth() + 1)).slice(-2) + '/' + ("0" + today.getDate()).slice(-2) + '/' + today.getFullYear();
 
     const { user, setUser } = useContext(UserContext);
-    const [loggedIn, setLoggedIn] = useState(
-        decodeToken(localStorage.getItem('userToken')) || null
-    )
-    const [loggedOut, setLoggedOut] = useState(false);
-
     const { latitude, longitude, error } = usePosition();
     const userPosition = setPosition(latitude, longitude, error);
 

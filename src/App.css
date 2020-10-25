@@ -254,6 +254,9 @@ a.nav-link {
 
 .conversations {
   background-color: #BACCB1;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 .chats {
@@ -262,4 +265,22 @@ a.nav-link {
 
 .conversation {
   background-color: #D6D5D5;
+  height: 60px;
+  border: 1px white solid;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.conversation:hover {
+  cursor: pointer;
+  border: 1px #086F00 solid;
+}
+
+.conversation__person {
+  font-size: 1.5em !important;
+  font-family: 'Vollkorn', serif;
 }

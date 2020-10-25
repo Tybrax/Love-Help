@@ -21,7 +21,6 @@ const NavbarElements = () => {
                 </li>
                 <li className="nav-item">
                     <Link className="nav-link" to="/messages"><Icon name='mail' /></Link>
-
                 </li>
             </Fragment>
         )

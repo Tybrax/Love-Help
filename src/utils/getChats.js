@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-const getVolunteer = async (volunteersIds, token) => {
-    const volunteersData = [];
+const getUserIdFromVolunteer = async (volunteerId, token) => {
 
     const config = {
         headers: {
@@ -9,21 +8,11 @@ const getVolunteer = async (volunteersIds, token) => {
         }
     };
 
-    const names = [];
+    const endPoint = `http://localhost:3001/volunteer/${volunteerId}`;
+    const response = await axios.get(endPoint, config);
+    const userId = await response.data.user_id;
 
-    for (const volunteerId of volunteersIds) {
-        const firstEndPoint = `http://localhost:3001/volunteer/${volunteerId}`;
-        const firstResponse = await axios.get(firstEndPoint, config);
-        const volunteerData = await firstResponse.data;
-
-        const secondEndpoint = `http://localhost:3001/user/${volunteerData.user_id}`;
-        const userData = getUser(volunteerData.user_id);
-        userData.then((response) => {
-            names.push(response);
-        })
-    }
-
-    return names;
+    return userId;
 
 }
 
@@ -35,8 +24,8 @@ export const getUser = async (userID) => {
     return fullName;
 }
 
-
-const getChats = async (token, currentUserId) => {
+/*MAIN FUNCTION TO CALL FOR RETRIEVING THE NAME FROM THE CORRECT CHATROOMS*/
+export const getChats = async (token, currentUserId) => {
     /*HTTP requests required attributes*/
     const endPoint = 'http://localhost:3001/chats';
     const config = {
@@ -45,88 +34,44 @@ const getChats = async (token, currentUserId) => {
         }
     };
 
+    /*GET /chats to retrieve all the chatrooms informations*/
     const request = await axios.get(endPoint, config);
     const chatsData = await request.data;
-
-    const userIds = [];
-    const volunteersIds = [];
+    const volunteersIdsFromChats = [];
 
     chatsData.map((chat) => {
+        volunteersIdsFromChats.push(chat.volunteer_id);
+    })
+
+    const chatRoomsInformations = [];
+
+    /*Compare the current_user_id to the ids within the JSON response from GET /chats*/
+    let i = 0;
+    for await (let chat of chatsData) {
+        const promise = getUserIdFromVolunteer(chat.volunteer_id, token);
+        promise.then((response) => {
+        const userIdFromVolunteer = response;
+
         if (chat.user_id === currentUserId) {
-            volunteersIds.push(chat.volunteer_id);
+            const name = getUser(currentUserId);
+            const firstPromise =  getUserIdFromVolunteer(chat.volunteer_id, token);
+            firstPromise.then((firstResponse) => {
+                const secondPromise =  getUser(firstResponse);
+                secondPromise.then((secondResponse) => {
+                    chatRoomsInformations.push(secondResponse);
+                })
+            })
 
-        } else if (chat.volunteer_id === currentUserId) {
-            userIds.push(chat.user_id);
+        } else if ( userIdFromVolunteer === currentUserId) {
+            const promise =  getUser(chat.user_id);
+            promise.then((response) => {
+                chatRoomsInformations.push(response);
+
+            })
         }
-    });
-
-    if (userIds.length) {
-        const namesFromUsers = await getUser(userIds);
-        return namesFromUsers;
-    } else if (volunteersIds.length) {
-        const namesFromVolunteers = getVolunteer(volunteersIds, token);
-        return namesFromVolunteers;
-    }
-}
-
-const getRequestTitle = async (token, requestId) => {
-
-    const config = {
-        headers: {
-            'authorization': `bearer ${token}`
-        }
-    };
-
-    const request = await axios.get(`http://localhost:3001/requests/${requestId}`, config);
-    const requestData = await request.data;
-    return requestData;
-
-}
-
-export const getRequestInformations = async (token, currentUserId) => {
-    /*HTTP requests required attributes*/
-    const endPoint = 'http://localhost:3001/chats';
-    const config = {
-        headers: {
-            'authorization': `bearer ${token}`
-        }
-    };
-
-    const request = await axios.get(endPoint, config);
-    const chatsData = await request.data;
-
-    const requestsId = [];
-    const usersId = [];
-
-    chatsData.map((request) => {
-        requestsId.push(request.request_id);
-        usersId.push(request.user_id);
-    })
-
-    const requestsInformations = [];
-    requestsId.map((requestId) => {
-        const informations = getRequestTitle(token, requestId);
-        informations.then((response) => {
-            requestsInformations.push(response.title);
         })
-
-    })
-
-    const userNames = [];
-    usersId.map((userId) => {
-        const fullName = getUser(userId);
-        fullName.then((response) => {
-            userNames.push(response);
-        })
-    })
-
-    /*CREATE A VARIABLE THAT STORE THE REQUEST OBJECT AND THE USERNAME*/
-    const requestsData = {
-        requestId: requestsId,
-        informations: requestsInformations,
-        userNames: userNames
     }
 
-    return requestsData;
-
+    return chatRoomsInformations;
 }
+

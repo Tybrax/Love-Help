@@ -1,47 +1,107 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Container, Alert, Button } from 'react-bootstrap';
 import { getConversations } from '../../utils/getConversations';
 import { getUserInformation } from '../../utils/getUserInformation';
-import { getRequestInformations } from '../../utils/getChats';
 import { getUser } from '../../utils/getChats';
 import { decodeToken } from '../../utils/decodeToken';
 
-export const Sidebar = () => {
+const getChats = 'http://localhost:3001/chats';
+
+
+export const Sidebar = ({ handleClick }) => {
 
     /*VARIABLES*/
     const token = localStorage.getItem('userToken') || null;
-    const userId = decodeToken(token).user_id;
+    const currentUserId = decodeToken(token).user_id;
 
-    /*STATES*/
-    const [conversationsError, setConversationsError] = useState(false);
-    const [requests, setRequests] = useState([]);
+    const config = {
+        headers: {
+            'authorization': `bearer ${token}`
+        }
+    };
 
-    /*LIFECYCLE*/
+    /*Errors*/
+    const [chatsError, setChatsError] = useState(false);
+    const [volunteersError, setVolunteersError] = useState(false);
+    const [userError, setUserError] = useState(false);
+
+    /*Conversations*/
+    const [conversations, setConversations] = useState([]);
+    const [person, setPerson] = useState('');
+
     useEffect(() => {
-        const allRequests = getRequestInformations(token, userId);
-        allRequests.then((response) => {
-            console.log(response);
-            /*TO DO*/
-            /*Set states for requests as an array of iterable objects containing : request title, request id and user id*/
-        })
-        .catch((error) => {
-            setConversationsError(true);
-        })
+        if (token && currentUserId) {
+            axios.get(getChats, config)
+            .then((response) => {
+                const chats = [];
+                for (const data of response.data) {
+                    const chatData = data;
+                    const chat = {
+                        chatId: chatData.id,
+                        requesterId: chatData.user_id
+                    }
+                    const getUserFromVolunteer = `http://localhost:3001/volunteer/${chatData.volunteer_id}`;
+                    axios.get(getUserFromVolunteer, config)
+                    .then((response) => {
+                        const userIdFromVolunteer = response.data.user_id;
+                        chat.volunteerUserId = userIdFromVolunteer;
+                        if (currentUserId === chat.requesterId) {
+                            axios.get(`http://localhost:3001/user/${userIdFromVolunteer}`)
+                            .then((response) => {
+                                const fullName = `${response.data.first_name} ${response.data.last_name}`;
+                                chat.fullName = fullName
+                                chats.push(chat);
+                                const newArr = Array.prototype.slice.call(chats);
+                                setConversations(newArr);
+                                setPerson("volunteer");
+                            })
+                            .catch((error) => {
+                                setUserError(true);
+                            })
+                        } else if (currentUserId === userIdFromVolunteer) {
+                            axios.get(`http://localhost:3001/user/${chat.requesterId}`)
+                            .then((response) => {
+                                const fullName = `${response.data.first_name} ${response.data.last_name}`;
+                                chat.fullName = fullName;
+                                chats.push(chat);
+                                const newArr = Array.prototype.slice.call(chats);
+                                setConversations(newArr);
+                                setPerson("requester");
+                            })
+                            .catch((error) => {
+                                setUserError(true);
+                            })
+                        }
+                    })
+                    .catch((error) => {
+                        setVolunteersError(true);
+                    })
+                }
+            })
+            .catch((error) => {
+                setChatsError(true);
+            })
+        } else {
+            setChatsError(true);
+        }
     }, [])
 
-    return (
-        <div className="conversations">
-            <h2 className="text-center mb-3">CONVERSATIONS</h2>
-            { conversationsError && (
-                <Alert variant="danger" className="alert-fail text-center mt-3">
-                    <h4>Can't load conversations from server.</h4>
-                </Alert>
-            )}
-                <Container className="mt-3 mb-3 conversation border rounded">
-
+    if (volunteersError || chatsError || userError) {
+        return (
+            <Alert variant="danger" className="alert-fail text-center mt-3">
+                <h4>Can't load conversations from server.</h4>
+            </Alert>
+        )
+    } else {
+        return (
+        <Container className="conversations">
+            {conversations.map((chat) => (
+                <Container key={chat.chatId} className="conversation" onClick={() => handleClick(chat.chatId)}>
+                    <h5 className="conversation__person">{chat.fullName}</h5>
                 </Container>
-
-        </div>
-
-    )
+            ))}
+        </Container>
+        )
+    }
 }
