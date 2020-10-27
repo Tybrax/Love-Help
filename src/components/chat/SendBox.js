@@ -21,7 +21,7 @@ export const SendBox = ({ chatId, currentUserId }) => {
     const [message, setMessage] = useState('');
 
     return (
-        <Container>
+        <Container className="text-center p-3">
             <Formik
                 initialValues={{ message: '' }}
 

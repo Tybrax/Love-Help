@@ -2,7 +2,16 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { SendBox } from './SendBox.js';
 import axios from 'axios';
 import { Message } from './Message';
+import { filterMessages } from '../../utils/filterMessages';
+
 const getMessages = 'http://localhost:3001/messages';
+
+const headerStyle = {
+    backgroundColor: '#243c22',
+    color: 'white',
+    fontFamily: 'Vollkorn',
+    letterSpacing: '2px'
+};
 
 export const ChatRoom = ({ chatId, display, currentUserId }) => {
 
@@ -14,36 +23,43 @@ export const ChatRoom = ({ chatId, display, currentUserId }) => {
         }
     };
 
+    const contactName = localStorage.getItem(`${chatId}`);
+
     const [messages, setMessages] = useState([]);
     const [messagesHaveErrors, setMessagesHaveErrors] = useState(false);
 
     useEffect(() => {
+        /*Fetch messages*/
         const request = axios.get(getMessages, config);
         request.then((response) => {
             const newArr = Array.prototype.slice.call(response.data);
-            setMessages(newArr);
-            console.log(newArr);
+            const filteredMessages = filterMessages(chatId, newArr);
+            const ArrayFromArrayLikeObject = Array.prototype.slice.call(filteredMessages);
+            setMessages(ArrayFromArrayLikeObject);
         })
         .catch((error) => {
             setMessagesHaveErrors(true);
         })
     }, [messages])
 
-    if (display) {
+    if (display && contactName) {
         return (
-            <div className="chats">
+            <div className="chats mb-5">
                 <Fragment>
-                    {chatId}
+                    <div style={headerStyle}>
+                        <h3 className="text-center p-4">{contactName}</h3>
+                    </div>
                     {messages.map((message, index) => (
                         <Message
                             key={index}
                             message={message.content}
-                            authorUserId={message.user_id}
+                            author={(currentUserId == message.user_id) ? 0 : 1}
                         />
                     ))}
                     <SendBox
                         chatId={chatId}
                         currentUserId={currentUserId}
+                        className="p-3"
                     />
                 </Fragment>
 

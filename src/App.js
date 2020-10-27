@@ -40,7 +40,7 @@ function App() {
             <Route exact path="/messages" component={Chat} />
           </Switch>
         </div>
-        <Footer />
+        <Footer className="mt-5" />
       </UserContext.Provider>
     </Router>
   );

@@ -182,22 +182,19 @@ export const MapComponent = () => {
 
     /*BUILDING*/
     const postVolunteer = (id) => {
-        /*Count number of volunteer for given request ID*/
         const promise = getVolunteers(token, id);
         promise.then((response) => {
             const totalVolunteers = response.data;
             const count = volunteersFilter(totalVolunteers, id);
-            /*Checkers functions*/
             const userChecker = usersCheck(totalVolunteers, id, currentUserId);
             const volunterChecker = volunteersCheck(userChecker[0]);
-            /*Create a volunteer*/
             if (volunterChecker === 'create' && (userChecker[1] === false)) {
                 const secondPromise = createVolunteer(token, currentUserId, id);
                 secondPromise.then((response) => {
                     const volunteerId = response.data.id;
-                    /*CREATE CHATROOMS*/
-                    /*CHANGE VOLUNTEER ID TO PASS REQUESTER_ID (=USER_ID in REQUEST)*/
+                    /*create a chat using the volunteerID*/
                     const thirdPromise = createChat(token, requesterId, volunteerId, id);
+
                     thirdPromise.then((response) => {
                         setChatCreated(true);
                         setChatId(response.data.id);

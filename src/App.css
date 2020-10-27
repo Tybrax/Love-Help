@@ -266,7 +266,6 @@ a.nav-link {
 .conversation {
   background-color: #D6D5D5;
   height: 60px;
-  border: 1px white solid;
   border-radius: 7px;
   display: flex;
   align-items: center;
@@ -277,10 +276,19 @@ a.nav-link {
 
 .conversation:hover {
   cursor: pointer;
-  border: 1px #086F00 solid;
+  background-color: #222f21;
+  color: white;
 }
 
 .conversation__person {
   font-size: 1.5em !important;
   font-family: 'Vollkorn', serif;
+}
+
+.blue-message {
+
+}
+
+.green-message {
+
 }

@@ -28,7 +28,6 @@ export const Sidebar = ({ handleClick }) => {
 
     /*Conversations*/
     const [conversations, setConversations] = useState([]);
-    const [person, setPerson] = useState('');
 
     useEffect(() => {
         if (token && currentUserId) {
@@ -46,6 +45,7 @@ export const Sidebar = ({ handleClick }) => {
                     .then((response) => {
                         const userIdFromVolunteer = response.data.user_id;
                         chat.volunteerUserId = userIdFromVolunteer;
+                        /*Current user is requester, seeking the volunteer*/
                         if (currentUserId === chat.requesterId) {
                             axios.get(`http://localhost:3001/user/${userIdFromVolunteer}`)
                             .then((response) => {
@@ -54,11 +54,12 @@ export const Sidebar = ({ handleClick }) => {
                                 chats.push(chat);
                                 const newArr = Array.prototype.slice.call(chats);
                                 setConversations(newArr);
-                                setPerson("volunteer");
+                                localStorage.setItem(`${chatData.id}`, fullName);
                             })
                             .catch((error) => {
                                 setUserError(true);
                             })
+                        /*Current user is volunteer, seeking the requester*/
                         } else if (currentUserId === userIdFromVolunteer) {
                             axios.get(`http://localhost:3001/user/${chat.requesterId}`)
                             .then((response) => {
@@ -67,7 +68,7 @@ export const Sidebar = ({ handleClick }) => {
                                 chats.push(chat);
                                 const newArr = Array.prototype.slice.call(chats);
                                 setConversations(newArr);
-                                setPerson("requester");
+                                localStorage.setItem(`${chatData.id}`, fullName);
                             })
                             .catch((error) => {
                                 setUserError(true);
