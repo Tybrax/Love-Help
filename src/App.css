@@ -286,9 +286,13 @@ a.nav-link {
 }
 
 .blue-message {
-
+  background-color: #28abb9;
+  width: 300px;
+  border-radius: 5px;
 }
 
 .green-message {
-
+  background-color: #b8de6f;
+  width: 300px;
+  border-radius: 5px;
 }

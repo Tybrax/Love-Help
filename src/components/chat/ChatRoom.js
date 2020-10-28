@@ -53,6 +53,7 @@ export const ChatRoom = ({ chatId, display, currentUserId }) => {
                         <Message
                             key={index}
                             message={message.content}
+                            time={message.created_at}
                             author={(currentUserId == message.user_id) ? 0 : 1}
                         />
                     ))}

@@ -1,12 +1,8 @@
-/*25/10
-
-TO DO :
-IMPLEMENT LOGIC FOR AUTHOR*/
-
 import React, { useState } from 'react';
-import { Container } from 'react-bootstrap';
+import { Container, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { Formik } from 'formik';
+import { Input } from '@material-ui/core';
 
 export const SendBox = ({ chatId, currentUserId }) => {
 
@@ -54,16 +50,22 @@ export const SendBox = ({ chatId, currentUserId }) => {
                  isSubmitting,
                 }) => (
                  <form onSubmit={handleSubmit}>
-                   <input
+                   <hr />
+                   <Input
+                     as={Input}
                      type="text"
                      name="message"
                      onChange={handleChange}
                      onBlur={handleBlur}
                      value={values.message}
                    />
-                   <button type="submit" disabled={isSubmitting}>
+                   <Button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="btn-dark ml-4"
+                    >
                      Submit
-                   </button>
+                   </Button>
                  </form>
                )}
             </Formik>

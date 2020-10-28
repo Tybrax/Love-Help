@@ -11,21 +11,31 @@ import React, { useState, useEffect } from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
 import axios from 'axios';
 
-export const Message = ({ message, author }) => {
+export const Message = ({ message, author, time }) => {
 
-    if (author == 0) {
+    if (author == 1) {
         return (
-            <Container className="blue-message mb-2">
-                <div className="border d-flex flex-row p-3">
-                    <h5>{message}</h5>
+            <Container className="d-flex flex-row">
+                <div className="blue-message mt-2 mb-2 p-2">
+                    <div className="d-flex flex-row">
+                        <h6 className="font-italic">{time.slice(0, 9)}, {time.slice(11, 16)}</h6>
+                    </div>
+                    <div className="d-flex flex-row">
+                        <h5 className="font-weight-bold">{message}</h5>
+                    </div>
                 </div>
             </Container>
         )
     } else {
         return (
-            <Container className="green-message mb-2">
-                <div className="border d-flex flex-row-reverse p-3">
-                    <h5>{message}</h5>
+            <Container className="d-flex flex-row-reverse">
+                <div className="green-message mb-4 p-2">
+                    <div className="d-flex flex-row-reverse">
+                        <h6 className="font-italic">{time.slice(0, 9)}, {time.slice(11, 16)}</h6>
+                    </div>
+                    <div className="d-flex flex-row-reverse">
+                        <h5 className="font-weight-bold">{message}</h5>
+                    </div>
                 </div>
             </Container>
         )
