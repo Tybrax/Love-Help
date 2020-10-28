@@ -296,3 +296,8 @@ a.nav-link {
   width: 300px;
   border-radius: 5px;
 }
+
+.messages__header {
+  font-family: 'Vollkorn', serif;
+  letter-spacing: 2px;
+}

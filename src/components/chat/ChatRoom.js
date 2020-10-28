@@ -3,6 +3,8 @@ import { SendBox } from './SendBox.js';
 import axios from 'axios';
 import { Message } from './Message';
 import { filterMessages } from '../../utils/filterMessages';
+import { Container } from 'react-bootstrap';
+import image from '../../images/img0.jpg'
 
 const getMessages = 'http://localhost:3001/messages';
 
@@ -68,9 +70,14 @@ export const ChatRoom = ({ chatId, display, currentUserId }) => {
         )
     } else {
         return (
-            <div className="chats">
-                NOTHING
-            </div>
+            <Container className="chats">
+                <figure className="text-center">
+                    <figcaption className="pt-3 mb-3 messages__header">
+                        <h2>Check out your messages</h2>
+                    </figcaption>
+                    <img src={image} width="600px" className="img-fluid"/>
+                </figure>
+            </Container>
         )
 
     }
