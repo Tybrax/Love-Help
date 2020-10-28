@@ -52,7 +52,7 @@ export const SendBox = ({ chatId, currentUserId }) => {
                  <form onSubmit={handleSubmit}>
                    <hr />
                    <Input
-                     as={Input}
+                     className="message__input"
                      type="text"
                      name="message"
                      onChange={handleChange}

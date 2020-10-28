@@ -1,34 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import axios from 'axios';
-import { Container } from 'react-bootstrap';
+import { Container, Alert } from 'react-bootstrap';
 
-const requestEndPoint = 'http://localhost:3001/total'
+const getCount = 'http://localhost:3001/total'
 
 const Counter = () => {
 
     const [count, setCount] = useState(0);
+    const [countError, setCountError] = useState(false);
 
     useEffect(() => {
-        setTimeout(() => {
-            axios.get(requestEndPoint)
-            .then(response => {
-                const responseData = response.data;
-                setCount(responseData);
-            })
-            .catch(e => {
-                console.log(e)
-            })
-        }, 1000);
+        axios.get(getCount)
+        .then(response => {
+            const responseData = response.data;
+            setCount(responseData);
+        })
+        .catch((error) => {
+            setCountError(true);
+        })
     }, [count])
 
     return (
-        <Container className='count d-flex mx-auto align-items-center justify-content-center rounded-lg'>
-            { count <= 1  ? (
-                <h3 style={{fontSize: '1rem'}} className='text-center'>Unfulfilled request : { count }</h3>
-            ) : (
-                <h3 style={{fontSize: '1rem'}} className='text-center'>Unfulfilled requests : { count }</h3>
-            )}
-        </Container>
+        <Fragment>
+            <div>
+                { countError && (
+                    <Alert variant="danger" className="alert-fail text-center">
+                        <h4>Temporary can't display request counter.</h4>
+                    </Alert>
+                )}
+            </div>
+            <Container className='count d-flex mx-auto align-items-center justify-content-center rounded-lg'>
+                { (count <= 1 && count) ? (
+                    <h4 style={{fontSize: '1rem'}} className='text-center'>{ count } unfulfilled request</h4>
+                ) : (
+                    <h4 style={{fontSize: '1rem'}} className='text-center'>{ count } unfulfilled requests</h4>
+                )}
+            </Container>
+        </Fragment>
     )
 };
 

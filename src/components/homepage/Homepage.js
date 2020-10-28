@@ -18,6 +18,7 @@ import { Container, Row, Col, Alert } from 'react-bootstrap';
 import img0 from '../../images/img0.jpg';
 import img1 from '../../images/img1.jpg';
 import img2 from '../../images/img2.jpg';
+import loggedin from '../../images/loggedin.png';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -44,6 +45,18 @@ export const Homepage = () => {
             <Jumbotron>
                 <h1 className="jumbotron-title">Love & Help</h1>
             </Jumbotron>
+            <Container>
+                <Row className='justify-content-center'>
+                    <Col className='contribute' md={12}>
+                        <Col md={8}>
+                            <h4 style={{ fontSize: '1.2rem', color: 'black' }} className="session-info subtitle text-center mt-2"><FontAwesomeIcon size="lg" icon={['fas', 'life-ring']} fixedWidth /> Please help us reducing the number of unfulfilled request on {date}</h4>
+                        </Col>
+                        <Col md={4}>
+                            <Counter className="mt-5" />
+                        </Col>
+                    </Col>
+                </Row>
+            </Container>
             <Container className="mt-5">
                 <Row className="mb-5">
                     {user ? (
@@ -52,7 +65,13 @@ export const Homepage = () => {
                                 <LoggedIn />
                             </Col>
                             <Col xs={12} sm={12} md={6}>
-                                <div>SOME STUFFS</div>
+                                <Container>
+                                    <h3 className="font-weight-bold text-center mb-4">Welcome on Love&Help</h3>
+                                    <article>
+                                        <p className="text-justify loggedin__text mb-4">We're delighted to see you using our awesome platform. You're here to help and to be helped! Click on the REQUEST tab and start helping your neightborhood.</p>
+                                    </article>
+                                    <img src={loggedin} className="img-fluid" />
+                                </Container>
                             </Col>
                         </React.Fragment>
                     ) : (
@@ -70,19 +89,6 @@ export const Homepage = () => {
             <Container fluid>
                 <Row>
                     <Col md={12} className='background_style'>
-
-                        <Container>
-                            <Row className='justify-content-center'>
-                                <Col className='contribute' md={12}>
-                                    <Col md={8}>
-                                        <h4 style={{ fontSize: '1.2rem', color: 'black' }} className="session-info subtitle text-center mt-2"><FontAwesomeIcon size="lg" icon={['fas', 'life-ring']} fixedWidth /> Please help us reducing the number of unfulfilled request on {date}</h4>
-                                    </Col>
-                                    <Col md={4}>
-                                        <Counter className="mt-5" />
-                                    </Col>
-                                </Col>
-                            </Row>
-                        </Container>
 
                         <Container fluid className="mt-3">
                             <Row className="mb-5 d-flex justify-content-around">

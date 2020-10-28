@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import axios from 'axios';
+import { decodeToken } from './utils/decodeToken';
 import { UserContext } from './UserContext';
 import { Button, Container } from 'react-bootstrap';
 import { Icon } from 'semantic-ui-react'
@@ -10,6 +11,8 @@ export const SessionStatus = () => {
     const [isLoggedOut, setIsLoggedOut] = useState(false);
 
     const token = localStorage.getItem('userToken') || null;
+    const firstName = decodeToken(token).first_name || null;
+    const lastName = decodeToken(token).last_name || null;
 
     const handleClick = (event) => {
         event.preventDefault();
@@ -31,6 +34,9 @@ export const SessionStatus = () => {
     } else {
         return (
             <Container className="mt-4">
+                <div className="mr-3">
+                    <h4 className="font-weight-bold username">{firstName} {lastName}</h4>
+                </div>
                 <div
                     className="mt-2 mb-3 d-flex  flex-row-reverse border rounded pt-2 px-1 signout"
                     onClick={handleClick}

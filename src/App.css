@@ -37,9 +37,9 @@ a.nav-link {
 
 .count {
     background-color: #222f21;
-    height: 40px;
+    height: 60px;
     color: white;
-    width: 50%;
+    width: 70%;
 }
 
 .counter-title {
@@ -289,15 +289,34 @@ a.nav-link {
   background-color: #28abb9;
   width: 300px;
   border-radius: 5px;
+  margin-top: 15px;
 }
 
 .green-message {
   background-color: #b8de6f;
   width: 300px;
   border-radius: 5px;
+  margin-top: 15px;
 }
 
 .messages__header {
   font-family: 'Vollkorn', serif;
   letter-spacing: 2px;
+  color: #222f21;
+}
+
+.message__input {
+  width: 65%;
+}
+
+.username {
+  letter-spacing: 1px;
+  color: #222f21;
+  font-family: 'Vollkorn', serif;
+}
+
+.loggedin__text {
+  color: #222f21;
+  font-family: 'Vollkorn', serif;
+  font-size: 1,4 em;
 }

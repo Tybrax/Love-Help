@@ -48,7 +48,7 @@ export const Navbar = (props) => {
                         />
                         <ul className="navbar-nav mr-auto mt-2 mt-lg-0 ml-5">
                             <li className="nav-item">
-                                <Link className="nav-link ml-5" to="/">HOME</Link>
+                                <Link className="nav-link" to="/">HOME</Link>
                             </li>
                             <li className="nav-item">
                                 <Link className="nav-link" to="/about">ABOUT</Link>
