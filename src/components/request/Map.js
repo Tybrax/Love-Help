@@ -1,3 +1,6 @@
+/*TO DO
+-> WHEN 5 DIFFERENT USERS FULFILL REQUESTER : REMOVE IT FROM THE MAP
+*/
 import React, { useState, useEffect, useMemo } from 'react';
 import { Container, Button, Alert } from 'react-bootstrap';
 import logoGreen from '../../images/logo_green.png';
@@ -16,6 +19,7 @@ import { decodeToken } from '../../utils/decodeToken';
 import { getRequests } from '../../utils/getRequests.js';
 import { getRequest } from '../../utils/getRequest.js';
 import { getUser } from '../../utils/getChats';
+import { removeRequest } from '../../utils/removeRequest.js';
 import {
     getVolunteers,
     volunteersCheck,
@@ -83,55 +87,58 @@ export const MapComponent = () => {
 
 
     useEffect(() => {
+            let mounted = true;
             const promise = getRequests(token);
 
             promise.then((response) => {
-                const responseData = response.data;
+                if (mounted) {
+                    const responseData = response.data;
 
-                /*Edit the coordinates so they have the accepted format for googleMap*/
-                const coordinates = [];
-                const cleanCoordinates = [];
+                    /*Edit the coordinates so they have the accepted format for googleMap*/
+                    const coordinates = [];
+                    const cleanCoordinates = [];
 
-                /*Create empty lists for each request to append to the marker state*/
-                const requestsStatus = [];
-                const requestsType = [];
-                const requestsId = [];
+                    /*Create empty lists for each request to append to the marker state*/
+                    const requestsStatus = [];
+                    const requestsType = [];
+                    const requestsId = [];
 
 
-                /*Fill our lists with data from the requests*/
-                responseData.map(request => requestsStatus.push(request.fulfilled));
-                responseData.map(request => requestsType.push(request.request_type));
-                responseData.map(request => requestsId.push(request.id));
-                responseData.map(request => coordinates.push(request.location));
+                    /*Fill our lists with data from the requests*/
+                    responseData.map(request => requestsStatus.push(request.fulfilled));
+                    responseData.map(request => requestsType.push(request.request_type));
+                    responseData.map(request => requestsId.push(request.id));
+                    responseData.map(request => coordinates.push(request.location));
 
-                /*Create objects using our lists*/
-                let i;
-                for (i = 0 ; i < coordinates.length; i++) {
-                    const splitCoordinates = coordinates[i].split(",");
-                    const latitude = splitCoordinates[0];
-                    const longitude = splitCoordinates[1].trim();
-                    const type = requestsType[i];
-                    const requestId = requestsId[i]
-                    /*alert(type);*/
-                    const coordinatesObject = {
-                        lat: parseFloat(latitude),
-                        lng: parseFloat(longitude),
-                        id: requestId,
-                        icon: type
-                    };
-                    cleanCoordinates.push(coordinatesObject);
+                    /*Create objects using our lists*/
+                    let i;
+                    for (i = 0 ; i < coordinates.length; i++) {
+                        const splitCoordinates = coordinates[i].split(",");
+                        const latitude = splitCoordinates[0];
+                        const longitude = splitCoordinates[1].trim();
+                        const type = requestsType[i];
+                        const requestId = requestsId[i]
+                        /*alert(type);*/
+                        const coordinatesObject = {
+                            lat: parseFloat(latitude),
+                            lng: parseFloat(longitude),
+                            id: requestId,
+                            icon: type
+                        };
+                        cleanCoordinates.push(coordinatesObject);
+                    }
+
+                    /*Update state to have an array of object containing coordinates and time for React key*/
+                    setMarkers(cleanCoordinates);
+                    setIcons(requestsType);
                 }
-
-                /*Update state to have an array of object containing coordinates and time for React key*/
-                setMarkers(cleanCoordinates);
-                setIcons(requestsType);
-                /*Iterate through an array of objects and edit different states for the Map component*/
             })
             .catch((error) => {
                 if (requestsError === false) {
                     setRequestsError(true);
                 }
             })
+            return () => mounted = false;
     }, [markers])
 
     const openWindow = (id) => {

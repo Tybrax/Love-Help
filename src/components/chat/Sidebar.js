@@ -6,7 +6,7 @@ import { getUserInformation } from '../../utils/getUserInformation';
 import { getUser } from '../../utils/getChats';
 import { decodeToken } from '../../utils/decodeToken';
 
-const getChats = 'http://localhost:3001/chats';
+const getChats = `${process.env.REACT_APP_BASE_URL}/chats`;
 
 
 export const Sidebar = ({ handleClick }) => {
@@ -40,14 +40,14 @@ export const Sidebar = ({ handleClick }) => {
                         chatId: chatData.id,
                         requesterId: chatData.user_id
                     }
-                    const getUserFromVolunteer = `http://localhost:3001/volunteer/${chatData.volunteer_id}`;
+                    const getUserFromVolunteer = `${process.env.REACT_APP_BASE_URL}/volunteer/${chatData.volunteer_id}`;
                     axios.get(getUserFromVolunteer, config)
                     .then((response) => {
                         const userIdFromVolunteer = response.data.user_id;
                         chat.volunteerUserId = userIdFromVolunteer;
                         /*Current user is requester, seeking the volunteer*/
                         if (currentUserId === chat.requesterId) {
-                            axios.get(`http://localhost:3001/user/${userIdFromVolunteer}`)
+                            axios.get(`${process.env.REACT_APP_BASE_URL}/user/${userIdFromVolunteer}`)
                             .then((response) => {
                                 const fullName = `${response.data.first_name} ${response.data.last_name}`;
                                 chat.fullName = fullName
@@ -61,7 +61,7 @@ export const Sidebar = ({ handleClick }) => {
                             })
                         /*Current user is volunteer, seeking the requester*/
                         } else if (currentUserId === userIdFromVolunteer) {
-                            axios.get(`http://localhost:3001/user/${chat.requesterId}`)
+                            axios.get(`${process.env.REACT_APP_BASE_URL}/user/${chat.requesterId}`)
                             .then((response) => {
                                 const fullName = `${response.data.first_name} ${response.data.last_name}`;
                                 chat.fullName = fullName;
@@ -97,6 +97,10 @@ export const Sidebar = ({ handleClick }) => {
     } else {
         return (
         <Container className="conversations">
+            {(conversations.length === 0) && (
+                <h3 className="text-center">No requests answered yet</h3>
+            )}
+
             {conversations.map((chat) => (
                 <Container key={chat.chatId} className="conversation" onClick={() => handleClick(chat.chatId)}>
                     <h5 className="conversation__person">{chat.fullName}</h5>

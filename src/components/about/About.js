@@ -8,6 +8,10 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons'
 library.add(fas);
 
+const aboutTextOne = "Our platform was built in 2020 and aims at helping people during the coronavirus epidemic crisis. Indeed, the virus has impacted everyone's lifestyle and a lot of people have lost their jobs. In that context, I feel it would have been highly appreciated to build a platform to grow a strong commmunity around help requests."
+
+const catchPhrase = "No matter what's your request, we believe there's always someone around to help you out."
+
 export const About = () => {
 
     const titleColor = {
@@ -55,10 +59,13 @@ export const About = () => {
                                         <Card border="light" style={{ width: '100%', borderRadius: '4px', marginRight: '2.5%', marginLeft: '2.5%', marginBottom: '15%' }}>
                                             <Card.Body>
                                                 <Card.Title className="text-center" style={{ fontWeight: '700', lineHeight: '1.5em', height: '3em' }}>
-                                                <h2 className="pt-3 pb-3 pr-3 pl-3  sub-title text-left text-uppercase">Our Charity</h2>
+                                                <h2 className="pt-3 pb-3 pr-3 pl-3  sub-title text-center text-uppercase">Our Charity</h2>
                                                 </Card.Title>
-                                                <Card.Text className='subtitles text-center mt-1' style={{ marginBottom: 0 }}>
-                                                <span className="pb-5 pr-3 pl-3 text-justify cat-text">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</span>
+                                                <Card.Text className='about-text text-justify p-3'>
+                                                    {aboutTextOne}
+                                                </Card.Text>
+                                                <Card.Text className='about-text text-justify font-weight-bold p-3'>
+                                                    {catchPhrase}
                                                 </Card.Text>
                                             </Card.Body>
                                         </Card>

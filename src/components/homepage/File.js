@@ -11,10 +11,10 @@ export const File = ({ ID, token }) => {
     const [isUpload, setIsUpload] = useState(false);
     const [isApproved, setIsApproved] = useState(false);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         const formData = new FormData();
         formData.append('official', file);
-        const promise = upload(ID, formData, token);
+        const promise = await  upload(ID, formData, token);
         promise.then((response) => {
             setIsUpload(true);
             const secondPromise = approval(ID);

@@ -6,7 +6,7 @@ export const getConversations = async (token) => {
             'authorization': `bearer ${token}`
         }
     };
-    const endPoint = 'http://localhost:3001/messages';
+    const endPoint = `${process.env.REACT_APP_BASE_URL}/messages`;
 
     const request = await axios.get(endPoint, config);
     return request;

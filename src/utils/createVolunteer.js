@@ -3,7 +3,7 @@ import axios from 'axios';
 /*Store the total number of volunteers*/
 export const getVolunteers = async (token, requestId) => {
 
-    const endPoint = `http://localhost:3001/volunteers`;
+    const endPoint = `${process.env.REACT_APP_BASE_URL}/volunteers`;
     const config = {
         headers: {
             'authorization': `bearer ${token}`

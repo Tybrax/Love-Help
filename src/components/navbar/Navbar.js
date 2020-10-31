@@ -54,7 +54,7 @@ export const Navbar = (props) => {
                                 <Link className="nav-link" to="/about">ABOUT</Link>
                             </li>
                             <NavbarElements />
-                            <SessionStatus />
+                            <SessionStatus height="40px" />
                         </ul>
                     </div>
                 </nav>

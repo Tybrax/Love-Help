@@ -40,7 +40,7 @@ export const GeoSuggest = (props) => {
   const [successInformations, setSuccessInformations] = useState({});
 
   /*state for fail alert*/
-  const [failAlert, setFailAlert] = useState(false);
+  const [requestError, setRequestError] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -48,8 +48,8 @@ export const GeoSuggest = (props) => {
       setSuccessAlert(false);
     }
 
-    if (failAlert) {
-      setFailAlert(false);
+    if (requestError) {
+      setRequestError(false);
     }
 
     /*remember to active API keys from Google Developer console*/
@@ -76,7 +76,7 @@ export const GeoSuggest = (props) => {
       })
       .catch(e => {
         /*display a failure alert if the record is created in the API*/
-        setFailAlert(true);
+        setRequestError(true);
       })
   }
 
@@ -97,9 +97,9 @@ export const GeoSuggest = (props) => {
         </Alert>
       )}
 
-      { failAlert && (
+      { requestError && (
         <Alert variant="danger" className="alert-fail">
-          <h4>Your request was not sent. Please try again later.</h4>
+          <h4>Your Description is too long, please be more concise!</h4>
         </Alert>
       )}
 

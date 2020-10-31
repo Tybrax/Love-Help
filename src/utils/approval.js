@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const approval = async (userID) => {
 
-    const url = `http://localhost:3001/user/${userID}`;
+    const url = `${process.env.REACT_APP_BASE_URL}/user/${userID}`;
 
     const config = {
         headers: {

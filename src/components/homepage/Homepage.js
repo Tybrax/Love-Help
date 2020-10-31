@@ -4,8 +4,8 @@ import { usePosition } from 'use-position';
 
 import { Jumbotron } from 'react-bootstrap';
 import Description from './Description.js';
-import SignUp from './SignUp.js';
-import LogIn from './LogIn.js';
+import { SignUp } from './SignUp.js';
+import { LogIn } from './LogIn.js';
 import LogOut from './LogOut.js';
 import { LoggedIn } from './LoggedIn';
 import { logout } from '../../utils/logout';

@@ -5,12 +5,14 @@ import { UserContext } from './UserContext';
 import { Button, Container } from 'react-bootstrap';
 import { Icon } from 'semantic-ui-react'
 import { logout } from './utils/logout';
+import { Link } from "react-router-dom";
 
 export const SessionStatus = () => {
     const {user, setUser} = useContext(UserContext);
     const [isLoggedOut, setIsLoggedOut] = useState(false);
 
     const token = localStorage.getItem('userToken') || null;
+    console.log(typeof token);
     const firstName = decodeToken(token).first_name || null;
     const lastName = decodeToken(token).last_name || null;
 
@@ -28,7 +30,9 @@ export const SessionStatus = () => {
     if (!token) {
         return (
             <Container className="">
-                <h6 className="session-info text-right my-auto mr-5 mb-5">Please <span style={titleColor} className="font-weight-bold">Login</span> or <span style={titleColor} className="font-weight-bold">Sign up</span>.</h6>
+                <h6 className="session-info text-right my-auto mr-5 mb-5">
+                    <Link to="/login">Sign in</Link> | <Link to="/signup">Sign up</Link>
+                </h6>
             </Container>
         )
     } else {

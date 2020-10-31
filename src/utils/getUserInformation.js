@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const retrieveUserInformation = async (userId) => {
-    const endPoint = `http://localhost:3001/user/${userId}`;
+    const endPoint = `${process.env.REACT_APP_BASE_URL}/user/${userId}`;
 
     const request = await axios.get(endPoint);
     const userData = request.data;

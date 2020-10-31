@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const createChat = async (token, requesterId, volunteerId, requestId) => {
-    const endPoint = `http://localhost:3001/requests/${requestId}/chats`
+    const endPoint = `${process.env.REACT_APP_BASE_URL}/requests/${requestId}/chats`
     const body = {
         user_id: requesterId,
         volunteer_id: volunteerId,

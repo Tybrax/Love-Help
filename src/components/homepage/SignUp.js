@@ -32,7 +32,7 @@ const Schema = Yup.object().shape({
     .required('Confirm password required'),
 });
 
-const SignUp = () => {
+export const SignUp = () => {
 
   const { user, setUser } = useContext(UserContext);
 
@@ -47,7 +47,7 @@ const SignUp = () => {
   );
 
   return (
-  <div className="text-center">
+  <div className="text-center m-5">
     { isCreated ? (
       <File ID={userID} token={token} />
     ) : (
@@ -185,6 +185,3 @@ const SignUp = () => {
   )
 
 };
-
-export default SignUp;
-

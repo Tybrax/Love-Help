@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const upload = async (userID, file, token) => {
 
-    const url = `http://localhost:3001/user/${userID}/file`;
+    const url = `${process.env.REACT_APP_BASE_URL}/user/${userID}/file`;
 
     const config = {
         headers: {

@@ -6,8 +6,8 @@ export const Footer = () => {
         <Container fluid className="footer">
             <footer>
                 <Container>
-                    <Row>
-                        <Col className="d-flex justify-content-center mt-5">
+                    <Row className="d-flex justify-content-center align-items-center">
+                        <Col>
                             <h4 className="mt-2">© 2020 Copyright : Bastien RATAT</h4>
                         </Col>
                         <Col className="d-flex justify-content-center mt-5">

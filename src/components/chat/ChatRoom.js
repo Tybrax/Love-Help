@@ -6,7 +6,7 @@ import { filterMessages } from '../../utils/filterMessages';
 import { Container } from 'react-bootstrap';
 import image from '../../images/img0.jpg'
 
-const getMessages = 'http://localhost:3001/messages';
+const getMessages = `${process.env.REACT_APP_BASE_URL}/messages`;
 
 const headerStyle = {
     backgroundColor: '#243c22',
@@ -32,16 +32,21 @@ export const ChatRoom = ({ chatId, display, currentUserId }) => {
 
     useEffect(() => {
         /*Fetch messages*/
+        let mounted = true;
         const request = axios.get(getMessages, config);
         request.then((response) => {
-            const newArr = Array.prototype.slice.call(response.data);
-            const filteredMessages = filterMessages(chatId, newArr);
-            const ArrayFromArrayLikeObject = Array.prototype.slice.call(filteredMessages);
-            setMessages(ArrayFromArrayLikeObject);
+            if (mounted) {
+                const newArr = Array.prototype.slice.call(response.data);
+                const filteredMessages = filterMessages(chatId, newArr);
+                const ArrayFromArrayLikeObject = Array.prototype.slice.call(filteredMessages);
+                setMessages(ArrayFromArrayLikeObject);
+            }
+
         })
         .catch((error) => {
             setMessagesHaveErrors(true);
         })
+        return () => mounted = false;
     }, [messages])
 
     if (display && contactName) {
@@ -51,6 +56,7 @@ export const ChatRoom = ({ chatId, display, currentUserId }) => {
                     <div style={headerStyle}>
                         <h3 className="text-center p-4">{contactName}</h3>
                     </div>
+
                     {messages.map((message, index) => (
                         <Message
                             key={index}
@@ -59,6 +65,7 @@ export const ChatRoom = ({ chatId, display, currentUserId }) => {
                             author={(currentUserId == message.user_id) ? 0 : 1}
                         />
                     ))}
+
                     <SendBox
                         chatId={chatId}
                         currentUserId={currentUserId}

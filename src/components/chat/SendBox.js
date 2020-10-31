@@ -7,7 +7,7 @@ import { Input } from '@material-ui/core';
 export const SendBox = ({ chatId, currentUserId }) => {
 
     const token = localStorage.getItem('userToken') || null;
-    const postMessage = `http://localhost:3001/chat/${chatId}/messages`;
+    const postMessage = `${process.env.REACT_APP_BASE_URL}/chat/${chatId}/messages`;
     const config = {
         headers: {
             'authorization': `bearer ${token}`

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const getRequests = async (token) => {
-    const endpoint = 'http://localhost:3001/requests';
+    const endpoint = `${process.env.REACT_APP_BASE_URL}/requests`;
 
     const config = { headers: {
         'authorization': `bearer ${token}`,

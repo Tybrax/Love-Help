@@ -2,7 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import axios from 'axios';
 import { Container, Alert } from 'react-bootstrap';
 
-const getCount = 'http://localhost:3001/total'
+const getCount = `${process.env.REACT_APP_BASE_URL}/total`;
 
 const Counter = () => {
 
@@ -10,14 +10,18 @@ const Counter = () => {
     const [countError, setCountError] = useState(false);
 
     useEffect(() => {
+        let mounted = true;
         axios.get(getCount)
         .then(response => {
-            const responseData = response.data;
-            setCount(responseData);
+            if (mounted) {
+                const responseData = response.data;
+                setCount(responseData);
+            }
         })
         .catch((error) => {
             setCountError(true);
         })
+        return () => mounted = false;
     }, [count])
 
     return (

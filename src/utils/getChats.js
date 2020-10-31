@@ -8,7 +8,7 @@ const getUserIdFromVolunteer = async (volunteerId, token) => {
         }
     };
 
-    const endPoint = `http://localhost:3001/volunteer/${volunteerId}`;
+    const endPoint = `${process.env.REACT_APP_BASE_URL}/volunteer/${volunteerId}`;
     const response = await axios.get(endPoint, config);
     const userId = await response.data.user_id;
 
@@ -18,7 +18,7 @@ const getUserIdFromVolunteer = async (volunteerId, token) => {
 
 export const getUser = async (userID) => {
     /*MAKE SINGLE REQUEST FOR EACH USER AND RETRIEVE FULL NAME*/
-    const response = await axios.get(`http://localhost:3001/user/${userID}`);
+    const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/user/${userID}`);
     const data = await response.data;
     const fullName = `${data.first_name} ${data.last_name}`;
     return fullName;
@@ -27,7 +27,7 @@ export const getUser = async (userID) => {
 /*MAIN FUNCTION TO CALL FOR RETRIEVING THE NAME FROM THE CORRECT CHATROOMS*/
 export const getChats = async (token, currentUserId) => {
     /*HTTP requests required attributes*/
-    const endPoint = 'http://localhost:3001/chats';
+    const endPoint = `${process.env.REACT_APP_BASE_URL}/chats`;
     const config = {
         headers: {
             'authorization': `bearer ${token}`

@@ -6,7 +6,6 @@ import { login } from '../../utils/login';
 import { UserContext } from '../../UserContext';
 import jwt_decode from 'jwt-decode';
 import { Alert } from 'react-bootstrap';
-
 import { Redirect } from 'react-router-dom';
 
 /*Validations schemas*/
@@ -20,7 +19,7 @@ const Schema = Yup.object().shape({
     .required('Required'),
 });
 
-const LogIn = () => {
+export const LogIn = () => {
 
   /*CREATE CONTEXT FOR USER DATA*/
   const { user, setUser } = useContext(UserContext);
@@ -32,7 +31,7 @@ const LogIn = () => {
   )
 
   return (
-    <div className="text-center">
+    <div className="text-center m-5">
       <h1 className="sub-title">Log In</h1>
         {hasError ? (
           <Alert variant='danger'>Wrong email or password</Alert>
@@ -40,7 +39,7 @@ const LogIn = () => {
           <></>
         )}
         { loggedIn ? (
-          <div>OK</div>
+          <Redirect to="/request" />
         ) : (
           <></>
         )}
@@ -131,5 +130,3 @@ const LogIn = () => {
   )
 
 };
-
-export default LogIn;

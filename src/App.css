@@ -30,7 +30,7 @@ a.nav-link {
 }
 
 .footer {
-    height: 110px;
+    height: 130px;
     background-color: #243c22;
     color: white;
 }
@@ -319,4 +319,8 @@ a.nav-link {
   color: #222f21;
   font-family: 'Vollkorn', serif;
   font-size: 1,4 em;
+}
+
+.about-text {
+  font-size: 1.2em;
 }

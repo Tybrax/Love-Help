@@ -21,6 +21,8 @@ import { Footer } from './components/footer/Footer.js';
 import { About } from './components/about/About.js';
 import { Request } from './components/request/Request.js';
 import { Chat } from './components/chat/Chat.js';
+import { LogIn } from './components/homepage/LogIn.js';
+import { SignUp } from './components/homepage/SignUp.js';
 import { SessionStatus } from './SessionStatus.js';
 
 function App() {
@@ -38,6 +40,8 @@ function App() {
             <Route exact path="/about" component={About} />
             <Route exact path="/file" component={File} />
             <Route exact path="/messages" component={Chat} />
+            <Route exact path="/login" component={LogIn} />
+            <Route exact path="/signup" component={SignUp} />
           </Switch>
         </div>
         <Footer className="mt-5" />
