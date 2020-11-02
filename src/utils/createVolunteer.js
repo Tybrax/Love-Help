@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 /*Store the total number of volunteers*/
-export const getVolunteers = async (token, requestId) => {
+export const getVolunteers = async (token) => {
 
     const endPoint = `${process.env.REACT_APP_BASE_URL}/volunteers`;
     const config = {
@@ -25,7 +25,13 @@ export const volunteersFilter = (totalVolunteers, requestId) => {
 
 /*Check if the number of volunteers for a given request is inferior to 5*/
 export const volunteersCheck = (count) => {
-   return ((count < 5) ? 'create' : 'full')
+    if (count < 5) {
+        return 'create';
+    } else if (count === 5) {
+        return 'update status';
+    } else {
+        return 'full';
+    }
 }
 
 export const usersCheck = (totalVolunteers, requestId, userId) => {

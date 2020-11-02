@@ -2,11 +2,11 @@ import React, { useState, useContext } from 'react';
 import { Formik, Field, Form } from 'formik';
 import { TextField, Button } from '@material-ui/core';
 import * as Yup from 'yup';
-import { login } from '../../utils/login';
 import { UserContext } from '../../UserContext';
 import jwt_decode from 'jwt-decode';
 import { Alert } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
+import axios from 'axios';
 
 /*Validations schemas*/
 const Schema = Yup.object().shape({
@@ -19,6 +19,13 @@ const Schema = Yup.object().shape({
     .required('Required'),
 });
 
+const logInURL = `${process.env.REACT_APP_BASE_URL}/login`;
+const config = {
+  headers: {
+    'Content-type': 'application/json'
+  }
+};
+
 export const LogIn = () => {
 
   /*CREATE CONTEXT FOR USER DATA*/
@@ -29,6 +36,20 @@ export const LogIn = () => {
   const [token, setToken] = useState(
     localStorage.getItem('userToken') || null
   )
+
+  const handleSubmit = async (signInData) => {
+    try {
+      const signIn = await axios.post(logInURL, signInData, config);
+      const webToken = await signIn.data.jwt;
+      localStorage.removeItem('userToken');
+      localStorage.setItem('userToken', webToken);
+      setLoggedIn(true);
+      const decodedToken = jwt_decode(webToken);
+      setUser(decodedToken);
+    } catch(error) {
+      setHasError(true);
+    }
+  }
 
   return (
     <div className="text-center m-5">
@@ -47,45 +68,14 @@ export const LogIn = () => {
         initialValues={{ email: '', password: '' }}
         validationSchema={Schema}
         onSubmit={(values, actions) => {
-          setTimeout(() => {
-            const dataToAPIOne = {
-                "email": `${values.email}`,
-                "password": `${values.password}`
-            }
-            const promise = login(dataToAPIOne);
-            promise.then(response => {
+          const dataToAPI = {
+            "email": `${values.email}`,
+            "password": `${values.password}`
+          };
 
-              {/*Retrieve JWT from request's response*/}
-              const webToken = response.data.jwt;
-
-              {/*Store the JWT within the local storage*/}
-              localStorage.removeItem('userToken');
-              localStorage.setItem('userToken', webToken);
-
-              {/*Change the state of loggedIn to true*/}
-              if (!loggedIn) {
-                setLoggedIn(true);
-              }
-
-              {/*Decode the token to retrieve user's information and update the user state*/}
-              const decodedToken = jwt_decode(webToken);
-              setUser(decodedToken);
-
-              setTimeout(() => {
-                setLoggedIn(false);
-              }, 1500)
-            })
-            .catch(e => {
-              if (!hasError) {
-                setHasError(true);
-              }
-              setTimeout(() => {
-                setHasError(false);
-              }, 2000)
-            })
-            actions.setSubmitting(false);
-            actions.resetForm();
-          }, 500);
+          handleSubmit(dataToAPI);
+          actions.setSubmitting(false);
+          actions.resetForm();
         }}
       >
         {( { errors, touched, handleSubmit, handleChange, handleBlur, values }) => (

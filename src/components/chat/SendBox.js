@@ -64,7 +64,7 @@ export const SendBox = ({ chatId, currentUserId }) => {
                         disabled={isSubmitting}
                         className="btn-dark ml-4"
                     >
-                     Submit
+                     Send
                    </Button>
                  </form>
                )}

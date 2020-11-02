@@ -45,16 +45,22 @@ export const Sidebar = ({ handleClick }) => {
                     .then((response) => {
                         const userIdFromVolunteer = response.data.user_id;
                         chat.volunteerUserId = userIdFromVolunteer;
+                        chat.requestId = response.data.request_id;
                         /*Current user is requester, seeking the volunteer*/
                         if (currentUserId === chat.requesterId) {
                             axios.get(`${process.env.REACT_APP_BASE_URL}/user/${userIdFromVolunteer}`)
                             .then((response) => {
                                 const fullName = `${response.data.first_name} ${response.data.last_name}`;
-                                chat.fullName = fullName
-                                chats.push(chat);
-                                const newArr = Array.prototype.slice.call(chats);
-                                setConversations(newArr);
-                                localStorage.setItem(`${chatData.id}`, fullName);
+                                chat.fullName = fullName;
+                                axios.get(`${process.env.REACT_APP_BASE_URL}/requests/${chat.requestId}`, config)
+                                .then((response) => {
+                                    chat.title = response.data.title;
+                                    chats.push(chat);
+                                    const newArr = Array.prototype.slice.call(chats);
+                                    setConversations(newArr);
+                                    localStorage.setItem(`${chatData.id}`, fullName);
+                                })
+
                             })
                             .catch((error) => {
                                 setUserError(true);
@@ -65,10 +71,14 @@ export const Sidebar = ({ handleClick }) => {
                             .then((response) => {
                                 const fullName = `${response.data.first_name} ${response.data.last_name}`;
                                 chat.fullName = fullName;
-                                chats.push(chat);
-                                const newArr = Array.prototype.slice.call(chats);
-                                setConversations(newArr);
-                                localStorage.setItem(`${chatData.id}`, fullName);
+                                axios.get(`${process.env.REACT_APP_BASE_URL}/requests/${chat.requestId}`, config)
+                                .then((response) => {
+                                    chat.title = response.data.title;
+                                    chats.push(chat);
+                                    const newArr = Array.prototype.slice.call(chats);
+                                    setConversations(newArr);
+                                    localStorage.setItem(`${chatData.id}`, fullName);
+                                })
                             })
                             .catch((error) => {
                                 setUserError(true);
@@ -102,8 +112,13 @@ export const Sidebar = ({ handleClick }) => {
             )}
 
             {conversations.map((chat) => (
-                <Container key={chat.chatId} className="conversation" onClick={() => handleClick(chat.chatId)}>
-                    <h5 className="conversation__person">{chat.fullName}</h5>
+                <Container key={chat.chatId} className="conversation d-block" onClick={() => handleClick(chat.chatId)}>
+                    <div>
+                        <h5 className="conversation__person p-1">{chat.fullName}</h5>
+                    </div>
+                    <div>
+                        <h5 className="conversation__title p-1">{chat.title}</h5>
+                    </div>
                 </Container>
             ))}
         </Container>

@@ -9,7 +9,9 @@
 }
 
 a.nav-link {
-  margin-right: 100px !important;
+  margin-right: 50px !important;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 .nav-link {
@@ -283,6 +285,14 @@ a.nav-link {
 .conversation__person {
   font-size: 1.5em !important;
   font-family: 'Vollkorn', serif;
+  text-align: center;
+}
+
+.conversation__title {
+  font-size: 1.5em !important;
+  font-family: 'Vollkorn', serif;
+  color: #222f21;
+  font-style: italic;
 }
 
 .blue-message {
@@ -323,4 +333,52 @@ a.nav-link {
 
 .about-text {
   font-size: 1.2em;
+}
+
+.me__header {
+    text-align: center;
+    font-size: 2.5em;
+    font-family: 'Vollkorn', serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #086F00;
+    font-weight: 550;
+}
+
+.activity-count {
+  background-color: #8AAE87;
+}
+
+.request__count {
+  background-color: #222f21;
+  color: white;
+  height: 60px;
+  width: 300px;
+  font-family: 'Vollkorn', serif;
+  margin-top: 20px;
+  margin-bottom: 60px;
+}
+
+h1.accordion__title {
+  font-family: 'Vollkorn', serif;
+  letter-spacing: 2px;
+  color: #222f21;
+}
+
+h1.accordion__title:hover {
+  color: #5B84F9;
+}
+
+.request__title {
+  background-color: #222f21;
+  color: white;
+  letter-spacing: 1px;
+  text-align: center;
+  width: 500px;
+}
+
+.update__button {
+  color: white;
+  border: 1px black solid;
+  border-radius: 5px;
 }

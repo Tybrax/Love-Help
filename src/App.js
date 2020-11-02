@@ -24,6 +24,7 @@ import { Chat } from './components/chat/Chat.js';
 import { LogIn } from './components/homepage/LogIn.js';
 import { SignUp } from './components/homepage/SignUp.js';
 import { SessionStatus } from './SessionStatus.js';
+import { SelfRequests } from './components/selfRequests/SelfRequests';
 
 function App() {
 
@@ -42,6 +43,7 @@ function App() {
             <Route exact path="/messages" component={Chat} />
             <Route exact path="/login" component={LogIn} />
             <Route exact path="/signup" component={SignUp} />
+            <Route exact path="/my-requests" component={SelfRequests} />
           </Switch>
         </div>
         <Footer className="mt-5" />

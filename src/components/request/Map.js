@@ -19,7 +19,8 @@ import { decodeToken } from '../../utils/decodeToken';
 import { getRequests } from '../../utils/getRequests.js';
 import { getRequest } from '../../utils/getRequest.js';
 import { getUser } from '../../utils/getChats';
-import { removeRequest } from '../../utils/removeRequest.js';
+import { updateRequest } from '../../utils/updateRequest.js';
+import { volunteersCount } from '../../utils/volunteersCount.js';
 import {
     getVolunteers,
     volunteersCheck,
@@ -68,6 +69,7 @@ export const MapComponent = () => {
     const [volunteersError, setVolunteersError] = useState(false);
     const [chatError, setChatError] = useState(false);
     const [volunteerNotCreated, setVolunteerNotCreated] = useState(false);
+    const [counterError, setCounterError] = useState(false);
 
     /*states for markers*/
     const [markers, setMarkers] = useState([]);
@@ -89,7 +91,6 @@ export const MapComponent = () => {
     useEffect(() => {
             let mounted = true;
             const promise = getRequests(token);
-
             promise.then((response) => {
                 if (mounted) {
                     const responseData = response.data;
@@ -103,9 +104,8 @@ export const MapComponent = () => {
                     const requestsType = [];
                     const requestsId = [];
 
-
                     /*Fill our lists with data from the requests*/
-                    responseData.map(request => requestsStatus.push(request.fulfilled));
+                    responseData.map(request => requestsStatus.push(request.status));
                     responseData.map(request => requestsType.push(request.request_type));
                     responseData.map(request => requestsId.push(request.id));
                     responseData.map(request => coordinates.push(request.location));
@@ -117,13 +117,15 @@ export const MapComponent = () => {
                         const latitude = splitCoordinates[0];
                         const longitude = splitCoordinates[1].trim();
                         const type = requestsType[i];
-                        const requestId = requestsId[i]
-                        /*alert(type);*/
+                        const requestId = requestsId[i];
+                        const status = requestsStatus[i];
+
                         const coordinatesObject = {
                             lat: parseFloat(latitude),
                             lng: parseFloat(longitude),
                             id: requestId,
-                            icon: type
+                            icon: type,
+                            status: status
                         };
                         cleanCoordinates.push(coordinatesObject);
                     }
@@ -142,52 +144,54 @@ export const MapComponent = () => {
     }, [markers])
 
     const openWindow = (id) => {
-            setTimeout( () => {
-                /*Get request for a clicked marker*/
-                const promise = getRequest(token, id);
-                promise.then(response => {
+            /*Get request for a clicked marker*/
+            const promise = getRequest(token, id);
+            promise.then(response => {
+                const clickResponse = response.data;
+                const publisherId = response.data.user_id;
+                const secondPromise = getUser(publisherId);
 
-                    const clickResponse = response.data;
-                    const publisherId = response.data.user_id;
-                    const secondPromise = getUser(publisherId);
-                    secondPromise.then((response) => {
-                        setRequesterName(response);
-                    })
-                    setRequesterId(publisherId);
-                    const windowObject = {
-                        windowsId: clickResponse.id,
-                        type: clickResponse.request_type,
-                        title: clickResponse.title.toUpperCase(),
-                        description : clickResponse.description,
-                        location: {
-                            lat: parseFloat(clickResponse.location.split(',')[0]),
-                            lng: parseFloat(clickResponse.location.split(',')[1].trim())
-                        }
-                    };
-
-                    /*Translate the address from coordinates to letters*/
-                    Geocode.fromLatLng(String(windowObject.location.lat), String(windowObject.location.lng))
-                    .then((response) => {
-
-                       /*Append the address to the object*/
-                       windowObject.address = response.results[0].formatted_address;
-                    })
-                    .catch((error) => {
-                        setCoordinatesError(true);
-                    })
-
-                    /*Update states to retrieve data from the JSX*/
-                    setWindows(windowObject);
-                    setInfoOpen(true);
-                    setCenter(windowObject.location);
+                secondPromise.then((response) => {
+                    setRequesterName(response);
                 })
-                .catch(error => {
-                    setSingleRequestError(true);
+                setRequesterId(publisherId);
+                const windowObject = {
+                    windowsId: clickResponse.id,
+                    type: clickResponse.request_type,
+                    title: clickResponse.title.toUpperCase(),
+                    description : clickResponse.description,
+                    location: {
+                        lat: parseFloat(clickResponse.location.split(',')[0]),
+                        lng: parseFloat(clickResponse.location.split(',')[1].trim())
+                    }
+                };
+                const volunteerCounter = volunteersCount(token, id);
+                volunteerCounter.then((response) => {
+                    if (response) {
+                        windowObject.counter = response;
+                    }
                 })
-            }, 500)
+                .catch((error) => {
+                    setCounterError(true);
+                })
+
+                Geocode.fromLatLng(String(windowObject.location.lat), String(windowObject.location.lng))
+                .then((response) => {
+                   windowObject.address = response.results[0].formatted_address;
+                })
+                .catch((error) => {
+                    setCoordinatesError(true);
+                })
+
+                setWindows(windowObject);
+                setInfoOpen(true);
+                setCenter(windowObject.location);
+            })
+            .catch(error => {
+                setSingleRequestError(true);
+            })
     }
 
-    /*BUILDING*/
     const postVolunteer = (id) => {
         const promise = getVolunteers(token, id);
         promise.then((response) => {
@@ -213,8 +217,10 @@ export const MapComponent = () => {
                 .catch((error) => {
                     setVolunteerNotCreated(true);
                 })
-            } else {
+            } else if (volunterChecker === 'full' && (userChecker[1] === false)) {
                 setVolunteerFull(true);
+            } else if (volunterChecker === 'update status' && (userChecker[1] === false)) {
+                updateRequest(id);
             }
         })
         .catch((error) => {
@@ -255,31 +261,37 @@ export const MapComponent = () => {
                     <h4>Can't create a volunteer.</h4>
                 </Alert>
             )}
+            { counterError && (
+                <Alert variant="success" className="alert-fail text-center">
+                    <h4>Can't display counter.</h4>
+                </Alert>
+            )}
             { chatCreated && (
                 <Alert variant="success" className="alert-fail text-center">
                     <h4>Request successfully answered.</h4>
                 </Alert>
             )}
-
                 <GoogleMap
                     mapContainerStyle={mapContainerStyle}
                     zoom={zoom}
                     center={center}
                     options={options}
                 >
-                    {/*Create markers for each request*/}
+
                     {markers.map((marker) => (
-                        <Marker
-                            key={marker.id}
-                            position={{ lat: marker.lat, lng: marker.lng }}
-                            icon={{
-                                url: (marker.icon === "one-time task") ? logoRed : logoGreen,
-                                scaledSize: new window.google.maps.Size(50,50),
-                                origin: new window.google.maps.Point(0,0),
-                                anchor: new window.google.maps.Point(25,25)
-                            }}
-                            onClick={() => {openWindow(marker.id)}}
-                        />
+                        (marker.status === 'unfulfilled') && (
+                            <Marker
+                                key={marker.id}
+                                position={{ lat: marker.lat, lng: marker.lng }}
+                                icon={{
+                                    url: (marker.icon === "one-time task") ? logoRed : logoGreen,
+                                    scaledSize: new window.google.maps.Size(50,50),
+                                    origin: new window.google.maps.Point(0,0),
+                                    anchor: new window.google.maps.Point(25,25)
+                                }}
+                                onClick={() => {openWindow(marker.id)}}
+                            />
+                        )
                     ))}
 
                     {/*Display basics information for clicked requests*/}
@@ -306,13 +318,38 @@ export const MapComponent = () => {
                                 >
                                     {windows.type}
                                 </h6>
+                                { (!windows.counter) ? (
+                                    <h6
+                                        className="info-text"
+                                        style={{ color : (windows.type === "one-time task") ? ' #c70039' : '#086F00'}}
+                                    >
+                                        Not clicked yet
+                                    </h6>
+                                ) : (
+                                    <h6
+                                        className="info-text"
+                                        style={{ color : (windows.type === "one-time task") ? ' #c70039' : '#086F00'}}
+                                    >
+                                        Clicked : {windows.counter}
+                                    </h6>
+                                )}
                                 <p className="info-text">{windows.address}</p>
-                                <Button
-                                    className="btn-dark d-block mx-auto"
-                                    onClick={(event) => postVolunteer(windows.windowsId)}
-                                >
-                                    Fulfill
-                                </Button>
+                                {(windows.counter >= 5) ? (
+                                    <Button
+                                        className="btn-dark d-block mx-auto disabled"
+                                        onClick={(event) => postVolunteer(windows.windowsId)}
+                                    >
+                                        Fulfill
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        className="btn-dark d-block mx-auto"
+                                        onClick={(event) => postVolunteer(windows.windowsId)}
+                                    >
+                                        Fulfill
+                                    </Button>
+                                )}
+
                             </div>
                         </InfoWindow>
                     )}

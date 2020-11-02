@@ -12,7 +12,6 @@ export const SessionStatus = () => {
     const [isLoggedOut, setIsLoggedOut] = useState(false);
 
     const token = localStorage.getItem('userToken') || null;
-    console.log(typeof token);
     const firstName = decodeToken(token).first_name || null;
     const lastName = decodeToken(token).last_name || null;
 

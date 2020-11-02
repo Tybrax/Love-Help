@@ -17,7 +17,10 @@ const NavbarElements = () => {
         return (
             <Fragment>
                 <li className="nav-item">
-                    <Link className="nav-link" to="/request">REQUEST</Link>
+                    <Link className="nav-link" to="/request">REQUESTS</Link>
+                </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/my-requests">ME</Link>
                 </li>
                 <li className="nav-item">
                     <Link className="nav-link" to="/messages"><Icon name='mail' /></Link>
@@ -41,8 +44,8 @@ export const Navbar = (props) => {
                     <div className="collapse navbar-collapse" id="navbarToggler">
                         <img
                             src={props.logo}
-                            width="50"
-                            height="50"
+                            width="80"
+                            height="80"
                             className="d-inline-block align-top"
                             alt="Bastien Ratat Logo"
                         />
@@ -54,8 +57,8 @@ export const Navbar = (props) => {
                                 <Link className="nav-link" to="/about">ABOUT</Link>
                             </li>
                             <NavbarElements />
-                            <SessionStatus height="40px" />
                         </ul>
+                        <SessionStatus height="40px" />
                     </div>
                 </nav>
                 </Col>
