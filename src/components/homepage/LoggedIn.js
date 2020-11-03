@@ -4,7 +4,7 @@ import { Container, Card } from 'react-bootstrap';
 import { Description } from './Description';
 import img3 from '../../images/img3.jpg';
 
-export const LoggedIn = () => {
+const LoggedIn = () => {
 
     const {user, setUser} = useContext(UserContext);
 
@@ -29,3 +29,5 @@ export const LoggedIn = () => {
         </Container>
     )
 }
+
+export default LoggedIn;

@@ -21,7 +21,6 @@ export const DashBoard = () => {
     useEffect(() => {
         let mounted = true;
 
-        /*get requests data*/
         const allRequests = getRequests(token);
         allRequests.then((response) => {
             if (mounted) {
@@ -35,22 +34,18 @@ export const DashBoard = () => {
             }
         })
 
-        /*get volunteering data*/
-
-
-        /*useEffect hook cleanup function*/
         return () => mounted = false;
     }, [requests])
 
     return (
-        <Container className="mt-5">
+        <Container className="mt-5 d-flex justify-content-center">
             <Row>
                 <Col xs={12} sm={12} md={6}>
-                    <h2 className="request__title p-3">Requests</h2>
+                    <h2 className="request__title p-3 m-5">Requests</h2>
                     <Requests arrayOfRequests={requests} />
                 </Col>
                 <Col xs={12} sm={12} md={6}>
-                    <h2 className="request__title p-3">Volunteering</h2>
+                    <h2 className="request__title p-3 m-5">Volunteering</h2>
                     <Volunteering />
                 </Col>
             </Row>

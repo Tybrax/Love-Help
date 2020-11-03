@@ -9,9 +9,8 @@
 */
 
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import { DashBoard } from './DashBoard';
-import { Volunteering } from './Volunteering';
 import { Header } from './Header';
 import { ActivityCount } from './ActivityCount';
 

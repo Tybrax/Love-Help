@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React from 'react';
 import { MapComponent } from './Map.js';
 import { GeoSuggest } from './GeoSuggest.js';
 import { Legend } from './Legend.js';
@@ -12,10 +12,6 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons'
 library.add(fas);
 
-const titleColor = {
-    color: '#086F00'
-};
-
 const today = new Date();
 const date = ("0" + (today.getMonth() + 1)).slice(-2) + '/' + ("0" + today.getDate()).slice(-2) + '/' + today.getFullYear();
 
@@ -25,7 +21,7 @@ export const Request = (props) => {
 
     if (token) {
         return (
-            <Fragment>
+            <React.Fragment>
                 <Container fluid>
                     <Row>
                         <Col md={12} className='background_style'>
@@ -69,7 +65,7 @@ export const Request = (props) => {
                         </Col>
                     </Row>
                 </Container>
-            </Fragment>
+            </React.Fragment>
         )
     } else {
         return (

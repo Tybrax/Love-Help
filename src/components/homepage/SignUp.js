@@ -2,13 +2,10 @@ import React, { useState, useContext } from 'react';
 import { Formik, Field, Form } from 'formik';
 import { TextField, Button } from '@material-ui/core';
 import * as Yup from 'yup';
-import axios from 'axios';
 import { signup } from '../../utils/signup';
-import { Redirect } from 'react-router-dom';
 import { Alert } from 'react-bootstrap';
 import { File } from './File';
 import { UserContext } from '../../UserContext';
-import { setLocalStorage } from '../../utils/setLocalStorage';
 
 // validations schemas
 const Schema = Yup.object().shape({
@@ -32,7 +29,7 @@ const Schema = Yup.object().shape({
     .required('Confirm password required'),
 });
 
-export const SignUp = () => {
+const SignUp = () => {
 
   const { user, setUser } = useContext(UserContext);
 
@@ -47,6 +44,7 @@ export const SignUp = () => {
   );
 
   return (
+
   <div className="text-center m-5">
     { isCreated ? (
       <File ID={userID} token={token} />
@@ -185,3 +183,5 @@ export const SignUp = () => {
   )
 
 };
+
+export default SignUp;

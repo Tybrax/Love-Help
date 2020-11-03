@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Container, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { Formik } from 'formik';
@@ -13,8 +13,6 @@ export const SendBox = ({ chatId, currentUserId }) => {
             'authorization': `bearer ${token}`
         }
     };
-
-    const [message, setMessage] = useState('');
 
     return (
         <Container className="text-center p-3">

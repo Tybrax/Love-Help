@@ -1,29 +1,30 @@
-import React, { useContext, useState, Fragment } from 'react';
+import React, { useContext,  lazy, Suspense } from 'react';
 import { UserContext } from '../../UserContext';
 import { usePosition } from 'use-position';
 
 import { Jumbotron } from 'react-bootstrap';
 import Description from './Description.js';
-import { SignUp } from './SignUp.js';
 import { LogIn } from './LogIn.js';
-import LogOut from './LogOut.js';
-import { LoggedIn } from './LoggedIn';
-import { logout } from '../../utils/logout';
-import { decodeToken } from '../../utils/decodeToken';
+
 import { setPosition } from '../../utils/setPosition';
 
 import Counter from './Count.js';
-import { Container, Row, Col, Alert } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 
 import img0 from '../../images/img0.jpg';
 import img1 from '../../images/img1.jpg';
 import img2 from '../../images/img2.jpg';
-import loggedin from '../../images/loggedin.png';
+import loggedin from '../../images/loggedin.jpg';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons'
 library.add(fas);
+
+const LoggedIn = lazy(() => import('./LoggedIn'));
+const SignUp = lazy(() => import('./SignUp'));
+
+const renderLoader = () => <p>Loading</p>;
 
 const description = {
     first: ['BE ACTIVE', img0, 'Meet your neighbors by helping them. Go out and discover new people instead of staying passively in your place. Turn off Netflix and write your own adventure through helping people in need. ', <FontAwesomeIcon size="lg" icon={['fas', 'hands-helping']} fixedWidth />],
@@ -62,7 +63,9 @@ export const Homepage = () => {
                     {user ? (
                         <React.Fragment>
                             <Col xs={12} sm={12} md={6}>
-                                <LoggedIn />
+                                <Suspense fallback={renderLoader()}>
+                                    <LoggedIn />
+                                </Suspense>
                             </Col>
                             <Col xs={12} sm={12} md={6}>
                                 <Container>
@@ -80,7 +83,10 @@ export const Homepage = () => {
                                 <LogIn />
                             </Col>
                             <Col xs={12} sm={12} md={6}>
-                                <SignUp />
+                                <Suspense fallback={renderLoader()}>
+                                    <SignUp />
+                                </Suspense>
+
                             </Col>
                         </React.Fragment>
                     )}

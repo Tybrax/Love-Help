@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
 import { Icon } from 'semantic-ui-react'
 
@@ -15,7 +15,7 @@ const NavbarElements = () => {
 
     if (token) {
         return (
-            <Fragment>
+            <React.Fragment>
                 <li className="nav-item">
                     <Link className="nav-link" to="/request">REQUESTS</Link>
                 </li>
@@ -25,7 +25,7 @@ const NavbarElements = () => {
                 <li className="nav-item">
                     <Link className="nav-link" to="/messages"><Icon name='mail' /></Link>
                 </li>
-            </Fragment>
+            </React.Fragment>
         )
     } else {
         return null;

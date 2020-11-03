@@ -39,7 +39,7 @@ export const File = ({ ID, token }) => {
 
     return (
         <Container>
-            { isUpload && setIsApproved ? (
+            { isUpload && isApproved ? (
                 <Confirmation />
             ) : (
             <Fragment>

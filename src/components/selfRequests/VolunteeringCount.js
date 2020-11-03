@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Container } from 'react-bootstrap';
 import { decodeToken } from '../../utils/decodeToken';
-import axios from 'axios';
 import { getVolunteers } from '../../utils/createVolunteer'
 
 export const VolunteeringCount = () => {
 
-    const [token, setToken] = useState(
-        localStorage.getItem('userToken') || null
-    )
+    const token = localStorage.getItem('userToken') || null;
+
     const currentUserId = decodeToken(token).user_id;
 
     const [count, setCount] = useState(0);
@@ -30,11 +27,11 @@ export const VolunteeringCount = () => {
         return () => mounted = false;
     }, [count])
 
-    if (count == 1) {
+    if (count === 1) {
         return (
                 <h4>I helped {count} person</h4>
         )
-    } else if (count == 0) {
+    } else if (count === 0) {
         return (
                 <h4>No one helped yet</h4>
         )

@@ -49,8 +49,8 @@ export const RequestCard = ({ requestTitle, requestDate, requestType, requestSta
     return (
         <div>
             {(nameError == false) ? (
-                <Container className="d-flex justify-content-center m-3">
-                    <Card className="request__card">
+                <Container className="d-block">
+                    <Card className="request__card d-flex justify-content-center m-3">
                         <div className="request__title ">
                             <h4 className="p-2">{requestTitle}</h4>
                             <h5 className="font-italic p-2">{requestDate.slice(0, 10)} by {requesterName}</h5>

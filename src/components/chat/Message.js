@@ -1,19 +1,9 @@
-/*
-BASTIEN RATAT
-TO DO :
--> 1. Use localStorage from the sidebar component to get currentUser role for each chat
--> 2. Create a function that sort out messages by date
--> 3. Create a function that assigns 0 or 1 to MESSAGE.author for each record
--> 4. Conditional rendering given the author value (styling and positionning)
-*/
-
-import React, { useState, useEffect } from 'react';
-import { Container, Col, Row } from 'react-bootstrap';
-import axios from 'axios';
+import React from 'react';
+import { Container } from 'react-bootstrap';
 
 export const Message = ({ message, author, time }) => {
 
-    if (author == 1) {
+    if (author === 1) {
         return (
             <Container className="d-flex flex-row">
                 <div className="blue-message mt-2 mb-2 p-2">
