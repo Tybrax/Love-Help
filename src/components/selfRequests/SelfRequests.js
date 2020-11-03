@@ -10,17 +10,17 @@
 
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { MyRequests } from './MyRequests';
+import { DashBoard } from './DashBoard';
 import { Volunteering } from './Volunteering';
 import { Header } from './Header';
 import { ActivityCount } from './ActivityCount';
 
 export const SelfRequests = () => {
     return (
-        <Container fluid>
+        <Container>
             <Header />
             <ActivityCount />
-            <MyRequests />
+            <DashBoard />
         </Container>
     )
 }

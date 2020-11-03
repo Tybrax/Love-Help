@@ -30,65 +30,78 @@ export const Sidebar = ({ handleClick }) => {
     const [conversations, setConversations] = useState([]);
 
     useEffect(() => {
+        let mounted = true;
         if (token && currentUserId) {
             axios.get(getChats, config)
             .then((response) => {
-                const chats = [];
-                for (const data of response.data) {
-                    const chatData = data;
-                    const chat = {
-                        chatId: chatData.id,
-                        requesterId: chatData.user_id
-                    }
-                    const getUserFromVolunteer = `${process.env.REACT_APP_BASE_URL}/volunteer/${chatData.volunteer_id}`;
-                    axios.get(getUserFromVolunteer, config)
-                    .then((response) => {
-                        const userIdFromVolunteer = response.data.user_id;
-                        chat.volunteerUserId = userIdFromVolunteer;
-                        chat.requestId = response.data.request_id;
-                        /*Current user is requester, seeking the volunteer*/
-                        if (currentUserId === chat.requesterId) {
-                            axios.get(`${process.env.REACT_APP_BASE_URL}/user/${userIdFromVolunteer}`)
-                            .then((response) => {
-                                const fullName = `${response.data.first_name} ${response.data.last_name}`;
-                                chat.fullName = fullName;
-                                axios.get(`${process.env.REACT_APP_BASE_URL}/requests/${chat.requestId}`, config)
-                                .then((response) => {
-                                    chat.title = response.data.title;
-                                    chats.push(chat);
-                                    const newArr = Array.prototype.slice.call(chats);
-                                    setConversations(newArr);
-                                    localStorage.setItem(`${chatData.id}`, fullName);
-                                })
-
-                            })
-                            .catch((error) => {
-                                setUserError(true);
-                            })
-                        /*Current user is volunteer, seeking the requester*/
-                        } else if (currentUserId === userIdFromVolunteer) {
-                            axios.get(`${process.env.REACT_APP_BASE_URL}/user/${chat.requesterId}`)
-                            .then((response) => {
-                                const fullName = `${response.data.first_name} ${response.data.last_name}`;
-                                chat.fullName = fullName;
-                                axios.get(`${process.env.REACT_APP_BASE_URL}/requests/${chat.requestId}`, config)
-                                .then((response) => {
-                                    chat.title = response.data.title;
-                                    chats.push(chat);
-                                    const newArr = Array.prototype.slice.call(chats);
-                                    setConversations(newArr);
-                                    localStorage.setItem(`${chatData.id}`, fullName);
-                                })
-                            })
-                            .catch((error) => {
-                                setUserError(true);
-                            })
+                if (mounted) {
+                    const chats = [];
+                    for (const data of response.data) {
+                        const chatData = data;
+                        const chat = {
+                            chatId: chatData.id,
+                            requesterId: chatData.user_id
                         }
-                    })
-                    .catch((error) => {
-                        setVolunteersError(true);
-                    })
+                        const getUserFromVolunteer = `${process.env.REACT_APP_BASE_URL}/volunteer/${chatData.volunteer_id}`;
+                        axios.get(getUserFromVolunteer, config)
+                        .then((response) => {
+                            if (mounted) {
+                            const userIdFromVolunteer = response.data.user_id;
+                            chat.volunteerUserId = userIdFromVolunteer;
+                            chat.requestId = response.data.request_id;
+                            /*Current user is requester, seeking the volunteer*/
+                            if (currentUserId === chat.requesterId) {
+                                axios.get(`${process.env.REACT_APP_BASE_URL}/user/${userIdFromVolunteer}`)
+                                .then((response) => {
+                                    if (mounted) {
+                                        const fullName = `${response.data.first_name} ${response.data.last_name}`;
+                                        chat.fullName = fullName;
+                                        axios.get(`${process.env.REACT_APP_BASE_URL}/requests/${chat.requestId}`, config)
+                                        .then((response) => {
+                                            if (mounted) {
+                                                chat.title = response.data.title;
+                                                chats.push(chat);
+                                                const newArr = Array.prototype.slice.call(chats);
+                                                setConversations(newArr);
+                                                localStorage.setItem(`${chatData.id}`, fullName);
+                                            }
+                                        })
+                                    }
+                                })
+                                .catch((error) => {
+                                    setUserError(true);
+                                })
+                            /*Current user is volunteer, seeking the requester*/
+                            } else if (currentUserId === userIdFromVolunteer) {
+                                axios.get(`${process.env.REACT_APP_BASE_URL}/user/${chat.requesterId}`)
+                                .then((response) => {
+                                    if (mounted) {
+                                        const fullName = `${response.data.first_name} ${response.data.last_name}`;
+                                        chat.fullName = fullName;
+                                        axios.get(`${process.env.REACT_APP_BASE_URL}/requests/${chat.requestId}`, config)
+                                        .then((response) => {
+                                            if (mounted) {
+                                                chat.title = response.data.title;
+                                                chats.push(chat);
+                                                const newArr = Array.prototype.slice.call(chats);
+                                                setConversations(newArr);
+                                                localStorage.setItem(`${chatData.id}`, fullName);
+                                            }
+                                        })
+                                    }
+                                })
+                                .catch((error) => {
+                                    setUserError(true);
+                                })
+                            }
+                        }
+                        })
+                        .catch((error) => {
+                            setVolunteersError(true);
+                        })
+                    }
                 }
+
             })
             .catch((error) => {
                 setChatsError(true);
@@ -96,6 +109,7 @@ export const Sidebar = ({ handleClick }) => {
         } else {
             setChatsError(true);
         }
+        return () => mounted = false;
     }, [])
 
     if (volunteersError || chatsError || userError) {

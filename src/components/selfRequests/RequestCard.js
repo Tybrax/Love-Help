@@ -49,42 +49,42 @@ export const RequestCard = ({ requestTitle, requestDate, requestType, requestSta
     return (
         <div>
             {(nameError == false) ? (
-                <Container className="d-flex justify-content-center">
-                    <Card className="m-2">
-                        <div className="request__title mb-2">
+                <Container className="d-flex justify-content-center m-3">
+                    <Card className="request__card">
+                        <div className="request__title ">
                             <h4 className="p-2">{requestTitle}</h4>
-                            <h5 className="font-italic p-2">Published on {requestDate.slice(0, 10)} by {requesterName}</h5>
+                            <h5 className="font-italic p-2">{requestDate.slice(0, 10)} by {requesterName}</h5>
                         </div>
                         <h5
-                            className="font-weight-bold m-3"
+                            className="font-weight-bold mt-3 pl-3"
                             style={(requestType === 'one-time task' ? redStyle : greenStyle)}
                         >
                             {requestType.slice(0, 1).toUpperCase()}{requestType.slice(1,)}
                         </h5>
-                        <p className="p-3 text-justify">{requestDescription}</p>
+                        <p className="text-justify pl-3 pr-3">{requestDescription}</p>
                         <h5
-                            className="font-weight-bold p-3"
+                            className="font-weight-bold pl-3"
                             style={(requestStatus === 'unfulfilled') ? statusStyle.unfulfilled : (requestStatus === 'fulfilled') ? statusStyle.fulfilled : statusStyle.pending}
                         >
                             {requestStatus.slice(0, 1).toUpperCase()}{requestStatus.slice(1,)}
                         </h5>
-                        <div className="d-flex justify-content-center">
+                        <div className="d-flex justify-content-center mt-3">
                             <button
-                                className="update__button m-3"
+                                className="update__button mr-3"
                                 style={{backgroundColor: '#086F00'}}
                                 onClick={() => fulfillRequest(requestId, token)}
                             >
                                 Fulfilled
                             </button>
                             <button
-                                className="update__button m-3"
+                                className="update__button mr-3"
                                 style={{backgroundColor: 'red'}}
                                 onClick={() => unfulfillRequest(requestId)}
                             >
                                 Unfulfilled
                             </button>
                             <button
-                                className="update__button m-3"
+                                className="update__button mr-3"
                                 style={{backgroundColor: 'orange'}}
                                 onClick={() => pendingRequest(requestId)}
                             >

@@ -20,7 +20,7 @@ const NavbarElements = () => {
                     <Link className="nav-link" to="/request">REQUESTS</Link>
                 </li>
                 <li className="nav-item">
-                    <Link className="nav-link" to="/my-requests">ME</Link>
+                    <Link className="nav-link" to="/dashboard">ME</Link>
                 </li>
                 <li className="nav-item">
                     <Link className="nav-link" to="/messages"><Icon name='mail' /></Link>
