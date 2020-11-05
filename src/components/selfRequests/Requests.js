@@ -3,7 +3,7 @@ import { Container } from 'react-bootstrap';
 import { Image } from './Image';
 import { RequestCard } from './RequestCard';
 
-export const Requests = ({ arrayOfRequests }) => {
+const Requests = ({ arrayOfRequests }) => {
     return (
         <Container>
             {arrayOfRequests.map((request, index) => (
@@ -21,3 +21,5 @@ export const Requests = ({ arrayOfRequests }) => {
         </Container>
     )
 }
+
+export default Requests;

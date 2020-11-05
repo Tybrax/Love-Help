@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Container, Card } from 'react-bootstrap';
 import { getRequest } from '../../utils/getRequest.js';
 import { getUser } from '../../utils/getChats.js';
@@ -77,27 +77,35 @@ export const Volunteering = () => {
 
     return (
         <Container className="d-block">
-            {volunteering.map((request, index) => (
-                <Card key={index} className="d-flex justify-content-center request__card">
-                    <div className="request__title ">
-                        <h4 className="p-2">{request.requestTitle}</h4>
-                        <h5 className="font-italic p-2">{request.requestDate.slice(0, 10)} by {request.requester}</h5>
-                    </div>
-                    <h5
-                        className="font-weight-bold mt-3 pl-3"
-                        style={(request.requestType === 'one-time task' ? redStyle : greenStyle)}
-                    >
-                        {request.requestType.slice(0, 1).toUpperCase()}{request.requestType.slice(1,)}
-                    </h5>
-                    <p className="text-justify pl-3 pr-3">{request.requestDescription}</p>
-                    <h5
-                        className="font-weight-bold pl-3 mb-5"
-                        style={(request.requestStatus === 'unfulfilled') ? statusStyle.unfulfilled : (request.requestStatus === 'fulfilled') ? statusStyle.fulfilled : statusStyle.pending}
-                    >
-                        {request.requestStatus.slice(0, 1).toUpperCase()}{request.requestStatus.slice(1,)}
-                    </h5>
-                </Card>
-            ))}
+            <h3 className="request__title p-3 m-5">Volunteering</h3>
+            {(volunteering.length === 0) ? (
+                <h5 className="p-3 m-5 text-center">No volunteering</h5>
+
+            ) : (
+                <Fragment>
+                    {volunteering.map((request, index) => (
+                        <Card key={index} className="d-flex justify-content-center request__card">
+                            <div className="request__title ">
+                                <h4 className="p-2">{request.requestTitle}</h4>
+                                <h5 className="font-italic p-2">{request.requestDate.slice(0, 10)} by {request.requester}</h5>
+                            </div>
+                            <h5
+                                className="font-weight-bold mt-3 pl-3"
+                                style={(request.requestType === 'one-time task' ? redStyle : greenStyle)}
+                            >
+                                {request.requestType.slice(0, 1).toUpperCase()}{request.requestType.slice(1,)}
+                            </h5>
+                            <p className="text-justify pl-3 pr-3">{request.requestDescription}</p>
+                            <h5
+                                className="font-weight-bold pl-3 mb-5"
+                                style={(request.requestStatus === 'unfulfilled') ? statusStyle.unfulfilled : (request.requestStatus === 'fulfilled') ? statusStyle.fulfilled : statusStyle.pending}
+                            >
+                                {request.requestStatus.slice(0, 1).toUpperCase()}{request.requestStatus.slice(1,)}
+                            </h5>
+                        </Card>
+                    ))}
+                </Fragment>
+            )}
         </Container>
     )
 };

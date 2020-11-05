@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+
 /*Store the total number of volunteers*/
 export const getVolunteers = async (token) => {
 
@@ -14,6 +15,7 @@ export const getVolunteers = async (token) => {
     return request;
 }
 
+
 /*Filter the volunteer for a given request*/
 export const volunteersFilter = (totalVolunteers, requestId) => {
     let count = 0;
@@ -22,6 +24,7 @@ export const volunteersFilter = (totalVolunteers, requestId) => {
     })
     return count;
 }
+
 
 /*Check if the number of volunteers for a given request is inferior to 5*/
 export const volunteersCheck = (count) => {
@@ -33,6 +36,7 @@ export const volunteersCheck = (count) => {
         return 'full';
     }
 }
+
 
 export const usersCheck = (totalVolunteers, requestId, userId) => {
     let count = 0;
@@ -57,9 +61,11 @@ export const usersCheck = (totalVolunteers, requestId, userId) => {
     return [count, userExist];
 }
 
+
 /*Post a volunteer to backend*/
 export const createVolunteer = async (token, userId, requestId) => {
-    const endPoint = `http://localhost:3001/requests/${requestId}/volunteers`;
+    const endPoint = `${process.env.REACT_APP_BASE_URL}/requests/${requestId}/volunteers`;
+
     const body = {
         user_id: userId,
         request_id: requestId
@@ -71,5 +77,18 @@ export const createVolunteer = async (token, userId, requestId) => {
         }
     };
     const request = await axios.post(endPoint, body, config);
+    return request;
+}
+
+export const checkForCurrentUserId = async (token, userId, requestId) => {
+    const endPoint = `${process.env.REACT_APP_BASE_URL}/requests/${requestId}`;
+    const config = {
+        headers: {
+            'authorization': `bearer ${token}`,
+            'content-type': 'application/json'
+        }
+    };
+
+    const request = await axios.get(endPoint, config);
     return request;
 }

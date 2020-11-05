@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import axios from 'axios';
 import { decodeToken } from '../../utils/decodeToken';
 import { Container, Col, Row } from 'react-bootstrap';
 import { Sidebar } from './Sidebar';
@@ -13,7 +12,6 @@ export const Chat = () => {
 
     const [showMessagesBox, setShowMessagesBox] = useState(false);
     const [chatRoom, setChatRoom] = useState();
-    const [messages, setMessages] = useState([]);
 
     const handleClick = (id) => {
         setChatRoom(id);

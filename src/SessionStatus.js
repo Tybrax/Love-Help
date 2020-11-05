@@ -1,8 +1,7 @@
 import React, { useContext, useState } from 'react';
-import axios from 'axios';
 import { decodeToken } from './utils/decodeToken';
 import { UserContext } from './UserContext';
-import { Button, Container } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import { Icon } from 'semantic-ui-react'
 import { logout } from './utils/logout';
 import { Link } from "react-router-dom";
@@ -22,15 +21,11 @@ export const SessionStatus = () => {
         setIsLoggedOut(true);
     }
 
-    const titleColor = {
-        color: '#086F00'
-    };
-
     if (!token) {
         return (
             <Container className="">
                 <h6 className="session-info text-right my-auto mr-5 mb-5">
-                    <Link to="/login">Sign in</Link> | <Link to="/signup">Sign up</Link>
+                    <Link to="/login">Sign in</Link>
                 </h6>
             </Container>
         )

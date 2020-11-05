@@ -26,7 +26,8 @@ import {
     volunteersCheck,
     volunteersFilter,
     createVolunteer,
-    usersCheck
+    usersCheck,
+    checkForCurrentUserId
 } from '../../utils/createVolunteer.js';
 import { createChat } from '../../utils/createChat.js';
 
@@ -141,7 +142,7 @@ export const MapComponent = () => {
                 }
             })
             return () => mounted = false;
-    }, [markers])
+    }, [markers, windows])
 
     const openWindow = (id) => {
             /*Get request for a clicked marker*/
@@ -199,29 +200,33 @@ export const MapComponent = () => {
             const count = volunteersFilter(totalVolunteers, id);
             const userChecker = usersCheck(totalVolunteers, id, currentUserId);
             const volunterChecker = volunteersCheck(userChecker[0]);
-            if (volunterChecker === 'create' && (userChecker[1] === false)) {
-                const secondPromise = createVolunteer(token, currentUserId, id);
-                secondPromise.then((response) => {
-                    const volunteerId = response.data.id;
-                    /*create a chat using the volunteerID*/
-                    const thirdPromise = createChat(token, requesterId, volunteerId, id);
+            const currentUserCheck = checkForCurrentUserId(token, currentUserId, id);
+            currentUserCheck.then((response) => {
+                if (response.data.user_id != currentUserId) {
+                    if (volunterChecker === 'create' && (userChecker[1] === false)) {
 
-                    thirdPromise.then((response) => {
-                        setChatCreated(true);
-                        setChatId(response.data.id);
-                    })
-                    .catch((error) => {
-                        setChatError(true);
-                    })
-                })
-                .catch((error) => {
-                    setVolunteerNotCreated(true);
-                })
-            } else if (volunterChecker === 'full' && (userChecker[1] === false)) {
-                setVolunteerFull(true);
-            } else if (volunterChecker === 'update status' && (userChecker[1] === false)) {
-                updateRequest(id);
-            }
+                        const secondPromise = createVolunteer(token, currentUserId, id);
+                        secondPromise.then((response) => {
+                            const volunteerId = response.data.id;
+
+                            const thirdPromise = createChat(token, requesterId, volunteerId, id);
+                            thirdPromise.then((response) => {
+                                setChatCreated(true);
+                                setChatId(response.data.id);
+                            })
+                            .catch((error) => {
+                                setChatError(true);
+                            })
+                        })
+                        .catch((error) => {
+                            setVolunteerNotCreated(true);
+                        })
+                    } else if (volunterChecker === 'full' && (userChecker[1] === false)) {
+                        setVolunteerFull(true);
+                        updateRequest(id);
+                    }
+                }
+            })
         })
         .catch((error) => {
             setVolunteersError(true);
@@ -330,14 +335,13 @@ export const MapComponent = () => {
                                         className="info-text"
                                         style={{ color : (windows.type === "one-time task") ? ' #c70039' : '#086F00'}}
                                     >
-                                        Clicked : {windows.counter}
+                                        Number of volunteers : {windows.counter}
                                     </h6>
                                 )}
                                 <p className="info-text">{windows.address}</p>
-                                {(windows.counter >= 5) ? (
+                                {((windows.counter >= 5) || chatCreated ) ? (
                                     <Button
                                         className="btn-dark d-block mx-auto disabled"
-                                        onClick={(event) => postVolunteer(windows.windowsId)}
                                     >
                                         Fulfill
                                     </Button>

@@ -7,7 +7,7 @@ export const fulfillRequest = async (requestId, token) => {
         }
     }
     const updateRoute = `${process.env.REACT_APP_BASE_URL}/requests/${requestId}`;
-    const updateRequest = await axios.delete(updateRoute, config);
+    const updateRequest = await axios.put(updateRoute, {status: 'fulfilled'});
     console.log(updateRequest);
 }
 

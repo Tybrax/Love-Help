@@ -70,7 +70,6 @@ export const GeoSuggest = (props) => {
           type: res.data.request_type,
           description: res.data.description
         };
-        console.log(informationsObject);
         setSuccessInformations(informationsObject);
         setSuccessAlert(true);
       })

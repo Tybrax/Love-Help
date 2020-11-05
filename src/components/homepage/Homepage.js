@@ -8,8 +8,8 @@ import { LogIn } from './LogIn.js';
 
 import { setPosition } from '../../utils/setPosition';
 
-import Counter from './Count.js';
 import { Container, Row, Col } from 'react-bootstrap';
+import ReactLoading from 'react-loading';
 
 import img0 from '../../images/img0.jpg';
 import img1 from '../../images/img1.jpg';
@@ -23,8 +23,12 @@ library.add(fas);
 
 const LoggedIn = lazy(() => import('./LoggedIn'));
 const SignUp = lazy(() => import('./SignUp'));
+const Counter = lazy(() => import('./Count.js'));
 
-const renderLoader = () => <p>Loading</p>;
+const Loader = () => (
+    <ReactLoading type="balls" color="green" height={'30%'} width={'30%'} />
+);
+
 
 const description = {
     first: ['BE ACTIVE', img0, 'Meet your neighbors by helping them. Go out and discover new people instead of staying passively in your place. Turn off Netflix and write your own adventure through helping people in need. ', <FontAwesomeIcon size="lg" icon={['fas', 'hands-helping']} fixedWidth />],
@@ -53,7 +57,9 @@ export const Homepage = () => {
                             <h4 style={{ fontSize: '1.2rem', color: 'black' }} className="session-info subtitle text-center mt-2"><FontAwesomeIcon size="lg" icon={['fas', 'life-ring']} fixedWidth /> Please help us reducing the number of unfulfilled request on {date}</h4>
                         </Col>
                         <Col md={4}>
-                            <Counter className="mt-5" />
+                            <Suspense fallback={Loader()}>
+                                <Counter className="mt-5" />
+                            </Suspense>
                         </Col>
                     </Col>
                 </Row>
@@ -63,7 +69,7 @@ export const Homepage = () => {
                     {user ? (
                         <React.Fragment>
                             <Col xs={12} sm={12} md={6}>
-                                <Suspense fallback={renderLoader()}>
+                                <Suspense fallback={Loader()}>
                                     <LoggedIn />
                                 </Suspense>
                             </Col>
@@ -83,7 +89,7 @@ export const Homepage = () => {
                                 <LogIn />
                             </Col>
                             <Col xs={12} sm={12} md={6}>
-                                <Suspense fallback={renderLoader()}>
+                                <Suspense fallback={Loader()}>
                                     <SignUp />
                                 </Suspense>
 

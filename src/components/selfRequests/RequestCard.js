@@ -68,23 +68,23 @@ export const RequestCard = ({ requestTitle, requestDate, requestType, requestSta
                         >
                             {requestStatus.slice(0, 1).toUpperCase()}{requestStatus.slice(1,)}
                         </h5>
-                        <div className="d-flex justify-content-center mt-3">
+                        <div className="d-flex justify-content-center mt-3 mb-3">
                             <button
-                                className="update__button mr-3"
+                                className="update__button m-2"
                                 style={{backgroundColor: '#086F00'}}
                                 onClick={() => fulfillRequest(requestId, token)}
                             >
                                 Fulfilled
                             </button>
                             <button
-                                className="update__button mr-3"
+                                className="update__button m-2"
                                 style={{backgroundColor: 'red'}}
                                 onClick={() => unfulfillRequest(requestId)}
                             >
                                 Unfulfilled
                             </button>
                             <button
-                                className="update__button mr-3"
+                                className="update__button m-2"
                                 style={{backgroundColor: 'orange'}}
                                 onClick={() => pendingRequest(requestId)}
                             >

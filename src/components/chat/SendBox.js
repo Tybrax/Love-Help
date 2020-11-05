@@ -31,7 +31,7 @@ export const SendBox = ({ chatId, currentUserId }) => {
 
                         const postRequest = axios.post(postMessage, messageData, config);
                         postRequest.then((response) => {
-                            console.log(response.data);
+
                         })
 
                         actions.resetForm();

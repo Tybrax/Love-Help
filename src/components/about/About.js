@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Card, Container, Row, Col, Figure } from 'react-bootstrap';
-import Counter from '../homepage/Count.js';
 import logoGreen from '../../images/logo_green.png';
-
+import ReactLoading from 'react-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons'
 library.add(fas);
 
+const Counter = React.lazy(() => import('../homepage/Count.js'));
+
 const aboutTextOne = "Our platform was built in 2020 and aims at helping people during the coronavirus epidemic crisis. Indeed, the virus has impacted everyone's lifestyle and a lot of people have lost their jobs. In that context, I feel it would have been highly appreciated to build a platform to grow a strong commmunity around help requests."
 
 const catchPhrase = "No matter what's your request, we believe there's always someone around to help you out."
+
+const Loader = () => (
+    <ReactLoading type="balls" color="green" height={'30%'} width={'30%'} />
+);
 
 export const About = () => {
 
@@ -36,7 +41,9 @@ export const About = () => {
                                             <h4 style={{ fontSize: '1.2rem', color: 'black' }} className="session-info subtitle text-center mt-2"><FontAwesomeIcon size="lg" icon={['fas', 'life-ring']} fixedWidth /> Please help us reducing the number of unfulfilled request on {date}</h4>
                                         </Col>
                                         <Col md={4}>
-                                            <Counter className="mt-5" />
+                                            <Suspense fallback={Loader()}>
+                                                <Counter className="mt-5" />
+                                            </Suspense>
                                         </Col>
                                     </Col>
                                 </Row>

@@ -4515,3 +4515,5 @@
 [1030/135210.634:ERROR:directory_reader_win.cc(43)] FindFirstFile: Le chemin d’accès spécifié est introuvable. (0x3)
 [1102/173452.219:ERROR:directory_reader_win.cc(43)] FindFirstFile: Le chemin d’accès spécifié est introuvable. (0x3)
 [1103/142613.973:ERROR:directory_reader_win.cc(43)] FindFirstFile: Le chemin d’accès spécifié est introuvable. (0x3)
+[1103/182839.265:ERROR:directory_reader_win.cc(43)] FindFirstFile: Le chemin d’accès spécifié est introuvable. (0x3)
+[1103/191435.664:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\Bastien\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\0498b88f-9694-459b-aade-6089dc6f8c55: Le chemin d’accès spécifié est introuvable. (0x3)
