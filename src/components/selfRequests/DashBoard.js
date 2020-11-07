@@ -6,6 +6,7 @@ import { Image } from './Image';
 import { Volunteering } from './Volunteering';
 import { Link } from "react-router-dom";
 import { Loader } from "../../Loader";
+import moment from 'moment';
 
 const Requests = lazy(() => import('./Requests.js'));
 
@@ -19,6 +20,7 @@ export const DashBoard = () => {
     const currentUserId = decodeToken(token).user_id;
 
     const [requests, setRequests] = useState([]);
+    const [canPublish, setCanPublish] = useState(false);
 
     useEffect(() => {
         let mounted = true;
@@ -30,6 +32,13 @@ export const DashBoard = () => {
                 response.data.map((request) => {
                     if ((request.user_id === currentUserId) && (request.status != 'fulfilled')) {
                         myRequests.push(request);
+                        if (request.created_at !== request.updated_at) {
+                            const updatedTime = moment(request.updated_at)._d;
+                            const dayDuration = moment().subtract(1, 'days')._d
+                            if (dayDuration >= updatedTime) {
+                                setCanPublish(true);
+                            }
+                        }
                     }
                 })
                 setRequests(myRequests);
@@ -50,7 +59,7 @@ export const DashBoard = () => {
                         </Container>
                     ) : (
                         <Suspense fallback={renderLoader()} >
-                            <Requests arrayOfRequests={requests} />
+                            <Requests arrayOfRequests={requests} canPublish={canPublish} />
                         </Suspense>
                     )}
                 </Col>

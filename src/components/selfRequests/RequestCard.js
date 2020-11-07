@@ -23,7 +23,7 @@ const statusStyle = {
     }
 }
 
-export const RequestCard = ({ requestTitle, requestDate, requestType, requestStatus, requesterId, requestDescription, requestId }) => {
+export const RequestCard = ({ requestTitle, requestDate, requestType, requestStatus, requesterId, requestDescription, requestId, canPublish }) => {
 
     const [token, setToken] = useState(
         localStorage.getItem('userToken') || null
@@ -78,18 +78,28 @@ export const RequestCard = ({ requestTitle, requestDate, requestType, requestSta
                             </button>
                             <button
                                 className="update__button m-2"
-                                style={{backgroundColor: 'red'}}
-                                onClick={() => unfulfillRequest(requestId)}
-                            >
-                                Unfulfill
-                            </button>
-                            <button
-                                className="update__button m-2"
                                 style={{backgroundColor: 'orange'}}
                                 onClick={() => pendingRequest(requestId)}
                             >
                                 Pending
                             </button>
+                            {(requestStatus === 'pending' && canPublish === false) ? (
+                                <button
+                                    className="update__button m-2"
+                                    style={{backgroundColor: 'grey'}}
+                                    disabled
+                                >
+                                    Unfulfill
+                                </button>
+                            ) : (
+                                <button
+                                    className="update__button m-2"
+                                    style={{backgroundColor: 'red'}}
+                                    onClick={() => unfulfillRequest(requestId)}
+                                >
+                                    Unfulfill
+                                </button>
+                            )}
                         </div>
                     </Card>
                 </Container>

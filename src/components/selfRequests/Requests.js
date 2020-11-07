@@ -3,7 +3,7 @@ import { Container } from 'react-bootstrap';
 import { Image } from './Image';
 import { RequestCard } from './RequestCard';
 
-const Requests = ({ arrayOfRequests }) => {
+const Requests = ({ arrayOfRequests, canPublish }) => {
     return (
         <Container>
             {arrayOfRequests.map((request, index) => (
@@ -16,6 +16,7 @@ const Requests = ({ arrayOfRequests }) => {
                     requestStatus={request.status}
                     requesterId={request.user_id}
                     requestId={request.id}
+                    canPublish={canPublish}
                 />
             ))}
         </Container>
