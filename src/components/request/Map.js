@@ -1,22 +1,18 @@
 /*TO DO
 -> WHEN 5 DIFFERENT USERS FULFILL REQUESTER : REMOVE IT FROM THE MAP
 */
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState } from 'react';
 import { Container, Button, Alert } from 'react-bootstrap';
 import logoGreen from '../../images/logo_green.png';
 import logoRed from '../../images/logo_red.png';
 import mapStyles from "./mapStyles";
 import {
     GoogleMap,
-    useLoadScript,
     Marker,
     InfoWindow,
 } from '@react-google-maps/api'
 import Geocode from 'react-geocode';
-import { Location } from '../homepage/Location';
-import axios from 'axios';
 import { decodeToken } from '../../utils/decodeToken';
-import { getRequests } from '../../utils/getRequests.js';
 import { getRequest } from '../../utils/getRequest.js';
 import { getUser } from '../../utils/getChats';
 import { updateRequest } from '../../utils/updateRequest.js';
@@ -29,7 +25,9 @@ import {
     usersCheck,
     checkForCurrentUserId
 } from '../../utils/createVolunteer.js';
+import { suspendRequest } from '../../utils/suspendRequest';
 import { createChat } from '../../utils/createChat.js';
+import { Redirect } from 'react-router-dom';
 
 Geocode.setLanguage("en");
 Geocode.setRegion("fr");
@@ -47,7 +45,7 @@ const options = {
     zoomControl: true
 };
 
-export const MapComponent = () => {
+export const MapComponent = ({ markers, icons, requestsError }) => {
 
     /*state for user*/
     const [token, setToken] = useState(
@@ -64,7 +62,6 @@ export const MapComponent = () => {
     const [zoom, setZoom] = useState(12);
 
     /*states for errors*/
-    const [requestsError, setRequestsError] = useState(false);
     const [coordinatesError ,setCoordinatesError] = useState(false);
     const [singleRequestError, setSingleRequestError] = useState(false);
     const [volunteersError, setVolunteersError] = useState(false);
@@ -72,9 +69,6 @@ export const MapComponent = () => {
     const [volunteerNotCreated, setVolunteerNotCreated] = useState(false);
     const [counterError, setCounterError] = useState(false);
 
-    /*states for markers*/
-    const [markers, setMarkers] = useState([]);
-    const [icons, setIcons] = useState([]);
 
     /*states for infowindows*/
     const [windows, setWindows] = useState();
@@ -87,62 +81,6 @@ export const MapComponent = () => {
     const [requesterId, setRequesterId] = useState(null);
     const [chatCreated, setChatCreated] = useState(false);
     const [chatId, setChatId] = useState(null);
-
-
-    useEffect(() => {
-            let mounted = true;
-            const promise = getRequests(token);
-            promise.then((response) => {
-                if (mounted) {
-                    const responseData = response.data;
-
-                    /*Edit the coordinates so they have the accepted format for googleMap*/
-                    const coordinates = [];
-                    const cleanCoordinates = [];
-
-                    /*Create empty lists for each request to append to the marker state*/
-                    const requestsStatus = [];
-                    const requestsType = [];
-                    const requestsId = [];
-
-                    /*Fill our lists with data from the requests*/
-                    responseData.map(request => requestsStatus.push(request.status));
-                    responseData.map(request => requestsType.push(request.request_type));
-                    responseData.map(request => requestsId.push(request.id));
-                    responseData.map(request => coordinates.push(request.location));
-
-                    /*Create objects using our lists*/
-                    let i;
-                    for (i = 0 ; i < coordinates.length; i++) {
-                        const splitCoordinates = coordinates[i].split(",");
-                        const latitude = splitCoordinates[0];
-                        const longitude = splitCoordinates[1].trim();
-                        const type = requestsType[i];
-                        const requestId = requestsId[i];
-                        const status = requestsStatus[i];
-
-                        const coordinatesObject = {
-                            lat: parseFloat(latitude),
-                            lng: parseFloat(longitude),
-                            id: requestId,
-                            icon: type,
-                            status: status
-                        };
-                        cleanCoordinates.push(coordinatesObject);
-                    }
-
-                    /*Update state to have an array of object containing coordinates and time for React key*/
-                    setMarkers(cleanCoordinates);
-                    setIcons(requestsType);
-                }
-            })
-            .catch((error) => {
-                if (requestsError === false) {
-                    setRequestsError(true);
-                }
-            })
-            return () => mounted = false;
-    }, [markers, windows])
 
     const openWindow = (id) => {
             /*Get request for a clicked marker*/
@@ -187,6 +125,7 @@ export const MapComponent = () => {
                 setWindows(windowObject);
                 setInfoOpen(true);
                 setCenter(windowObject.location);
+                setZoom(14);
             })
             .catch(error => {
                 setSingleRequestError(true);
@@ -197,12 +136,12 @@ export const MapComponent = () => {
         const promise = getVolunteers(token, id);
         promise.then((response) => {
             const totalVolunteers = response.data;
-            const count = volunteersFilter(totalVolunteers, id);
+            volunteersFilter(totalVolunteers, id);
             const userChecker = usersCheck(totalVolunteers, id, currentUserId);
             const volunterChecker = volunteersCheck(userChecker[0]);
             const currentUserCheck = checkForCurrentUserId(token, currentUserId, id);
             currentUserCheck.then((response) => {
-                if (response.data.user_id != currentUserId) {
+                if (response.data.user_id !== currentUserId) {
                     if (volunterChecker === 'create' && (userChecker[1] === false)) {
 
                         const secondPromise = createVolunteer(token, currentUserId, id);
@@ -272,9 +211,7 @@ export const MapComponent = () => {
                 </Alert>
             )}
             { chatCreated && (
-                <Alert variant="success" className="alert-fail text-center">
-                    <h4>Request successfully answered.</h4>
-                </Alert>
+                <Redirect to="/messages" />
             )}
                 <GoogleMap
                     mapContainerStyle={mapContainerStyle}
@@ -335,7 +272,7 @@ export const MapComponent = () => {
                                         className="info-text"
                                         style={{ color : (windows.type === "one-time task") ? ' #c70039' : '#086F00'}}
                                     >
-                                        Number of volunteers : {windows.counter}
+                                        Volunteers : {windows.counter}
                                     </h6>
                                 )}
                                 <p className="info-text">{windows.address}</p>
@@ -371,7 +308,6 @@ export const MapComponent = () => {
                         </h6>
                         <p className="info-text">ADDRESS : {windows.address}</p>
                         <p className="info-text">DESCRIPTION : {windows.description}</p>
-
                     </Container>
                 )}
             </div>

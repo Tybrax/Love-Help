@@ -1,15 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import axios from 'axios';
 import { Container, Alert, Button } from 'react-bootstrap';
 import { getConversations } from '../../utils/getConversations';
 import { getUserInformation } from '../../utils/getUserInformation';
 import { getUser } from '../../utils/getChats';
 import { decodeToken } from '../../utils/decodeToken';
+import ReactLoading from 'react-loading';
+const Conversations = lazy(() => import('./Conversations'));
+
+const Loader = () => (
+    <ReactLoading type="balls" color="green" height={'30%'} width={'30%'} className="text-center" />
+);
 
 const getChats = `${process.env.REACT_APP_BASE_URL}/chats`;
 
-
-export const Sidebar = ({ handleClick }) => {
+const Sidebar = ({ handleClick }) => {
 
     /*VARIABLES*/
     const token = localStorage.getItem('userToken') || null;
@@ -120,22 +125,16 @@ export const Sidebar = ({ handleClick }) => {
         )
     } else {
         return (
-        <Container className="conversations">
-            {(conversations.length === 0) && (
-                <h3 className="text-center">No requests answered yet</h3>
-            )}
-
-            {conversations.map((chat) => (
-                <Container key={chat.chatId} className="conversation d-block" onClick={() => handleClick(chat.chatId)}>
-                    <div>
-                        <h5 className="conversation__person p-1">{chat.fullName}</h5>
-                    </div>
-                    <div>
-                        <h5 className="conversation__title p-1">{chat.title}</h5>
-                    </div>
-                </Container>
-            ))}
-        </Container>
+            <Suspense fallback={Loader()}>
+                <Conversations
+                    conversations={conversations}
+                    chatsError={chatsError}
+                    volunteersError={volunteersError}
+                    handleClick={handleClick}
+                />
+            </Suspense>
         )
     }
 }
+
+export default Sidebar;

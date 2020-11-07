@@ -1,9 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, lazy, Suspense } from 'react'
 import { decodeToken } from '../../utils/decodeToken';
 import { Container, Col, Row } from 'react-bootstrap';
-import { Sidebar } from './Sidebar';
 import { ChatRoom } from './ChatRoom';
 import { Redirect } from 'react-router-dom';
+import ReactLoading from 'react-loading';
+const Sidebar = lazy(() => import('./Sidebar'));
+
+
+const Loader = () => (
+    <ReactLoading type="balls" color="green" height={'30%'} width={'30%'} className="text-center" />
+);
 
 export const Chat = () => {
 
@@ -25,7 +31,9 @@ export const Chat = () => {
             <Container>
                 <Row>
                     <Col xs={12} sm={12} md={4}>
-                        <Sidebar handleClick={handleClick} />
+                        <Suspense fallback={Loader()}>
+                            <Sidebar handleClick={handleClick} />
+                        </Suspense>
                     </Col>
                     <Col xs={12} sm={12} md={8}>
                         <ChatRoom

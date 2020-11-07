@@ -74,14 +74,14 @@ export const RequestCard = ({ requestTitle, requestDate, requestType, requestSta
                                 style={{backgroundColor: '#086F00'}}
                                 onClick={() => fulfillRequest(requestId, token)}
                             >
-                                Fulfilled
+                                Fulfill
                             </button>
                             <button
                                 className="update__button m-2"
                                 style={{backgroundColor: 'red'}}
                                 onClick={() => unfulfillRequest(requestId)}
                             >
-                                Unfulfilled
+                                Unfulfill
                             </button>
                             <button
                                 className="update__button m-2"

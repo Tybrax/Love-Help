@@ -4,6 +4,7 @@ import { getRequest } from '../../utils/getRequest.js';
 import { getUser } from '../../utils/getChats.js';
 import { getVolunteers } from '../../utils/createVolunteer.js';
 import { decodeToken } from '../../utils/decodeToken';
+import { fulfillRequest } from '../../utils/updateRequestStatus';
 
 const redStyle= {
     color: '#c70039'
@@ -50,21 +51,21 @@ export const Volunteering = () => {
                 for (const requestId of requestsIdForVolunteering) {
                     const request = getRequest(token, requestId);
                     request.then((response) => {
-                            const requestInfo = {
-                                id: requestId,
-                                requestTitle: response.data.title,
-                                requestType: response.data.request_type,
-                                requestDescription: response.data.description,
-                                requestDate: response.data.created_at,
-                                requestStatus: response.data.status
-                            };
-                            const requesterName = getUser(response.data.user_id);
-                            requesterName.then((response) => {
-                                requestInfo.requester = response;
-                                requestInformations.push(requestInfo);
-
-                            })
-
+                            if (response.data.status === "unfulfilled") {
+                                const requestInfo = {
+                                    id: requestId,
+                                    requestTitle: response.data.title,
+                                    requestType: response.data.request_type,
+                                    requestDescription: response.data.description,
+                                    requestDate: response.data.created_at,
+                                    requestStatus: response.data.status
+                                };
+                                const requesterName = getUser(response.data.user_id);
+                                requesterName.then((response) => {
+                                    requestInfo.requester = response;
+                                    requestInformations.push(requestInfo);
+                                })
+                            }
                     })
                 }
                 setVolunteering(requestInformations);
@@ -84,6 +85,8 @@ export const Volunteering = () => {
             ) : (
                 <Fragment>
                     {volunteering.map((request, index) => (
+
+
                         <Card key={index} className="d-flex justify-content-center request__card">
                             <div className="request__title ">
                                 <h4 className="p-2">{request.requestTitle}</h4>
@@ -102,7 +105,18 @@ export const Volunteering = () => {
                             >
                                 {request.requestStatus.slice(0, 1).toUpperCase()}{request.requestStatus.slice(1,)}
                             </h5>
+                            <div className="d-flex justify-content-center mt-3 mb-3">
+                                <button
+                                    className="update__button m-2"
+                                    style={{backgroundColor: '#086F00'}}
+                                    onClick={() => fulfillRequest(request.id, token)}
+                                >
+                                    Fulfill
+                                </button>
+                            </div>
                         </Card>
+
+
                     ))}
                 </Fragment>
             )}

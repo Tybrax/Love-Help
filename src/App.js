@@ -19,8 +19,8 @@ import { File } from './components/homepage/File.js';
 import { Footer } from './components/footer/Footer.js';
 import { About } from './components/about/About.js';
 import { Request } from './components/request/Request.js';
-import { Chat } from './components/chat/Chat.js';
 import { LogIn } from './components/homepage/LogIn.js';
+import { Chat } from './components/chat/Chat.js';
 import { SelfRequests } from './components/selfRequests/SelfRequests';
 
 function App() {
@@ -37,9 +37,9 @@ function App() {
             <Route exact path="/request" component={Request} />
             <Route exact path="/about" component={About} />
             <Route exact path="/file" component={File} />
-            <Route exact path="/messages" component={Chat} />
             <Route exact path="/login" component={LogIn} />
             <Route exact path="/dashboard" component={SelfRequests} />
+            <Route exact path="/messages" component={Chat} />
           </Switch>
         </div>
         <Footer className="mt-5" />

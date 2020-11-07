@@ -1,4 +1,4 @@
-import React, { useContext,  lazy, Suspense } from 'react';
+import React, { useContext, lazy, Suspense } from 'react';
 import { UserContext } from '../../UserContext';
 import { usePosition } from 'use-position';
 

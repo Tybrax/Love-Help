@@ -46,7 +46,7 @@ export const DashBoard = () => {
                     <h3 className="request__title p-3 m-5 text-center">Requests</h3>
                     {(requests.length === 0) ? (
                         <Container>
-                            <h5 className="p-3 m-2">No requests so far</h5>
+                            <h5 className="p-3 m-2 text-center">No request so far</h5>
                         </Container>
                     ) : (
                         <Suspense fallback={renderLoader()} >

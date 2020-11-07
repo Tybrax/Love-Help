@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { MapComponent } from './Map.js';
 import { GeoSuggest } from './GeoSuggest.js';
 import { Legend } from './Legend.js';
@@ -8,7 +8,10 @@ import Card from 'react-bootstrap/Card'
 import ReactLoading from 'react-loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas } from '@fortawesome/free-solid-svg-icons'
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { getRequests } from '../../utils/getRequests.js';
+import { pendingRequest } from '../../utils/updateRequestStatus';
+import axios from 'axios';
 library.add(fas);
 
 const Counter = React.lazy(() => import('../homepage/Count.js'));
@@ -24,6 +27,96 @@ export const Request = (props) => {
 
     const token = localStorage.getItem('userToken') || null;
 
+    /*Markers*/
+    const [markers, setMarkers] = useState([]);
+    const [icons, setIcons] = useState([]);
+    const [requestsError, setRequestsError] = useState(false);
+
+    useEffect(() => {
+            let mounted = true;
+            const promise = getRequests(token);
+            promise.then((response) => {
+                if (mounted) {
+                    const responseData = response.data;
+
+                    /*Edit the coordinates so they have the accepted format for googleMap*/
+                    const coordinates = [];
+                    const cleanCoordinates = [];
+
+                    /*Create empty lists for each request to append to the marker state*/
+                    const requestsStatus = [];
+                    const requestsType = [];
+                    const requestsId = [];
+
+                    /*Fill our lists with data from the requests*/
+                    responseData.map(request => requestsStatus.push(request.status));
+                    responseData.map(request => requestsType.push(request.request_type));
+                    responseData.map(request => requestsId.push(request.id));
+                    responseData.map(request => coordinates.push(request.location));
+
+                    /*Create objects using our lists*/
+                    let i;
+                    for (i = 0 ; i < coordinates.length; i++) {
+                        const splitCoordinates = coordinates[i].split(",");
+                        const latitude = splitCoordinates[0];
+                        const longitude = splitCoordinates[1].trim();
+                        const type = requestsType[i];
+                        const requestId = requestsId[i];
+                        const status = requestsStatus[i];
+
+                        const coordinatesObject = {
+                            lat: parseFloat(latitude),
+                            lng: parseFloat(longitude),
+                            id: requestId,
+                            icon: type,
+                            status: status
+                        };
+                        cleanCoordinates.push(coordinatesObject);
+                    }
+
+                    /*Update state to have an array of object containing coordinates and time for React key*/
+                    setMarkers(cleanCoordinates);
+                    setIcons(requestsType);
+                }
+            })
+            .catch((error) => {
+                if (requestsError === false) {
+                    setRequestsError(true);
+                }
+            })
+
+            /*Check volunteers for each request and change requests to pending depending on the status*/
+            const getRequestsURI = `${process.env.REACT_APP_BASE_URL}/requests`;
+            const config = {
+                headers: {
+                    "authorization": `bearer ${token}`
+                }
+            }
+
+            const allRequests = axios.get(getRequestsURI, config);
+            allRequests.then((response) => {
+                response.data.map((request) => {
+                    if (request.status != 'fulfilled') {
+                        let count = 0
+                        const getVolunteersURI = `${process.env.REACT_APP_BASE_URL}/volunteers`;
+                        const allVolunteers = axios.get(getVolunteersURI, config);
+                        allVolunteers.then((response) => {
+                            response.data.map((volunteer) => {
+                                if (volunteer.request_id === request.id) {
+                                    count += 1;
+                                }
+                                if (count === 5) {
+                                    pendingRequest(request.id);
+                                }
+                            })
+                        })
+                    }
+                })
+            })
+
+            return () => mounted = false;
+    }, [markers])
+
     if (token) {
         return (
             <React.Fragment>
@@ -38,7 +131,7 @@ export const Request = (props) => {
                                         </Col>
                                         <Col md={4}>
                                             <Suspense fallback={Loader()}>
-                                                <Counter className="mt-5" />
+                                                <Counter className="mt-5" reRenderProp={markers}/>
                                             </Suspense>
                                         </Col>
                                     </Col>
@@ -60,7 +153,7 @@ export const Request = (props) => {
                             <Container className='mb-4'>
                                 <Row className='justify-content-center'>
                                     <Col className='col_form' sm={12} md={8}>
-                                        <MapComponent />
+                                        <MapComponent markers={markers} icons={icons} requestsError={requestsError} />
                                     </Col>
                                     <Col className='col_form' sm={12} md={4}>
                                     <Card style={{margin: 0}} className='card_form' border="light">
