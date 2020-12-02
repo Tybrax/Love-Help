@@ -1,68 +1,31 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# LOVE HELP
 
-## Available Scripts
+## Accounts
 
-In the project directory, you can run:
+A user must be able to sign up. They can create an account with their first name, last name, email address, and an upload button to submit a copy of a government-approved ID (approved formats: .jpg, .png, .pdf).
 
-### `yarn start`
+## Volunteering to help
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Once signed in, all users see a map (via the Google Maps API with the map geolocalized reasonably to the user's current location) with markers on it indicating people in need of community help.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+The markers should be colored differently for two different kinds of needs: one-time tasks (i.e., to help carry a piece of heavy furniture) or for a material need (i.e., a homeless woman on your street who needs a blanket for winter).
 
-### `yarn test`
+The map should be movable and should refresh its results, geolocalized to the new location, if dragged to show a new area.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Upon clicking a marker, information about the help request appears somewhere on the webpage (you choose where). For each help request, there should be a brief description (300 characters max), a type of request (one-time tasks or material needs, as mentioned above), a location (shown on the displayed map), and a status (fulfilled or unfulfilled, although only unfulfilled requests should be shown on the map). There should also be a button displayed somewhere on the webpage allowing users to volunteer to fulfill the selected need.
 
-### `yarn build`
+Upon clicking the button to fulfill the need, the volunteer is sent into a message flow where they can send a message to the requester directly on the platform. The requester and the volunteer can communicate this way to organize fulfillment of the need.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Once 5 separate users have clicked on the fulfillment button and sent messages to the requester, the need is no longer displayed on the site. This prevents people from putting up requests that last forever to which hundreds of people reply!
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+What if 1 of the 5 users doesn't actually fulfill the help request, though? If, within 24 hours, the request still hasn't been marked as fulfilled, the requester can republish it. However, if either party marks the request as fulfilled (a status associated with the request that either the requester or volunteer can modify), it cannot be republished.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Requests
 
-### `yarn eject`
+There should also be a button visible on the website allowing users to submit a request for help. You already saw the elements of a request above: there should be a brief description (300 characters max), a type of request (one-time tasks or material needs, as mentioned above), and a location (as a set of latitude and longitude coordinates). There is also a status of fulfilled or unfulfilled associated with the request, although by default, it is unfulfilled.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Each request has multiple parties associated with it: it should have one requester and one-or-more responders.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Counter
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+There should be a counter for the number of unfulfilled help requests displayed on the homepage. This number should update every few seconds -- without reloading the page.
